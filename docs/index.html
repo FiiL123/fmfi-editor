@@ -21,6 +21,7 @@
                         <a class="nav-link" href="#plan-prace">Plán práce</a>
                         <a class="nav-link" href="#dennik">Denník</a>
                         <a class="nav-link" href="#zdroje">Zdroje</a>
+                        <a class="nav-link" href="#git">Git history</a>
                     </div>
                 </div>
             </div>
@@ -54,6 +55,27 @@
             <div class="container-md">
                 <h2 id="zdroje">Zdroje a ostatné</h2>
             </div>
+            <hr class="container-md">
+            <div class="container-md">
+                <h2 id="git">Git history</h2>
+                <ul id="commit-list">
+                </ul>
+            </div>
+            <script>
+                fetch(`https://api.github.com/repos/FiiL123/fmfi-editor/commits?per_page=5`)
+                    .then(response => response.json())
+                    .then(commits => {
+                        const commitList = document.getElementById('commit-list');
+
+                        commits.forEach(commit => {
+                            const commitItem = document.createElement('li');
+                            commitItem.innerHTML = `
+                            <a href='${commit.html_url}'>${commit.commit.message} </a>(${commit.commit.author.date})`;
+                            commitList.appendChild(commitItem);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching commits:', error));
+            </script>
         </main>
         <footer class="footer mt-auto bg-light">
             <div class="d-flex flex-column align-items-center justify-content-center text-center">
