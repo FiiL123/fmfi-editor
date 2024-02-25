@@ -1,56 +1,69 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!--
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    -->
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"
-                       href="#"
-                       id="navbarDropdown"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false">Dropdown</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item" href="#">Action</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Another action</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
+                <ul class="navbar-nav mb-lg-0 me-2">
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Navigate"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-hand"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Zoom"
+                           onclick="toolbarClickFunc(this)"><i class="fa fa-search-plus" aria-hidden="true"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Floor Up"
+                           onclick="toolbarClickFunc(this)"><i class="fa  fa-angle-double-up" aria-hidden="true"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Floor Down"
+                           onclick="toolbarClickFunc(this)"><i class="fa  fa-angle-double-down" aria-hidden="true"></i></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mb-lg-0 me-2 ms-2">
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create rooms"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-building"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create doors"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-door-closed"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create elevators/stairs"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-stairs"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create objects"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-screwdriver-wrench"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create custom objects"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-square-plus"></i></a>
+                    </li>
+                </ul>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2"
-                       type="search"
-                       placeholder="Search"
-                       aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            {% if current_user.is_authenticated %}
+                <h4 class="text-light me-2 text-center mt-2">{{ current_user.email }} |</h4>
+                <a class="btn btn-outline-danger" href="/logout">Logout</a>
+            {% else %}
+                <a class="btn btn-outline-success" href="/login">Login</a>
+            {% endif %}
         </div>
     </div>
 </nav>
