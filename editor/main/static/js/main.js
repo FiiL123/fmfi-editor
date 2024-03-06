@@ -1,5 +1,6 @@
 class RectangularRoom extends Konva.Rect {
-    constructor(x, y) {
+    constructor(x, y, tr) {
+        console.log(x+" "+y)
         super({
                 x: x,
                 y: y,
@@ -26,6 +27,11 @@ class RectangularRoom extends Konva.Rect {
         super.on('transformend', function () {
             console.log('transform end');
         });
+
+        super.on('click', function () {
+            console.log("klikikik")
+            tr.nodes([this]);
+        })
     }
 
 }
@@ -166,15 +172,17 @@ stage.on('touchend', function (e) {
 var layer = new Konva.Layer();
 stage.add(layer);
 
-var rect = new RectangularRoom(100, 200)
-layer.add(rect);
-
-
 // create new transformer
 
+
 var tr = new Konva.Transformer();
+
+var rect = new RectangularRoom(100, 200,tr)
+var rect3 = new RectangularRoom(300, 200,tr)
+layer.add(rect);
+layer.add(rect3);
 layer.add(tr);
-tr.nodes([rect]);
+
 
 
 
