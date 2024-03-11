@@ -139,6 +139,6 @@ var tr = new Konva.Transformer();
 
 layer.add(tr);
 
-
+var selectedRoom = null;
 
 
