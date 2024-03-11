@@ -1,42 +1,3 @@
-class RectangularRoom extends Konva.Rect {
-    constructor(x, y, tr) {
-        console.log(x+" "+y)
-        super({
-                x: x,
-                y: y,
-                width: 100,
-                height: 90,
-                fill: 'red',
-                name: 'rect',
-                stroke: 'black',
-                draggable: true,
-            },
-        );
-        super.on('transformstart', function () {
-            console.log('transform start');
-        });
-
-        super.on('dragmove', function () {
-            // updateText();
-        });
-        super.on('transform', function () {
-            // updateText();
-            console.log('transform');
-        });
-
-        super.on('transformend', function () {
-            console.log('transform end');
-        });
-
-        super.on('click', function () {
-            console.log("klikikik")
-            tr.nodes([this]);
-        })
-    }
-
-}
-
-
 var width = 10 * (window.innerWidth / 12) - 10;
 console.log(width)
 var height = window.innerHeight;
@@ -174,13 +135,8 @@ stage.add(layer);
 
 // create new transformer
 
-
 var tr = new Konva.Transformer();
 
-var rect = new RectangularRoom(100, 200,tr)
-var rect3 = new RectangularRoom(300, 200,tr)
-layer.add(rect);
-layer.add(rect3);
 layer.add(tr);
 
 
