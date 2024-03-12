@@ -24,6 +24,13 @@ export default class RectangularRoom extends Konva.Rect {
         super.on('transform', function () {
             // updateText();
             console.log('transform');
+            let roomWidth = (this.width()*this.scaleX());
+            let roomHeight = (this.height()*this.scaleY());
+            this.scaleX(1)
+            this.scaleY(1)
+            this.width(roomWidth);
+            this.height(roomHeight);
+
             handleRoomClick(this)
         });
 
