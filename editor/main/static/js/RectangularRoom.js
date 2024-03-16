@@ -19,23 +19,22 @@ export default class RectangularRoom extends Konva.Rect {
 
         super.on('dragmove', function () {
             // updateText();
-            handleRoomClick(this)
+            this.handlePositionChange();
+            handleRoomClick(this);
         });
         super.on('transform', function () {
             // updateText();
             console.log('transform');
-            let roomWidth = (this.width()*this.scaleX());
-            let roomHeight = (this.height()*this.scaleY());
-            this.scaleX(1)
-            this.scaleY(1)
-            this.width(roomWidth);
-            this.height(roomHeight);
 
-            handleRoomClick(this)
+            this.handleSizeChange();
+            handleRoomClick(this);
         });
 
         super.on('transformend', function () {
             console.log('transform end');
+            this.handlePositionChange();
+            handleRoomClick(this);
+
         });
 
         super.on('click', function () {
@@ -44,7 +43,53 @@ export default class RectangularRoom extends Konva.Rect {
             handleRoomClick(this)
         })
     }
+    toString(){
+        return `RectRoom(${this.x()}-${this.y()})`
+    }
+    handlePositionChange(){
+        let intersectObj = this.isIntersecting();
+        if (intersectObj === null){
+            let roomX = Math.floor(this.x());
+            let roomY = Math.floor(this.y());
+            this.x(roomX);
+            this.y(roomY);
+        }
+        else {
+            console.log(this.x()+ "-"+(this.x() + this.width()) + " -> " +intersectObj.x()+"-" +(intersectObj.x() + intersectObj.width()))
+            if((this.x() < intersectObj.x()+intersectObj.width()) && (this.x() > intersectObj.x()+intersectObj.width()/2)) {
+                console.log("setting x:" + Math.floor(intersectObj.x() - this.width()));
+                this.x(Math.floor(intersectObj.x() + intersectObj.width()));
+            }
+            if((this.x() + this.width()) > intersectObj.x() && ((this.x()) < intersectObj.x()+intersectObj.width()/2)){
+                console.log("setting x:"+Math.floor(intersectObj.x() - this.width()));
+                this.x(Math.floor(intersectObj.x() - this.width()));
 
+            }
+
+        }
+
+    }
+
+    handleSizeChange(){
+        let roomWidth = Math.floor(this.width()*this.scaleX());
+        let roomHeight = Math.floor(this.height()*this.scaleY());
+        this.scaleX(1)
+        this.scaleY(1)
+        this.width(roomWidth);
+        this.height(roomHeight);
+    }
+
+    isIntersecting() {
+        let layer = this.getLayer();
+        let children = layer.getChildren();
+        for (const obj of children) {
+            if ((obj instanceof RectangularRoom) && haveIntersection(this, obj) && !(this === obj)) {
+                console.log("Overlap:" + this + " - > " + obj);
+                return obj;
+            }
+        }
+        return null;
+    }
 }
 
 export function addRoom(){
@@ -80,18 +125,11 @@ function handleRoomClick(room) {
     updateSidebar(selectedRoom);
 }
 
-document.getElementById('roomDetailsForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    // Update the selected room with the edited details
-    const newWidth = Number(document.getElementById('roomWidth').value)/selectedRoom.width();
-    const newHeight = Number(document.getElementById('roomHeight').value)/selectedRoom.height();
-    console.log(newWidth)
-    selectedRoom.scaleX(newWidth);
-    selectedRoom.scaleY(newHeight);
-    selectedRoom.x(Number(document.getElementById('roomX').value));
-    selectedRoom.y(Number(document.getElementById('roomX').value));
-
-    // Hide the update button again
-    document.getElementById('updateRoomDetailsBtn').style.display = 'none';
-});
+function haveIntersection(r1, r2) {
+        return !(
+          r2.x() > r1.x() + r1.width() ||
+          r2.x() + r2.width() < r1.x() ||
+          r2.y() > r1.y() + r1.height() ||
+          r2.y() + r2.height() < r1.y()
+        );
+      }
