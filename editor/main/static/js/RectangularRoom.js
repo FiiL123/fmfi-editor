@@ -1,6 +1,6 @@
 // import { Konva } from './konva.min.js';
 export default class RectangularRoom extends Konva.Rect {
-    constructor(x, y, tr) {
+    constructor(x, y, tr, id="", number="") {
         console.log(x+" "+y)
         super({
                 x: x,
@@ -13,6 +13,8 @@ export default class RectangularRoom extends Konva.Rect {
                 draggable: true,
             },
         );
+        this.id = id;
+        this.number = number;
         super.on('transformstart', function () {
             console.log('transform start');
         });
@@ -108,21 +110,64 @@ export function addRoom(){
 
 function updateSidebar(room) {
     // Access the sidebar form elements
-    const roomWidthInput = document.getElementById('roomWidth');
-    const roomHeightInput = document.getElementById('roomHeight');
-    const roomX = document.getElementById('roomX');
-    const roomY = document.getElementById('roomY');
+    var existingAttributesDiv = document.getElementById('attributesDiv');
+    if (existingAttributesDiv) {
+        existingAttributesDiv.parentNode.removeChild(existingAttributesDiv);
+    }
+    var attributesDiv = document.createElement('div');
+    attributesDiv.id = 'attributesDiv';
+    attributesDiv.classList.add('attributes'); // You can add CSS classes for styling
+    // <label for="roomWidth">Width:</label>
+    //                     <input type="number" id="roomWidth" step="any" name="roomWidth">
+    //                     <br>
+    //                     <label for="roomHeight">Height:</label>
+    //                     <input type="number" id="roomHeight" step="any" name="roomHeight">
+    //                     <br>
+    //                     <label for="roomY">X:</label>
+    //                     <input type="number" id="roomX" step="any"  name="roomX">
+    //                     <br>
+    //                     <label for="roomY">Y:</label>
+    //                     <input type="number" id="roomY" step="any" name="roomY">
+    //                     <!-- Add more fields for other parameters -->
 
+    var roomWidthInput = document.createElement('input')
+    roomWidthInput.id = 'roomWidth'
+    roomWidthInput.type = 'number'
+    roomWidthInput.name = 'roomWidth'
+    roomWidthInput.value = (room.width() * room.scaleX());
+    attributesDiv.appendChild(roomWidthInput)
 
-    // Update form fields with room details
-    roomWidthInput.value = (room.width()*room.scaleX());
-    roomHeightInput.value = (room.height()*room.scaleY());
-    roomX.value = room.x()
-    roomY.value = room.y()
+    var roomHeightInput = document.createElement('input')
+    roomHeightInput.id = 'roomHeight'
+    roomHeightInput.type = 'number'
+    roomHeightInput.name = 'roomHeight'
+    roomHeightInput.value = (room.height() * room.scaleY());
+    attributesDiv.appendChild(roomHeightInput)
 
+    var roomXInput = document.createElement('input')
+    roomXInput.id = 'roomX'
+    roomXInput.type = 'number'
+    roomXInput.name = 'roomX'
+    roomXInput.value = room.x();
+    attributesDiv.appendChild(roomXInput)
 
-    // Show the update button
-    document.getElementById('updateRoomDetailsBtn').style.display = 'block';
+    var roomYInput = document.createElement('input')
+    roomYInput.id = 'roomY'
+    roomYInput.type = 'number'
+    roomYInput.name = 'roomY'
+    roomYInput.value = room.y();
+    attributesDiv.appendChild(roomYInput)
+
+    var form = document.getElementById("roomDetailsForm");
+
+    var formButton = document.createElement('button')
+    formButton.type='submit'
+    formButton.id='updateRoomDetailsBtn'
+    formButton.style.display = 'block'
+    formButton.textContent='Update'
+    attributesDiv.appendChild(formButton)
+    form.appendChild(attributesDiv)
+
 }
 
 // Function to handle the click event on RectangularRoom objects
@@ -149,15 +194,14 @@ document.getElementById('roomDetailsForm').addEventListener('submit', function (
     event.preventDefault();
 
     // Update the selected room with the edited details
-    const newWidth = Number(document.getElementById('roomWidth').value);
-    const newHeight = Number(document.getElementById('roomHeight').value);
-    let roomWidth = Math.floor(newWidth);
-    let roomHeight = Math.floor(newHeight);
-    selectedRoom.scaleX(1)
-    selectedRoom.scaleY(1)
-    selectedRoom.width(roomWidth);
-    selectedRoom.height(roomHeight);
+    const newWidth = Math.floor(Number(document.getElementById('roomWidth').value));
+    const newHeight = Math.floor(Number(document.getElementById('roomHeight').value));
+    const newX = Math.floor(Number(document.getElementById('roomX').value));
+    const newY = Math.floor(Number(document.getElementById('roomY').value));
+    selectedRoom.width(newWidth);
+    selectedRoom.height(newHeight);
+    selectedRoom.x(newX);
+    selectedRoom.y(newY);
 
-    // Hide the update button again
-    document.getElementById('updateRoomDetailsBtn').style.display = 'none';
+
 });
