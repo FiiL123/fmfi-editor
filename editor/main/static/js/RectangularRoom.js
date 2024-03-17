@@ -55,20 +55,26 @@ export default class RectangularRoom extends Konva.Rect {
             this.y(roomY);
         }
         else {
-            console.log(this.x()+ "-"+(this.x() + this.width()) + " -> " +intersectObj.x()+"-" +(intersectObj.x() + intersectObj.width()))
-            if((this.x() < intersectObj.x()+intersectObj.width()) && (this.x() > intersectObj.x()+intersectObj.width()/2)) {
-                console.log("setting x:" + Math.floor(intersectObj.x() - this.width()));
-                this.x(Math.floor(intersectObj.x() + intersectObj.width()));
+            let snapDistance = Math.sqrt((Math.pow(this.width(),2)+Math.pow(this.height(),2))/4); // Adjust this value as needed for your snapping sensitivity, 1/4 of the diagonal
+
+            // Snap horizontally
+            if (Math.abs(this.y() + this.height() / 2 - intersectObj.y() - intersectObj.height() / 2) < snapDistance) {
+                if (this.x() + this.width() < intersectObj.x() + snapDistance) {
+                    this.x(intersectObj.x() - this.width());
+                } else if (this.x() > intersectObj.x() + intersectObj.width() - snapDistance) {
+                    this.x(intersectObj.x() + intersectObj.width());
+                }
             }
-            if((this.x() + this.width()) > intersectObj.x() && ((this.x()) < intersectObj.x()+intersectObj.width()/2)){
-                console.log("setting x:"+Math.floor(intersectObj.x() - this.width()));
-                this.x(Math.floor(intersectObj.x() - this.width()));
-
+            // Snap vertically
+            if (Math.abs(this.x() + this.width() / 2 - intersectObj.x() - intersectObj.width() / 2) < snapDistance) {
+                if (this.y() + this.height() < intersectObj.y() + snapDistance) {
+                    this.y(intersectObj.y() - this.height());
+                } else if (this.y() > intersectObj.y() + intersectObj.height() - snapDistance) {
+                    this.y(intersectObj.y() + intersectObj.height());
+                }
             }
-
-        }
-
     }
+}
 
     handleSizeChange(){
         let roomWidth = Math.floor(this.width()*this.scaleX());
