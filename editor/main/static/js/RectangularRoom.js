@@ -55,8 +55,8 @@ export default class RectangularRoom extends Konva.Rect {
             this.y(roomY);
         }
         else {
-            let snapDistance = Math.sqrt((Math.pow(this.width(),2)+Math.pow(this.height(),2))/4); // Adjust this value as needed for your snapping sensitivity, 1/4 of the diagonal
-
+            let snapDistance = Math.sqrt((Math.pow(this.width(),2)+Math.pow(this.height(),2)))/4; // Adjust this value as needed for your snapping sensitivity, 1/4 of the diagonal
+            console.log("snp dist:" + snapDistance);
             // Snap horizontally
             if (Math.abs(this.y() + this.height() / 2 - intersectObj.y() - intersectObj.height() / 2) < snapDistance) {
                 if (this.x() + this.width() < intersectObj.x() + snapDistance) {
@@ -65,6 +65,7 @@ export default class RectangularRoom extends Konva.Rect {
                     this.x(intersectObj.x() + intersectObj.width());
                 }
             }
+
             // Snap vertically
             if (Math.abs(this.x() + this.width() / 2 - intersectObj.x() - intersectObj.width() / 2) < snapDistance) {
                 if (this.y() + this.height() < intersectObj.y() + snapDistance) {
@@ -73,6 +74,8 @@ export default class RectangularRoom extends Konva.Rect {
                     this.y(intersectObj.y() + intersectObj.height());
                 }
             }
+
+
     }
 }
 
@@ -139,3 +142,22 @@ function haveIntersection(r1, r2) {
           r2.y() + r2.height() < r1.y()
         );
       }
+
+
+
+document.getElementById('roomDetailsForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // Update the selected room with the edited details
+    const newWidth = Number(document.getElementById('roomWidth').value);
+    const newHeight = Number(document.getElementById('roomHeight').value);
+    let roomWidth = Math.floor(newWidth);
+    let roomHeight = Math.floor(newHeight);
+    selectedRoom.scaleX(1)
+    selectedRoom.scaleY(1)
+    selectedRoom.width(roomWidth);
+    selectedRoom.height(roomHeight);
+
+    // Hide the update button again
+    document.getElementById('updateRoomDetailsBtn').style.display = 'none';
+});
