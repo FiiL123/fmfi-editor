@@ -56,7 +56,7 @@ Vytvorenie vizuálneho editoru pre FMFI Guide, kde sú zmeny viditeľné v reál
 -----
 # Aktuálny stav
 
-![](https://www.webpagescreenshot.info/image-url/T2WS4TZE7)
+![](https://www.webpagescreenshot.info/image-url/6o-bqoBXm)
 
 -----
 

@@ -14,7 +14,7 @@ export default class RectangularRoom extends Konva.Rect {
             },
         );
         this.id = id;
-        this.number = number;
+        this.number = "test";
         super.on('transformstart', function () {
             console.log('transform start');
         });
@@ -23,13 +23,14 @@ export default class RectangularRoom extends Konva.Rect {
             // updateText();
             this.handlePositionChange();
             handleRoomClick(this);
+            this.updateTextPosition()
         });
         super.on('transform', function () {
             // updateText();
             console.log('transform');
-
             this.handleSizeChange();
             handleRoomClick(this);
+            this.updateTextPosition()
         });
 
         super.on('transformend', function () {
@@ -44,6 +45,14 @@ export default class RectangularRoom extends Konva.Rect {
             tr.nodes([this]);
             handleRoomClick(this)
         })
+
+        this.numberText = new Konva.Text({
+        text: this.number,
+        x: x,
+        y: y,
+        fontSize: 16,
+      });
+
     }
     toString(){
         return `RectRoom(${this.x()}-${this.y()})`
@@ -78,9 +87,14 @@ export default class RectangularRoom extends Konva.Rect {
             }
 
 
-    }
-}
+        }
 
+}
+    updateTextPosition(){
+        let textX = this.x() + this.width() - this.numberText.width()-2; // Adjust for bottom right corner
+        let textY = this.y() + this.height() - this.numberText.height(); // Adjust for bottom right corner
+        this.numberText.position({ x: textX, y: textY });
+    }
     handleSizeChange(){
         let roomWidth = Math.floor(this.width()*this.scaleX());
         let roomHeight = Math.floor(this.height()*this.scaleY());
@@ -106,6 +120,8 @@ export default class RectangularRoom extends Konva.Rect {
 export function addRoom(){
     var room = new RectangularRoom(100, 200,tr)
     layer.add(room)
+    room.updateTextPosition()
+    layer.add(room.numberText)
 }
 
 function updateSidebar(room) {
@@ -234,7 +250,8 @@ document.getElementById('roomDetailsForm').addEventListener('submit', function (
     selectedRoom.height(newHeight);
     selectedRoom.x(newX);
     selectedRoom.y(newY);
-    
+    selectedRoom.numberText.text(newNumber);
+    selectedRoom.updateTextPosition()
 
 
 });
