@@ -117,24 +117,39 @@ function updateSidebar(room) {
     var attributesDiv = document.createElement('div');
     attributesDiv.id = 'attributesDiv';
     attributesDiv.classList.add('attributes'); // You can add CSS classes for styling
-    // <label for="roomWidth">Width:</label>
-    //                     <input type="number" id="roomWidth" step="any" name="roomWidth">
-    //                     <br>
-    //                     <label for="roomHeight">Height:</label>
-    //                     <input type="number" id="roomHeight" step="any" name="roomHeight">
-    //                     <br>
-    //                     <label for="roomY">X:</label>
-    //                     <input type="number" id="roomX" step="any"  name="roomX">
-    //                     <br>
-    //                     <label for="roomY">Y:</label>
-    //                     <input type="number" id="roomY" step="any" name="roomY">
-    //                     <!-- Add more fields for other parameters -->
+
+    var roomIDInput = document.createElement('input')
+    roomIDInput.id = 'roomID'
+    roomIDInput.type = 'text'
+    roomIDInput.name = 'roomID'
+    roomIDInput.value = (room.id);
+    var roomIDLabel = document.createElement('label')
+    roomIDLabel.for = 'RoomID'
+    roomIDLabel.textContent = 'ID:'
+    attributesDiv.appendChild(roomIDLabel)
+    attributesDiv.appendChild(roomIDInput)
+
+    var roomNumberInput = document.createElement('input')
+    roomNumberInput.id = 'roomNumber'
+    roomNumberInput.type = 'text'
+    roomNumberInput.name = 'roomNumber'
+    roomNumberInput.value = (room.number);
+    var roomNumberLabel = document.createElement('label')
+    roomNumberLabel.for = 'roomNumber'
+    roomNumberLabel.textContent = 'Number:'
+    attributesDiv.appendChild(roomNumberLabel)
+    attributesDiv.appendChild(roomNumberInput)
 
     var roomWidthInput = document.createElement('input')
     roomWidthInput.id = 'roomWidth'
     roomWidthInput.type = 'number'
     roomWidthInput.name = 'roomWidth'
+    var roomWidthLabel = document.createElement('label')
+    roomWidthLabel.for = 'roomWidth'
+    roomWidthLabel.textContent = 'Width:'
+    attributesDiv.appendChild(roomWidthLabel)
     roomWidthInput.value = (room.width() * room.scaleX());
+
     attributesDiv.appendChild(roomWidthInput)
 
     var roomHeightInput = document.createElement('input')
@@ -142,6 +157,10 @@ function updateSidebar(room) {
     roomHeightInput.type = 'number'
     roomHeightInput.name = 'roomHeight'
     roomHeightInput.value = (room.height() * room.scaleY());
+    var roomHeightLabel = document.createElement('label')
+    roomHeightLabel.for = 'roomHeight'
+    roomHeightLabel.textContent = 'Height:'
+    attributesDiv.appendChild(roomHeightLabel)
     attributesDiv.appendChild(roomHeightInput)
 
     var roomXInput = document.createElement('input')
@@ -149,6 +168,10 @@ function updateSidebar(room) {
     roomXInput.type = 'number'
     roomXInput.name = 'roomX'
     roomXInput.value = room.x();
+    var roomXLabel = document.createElement('label')
+    roomXLabel.for = 'roomX'
+    roomXLabel.textContent = 'X:'
+    attributesDiv.appendChild(roomXLabel)
     attributesDiv.appendChild(roomXInput)
 
     var roomYInput = document.createElement('input')
@@ -156,6 +179,10 @@ function updateSidebar(room) {
     roomYInput.type = 'number'
     roomYInput.name = 'roomY'
     roomYInput.value = room.y();
+    var roomYLabel = document.createElement('label')
+    roomYLabel.for = 'roomY'
+    roomYLabel.textContent = 'Y:'
+    attributesDiv.appendChild(roomYLabel)
     attributesDiv.appendChild(roomYInput)
 
     var form = document.getElementById("roomDetailsForm");
@@ -194,14 +221,20 @@ document.getElementById('roomDetailsForm').addEventListener('submit', function (
     event.preventDefault();
 
     // Update the selected room with the edited details
+    const newID = document.getElementById('roomID').value;
+    const newNumber = document.getElementById('roomNumber').value;
     const newWidth = Math.floor(Number(document.getElementById('roomWidth').value));
     const newHeight = Math.floor(Number(document.getElementById('roomHeight').value));
     const newX = Math.floor(Number(document.getElementById('roomX').value));
     const newY = Math.floor(Number(document.getElementById('roomY').value));
+
+    selectedRoom.id = newID;
+    selectedRoom.number = newNumber;
     selectedRoom.width(newWidth);
     selectedRoom.height(newHeight);
     selectedRoom.x(newX);
     selectedRoom.y(newY);
+    
 
 
 });
