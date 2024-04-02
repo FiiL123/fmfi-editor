@@ -1,3 +1,5 @@
+
+
 var width = 10 * (window.innerWidth / 12) - 10;
 console.log(width)
 var height = window.innerHeight;
@@ -140,5 +142,3 @@ var tr = new Konva.Transformer();
 layer.add(tr);
 
 var selectedRoom = null;
-
-

@@ -89,7 +89,7 @@ export default class RectangularRoom extends Konva.Rect {
 
         }
 
-}
+    }
     updateTextPosition(){
         let textX = this.x() + this.width() - this.numberText.width()-2; // Adjust for bottom right corner
         let textY = this.y() + this.height() - this.numberText.height(); // Adjust for bottom right corner
@@ -114,6 +114,11 @@ export default class RectangularRoom extends Konva.Rect {
             }
         }
         return null;
+    }
+
+    delete(){
+        this.numberText.destroy()
+        tr.nodes([]);
     }
 }
 
