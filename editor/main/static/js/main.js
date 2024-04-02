@@ -1,5 +1,4 @@
 
-
 var width = 10 * (window.innerWidth / 12) - 10;
 console.log(width)
 var height = window.innerHeight;

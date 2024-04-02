@@ -1,3 +1,18 @@
+class EmptyAction{
+    constructor(props) {
+
+    }
+
+    make(){
+
+    }
+
+    revert(){
+
+    }
+
+}
+
 
 export class DeleteAction{
     constructor(obj) {
@@ -6,11 +21,11 @@ export class DeleteAction{
 
     make(){
         this.obj.delete();
-        this.obj.destroy();
+        this.obj.remove();
+        selectedRoom = null;
     }
 
     revert(){
-        // TODO
-        return 0
+        this.obj.ressurect();
     }
 }

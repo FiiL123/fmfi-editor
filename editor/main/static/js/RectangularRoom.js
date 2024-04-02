@@ -117,8 +117,13 @@ export default class RectangularRoom extends Konva.Rect {
     }
 
     delete(){
-        this.numberText.destroy()
+        this.numberText.remove()
         tr.nodes([]);
+    }
+
+    ressurect(){
+        layer.add(this);
+        layer.add(this.numberText);
     }
 }
 
