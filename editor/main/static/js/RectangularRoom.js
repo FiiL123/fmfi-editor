@@ -1,4 +1,5 @@
-// import { Konva } from './konva.min.js';
+import {TransformAction} from "./Actions.js";
+
 export default class RectangularRoom extends Konva.Rect {
     constructor(x, y, tr, id="", number="") {
         console.log(x+" "+y)
@@ -17,6 +18,10 @@ export default class RectangularRoom extends Konva.Rect {
         this.number = "test";
         super.on('transformstart', function () {
             console.log('transform start');
+            this.prevX = this.x()
+            this.prevY = this.y()
+            this.prevW = this.width()
+            this.prevH = this.height()
         });
 
         super.on('dragmove', function () {
@@ -24,6 +29,18 @@ export default class RectangularRoom extends Konva.Rect {
             this.handlePositionChange();
             handleRoomClick(this);
             this.updateTextPosition()
+        });
+
+        super.on('dragstart', function (){
+            console.log("drag start");
+            this.prevX = this.x()
+            this.prevY = this.y()
+            this.prevW = this.width()
+            this.prevH = this.height()
+        });
+        super.on('dragend', function (){
+            console.log("drag end");
+            actionManager.addAction(new TransformAction(this, this.prevX, this.prevY, this.prevW, this.prevH));
         });
         super.on('transform', function () {
             // updateText();
@@ -37,7 +54,7 @@ export default class RectangularRoom extends Konva.Rect {
             console.log('transform end');
             this.handlePositionChange();
             handleRoomClick(this);
-
+            actionManager.addAction(new TransformAction(this, this.prevX, this.prevY, this.prevW, this.prevH));
         });
 
         super.on('click', function () {
@@ -125,10 +142,19 @@ export default class RectangularRoom extends Konva.Rect {
         layer.add(this);
         layer.add(this.numberText);
     }
+
+    moveBack(prevX, prevY, prevW, prevH){
+        this.x(prevX);
+        this.y(prevY);
+        this.width(prevW);
+        this.height(prevH);
+        this.updateTextPosition();
+        updateSidebar(this);
+    }
 }
 
 export function addRoom(){
-    var room = new RectangularRoom(100, 200,tr)
+    var room = new RectangularRoom(100, 200,tr, "5")
     layer.add(room)
     room.updateTextPosition()
     layer.add(room.numberText)

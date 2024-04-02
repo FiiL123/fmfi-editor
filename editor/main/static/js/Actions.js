@@ -29,3 +29,22 @@ export class DeleteAction{
         this.obj.ressurect();
     }
 }
+
+export class TransformAction{
+    constructor(obj,prevX, prevY, prevW, prevH) {
+        this.obj = obj;
+        this.prevX= prevX;
+        this.prevY= prevY;
+        this.prevW= prevW;
+        this.prevH= prevH;
+    }
+
+    make(){
+
+    }
+
+    revert(){
+        this.obj.moveBack(this.prevX,this.prevY,this.prevW,this.prevH);
+    }
+
+}
