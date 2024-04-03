@@ -15,6 +15,7 @@ export default class PolygonRoom extends Konva.Line {
         this.number = number;
 
         super.on('click', function () {
+            selectedRoom = this;
             tr.nodes([this]);
             this.updateSidebar();
         });
@@ -57,6 +58,8 @@ export default class PolygonRoom extends Konva.Line {
         var attributesDiv = document.createElement('div');
         attributesDiv.id = 'attributesDiv';
         attributesDiv.classList.add('attributes');
+        var polygonRoomForm = document.createElement('form')
+        polygonRoomForm.id = "polygonRoomForm";
 
         var roomIDInput = document.createElement('input')
         roomIDInput.id = 'roomID'
@@ -66,8 +69,8 @@ export default class PolygonRoom extends Konva.Line {
         var roomIDLabel = document.createElement('label')
         roomIDLabel.for = 'RoomID'
         roomIDLabel.textContent = 'ID:'
-        attributesDiv.appendChild(roomIDLabel)
-        attributesDiv.appendChild(roomIDInput)
+        polygonRoomForm.appendChild(roomIDLabel)
+        polygonRoomForm.appendChild(roomIDInput)
 
         var roomNumberInput = document.createElement('input')
         roomNumberInput.id = 'roomNumber'
@@ -77,23 +80,38 @@ export default class PolygonRoom extends Konva.Line {
         var roomNumberLabel = document.createElement('label')
         roomNumberLabel.for = 'roomNumber'
         roomNumberLabel.textContent = 'Number:'
-        attributesDiv.appendChild(roomNumberLabel)
-        attributesDiv.appendChild(roomNumberInput)
+        polygonRoomForm.appendChild(roomNumberLabel)
+        polygonRoomForm.appendChild(roomNumberInput)
 
 
-        this.makePointForm(attributesDiv)
+        this.makePointForm(polygonRoomForm)
 
 
 
-        var form = document.getElementById("roomDetailsForm");
+
 
         var formButton = document.createElement('button')
         formButton.type='submit'
         formButton.id='updateRoomDetailsBtn'
         formButton.style.display = 'block'
         formButton.textContent='Update'
-        attributesDiv.appendChild(formButton)
-        form.appendChild(attributesDiv)
+        attributesDiv.appendChild(polygonRoomForm)
+        polygonRoomForm.appendChild(formButton)
+        document.getElementById('sidebar').appendChild(attributesDiv)
+
+        polygonRoomForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            console.log("UPDATEEEE")
+            // Update the selected room with the edited details
+            const newID = document.getElementById('roomID').value;
+            const newNumber = document.getElementById('roomNumber').value;
+
+
+            selectedRoom.id = newID;
+            selectedRoom.number = newNumber;
+
+
+        });
     }
 
     makePointForm(mainDiv){
@@ -109,7 +127,7 @@ export default class PolygonRoom extends Konva.Line {
                 pointLabel.textContent = 'Point('+i/2+'):'
                 const pointXInput = document.createElement('input');
                 pointXInput.type='number'
-
+                pointXInput.size = 5;
                 pointXInput.value = points[i]
                 pointsDiv.appendChild(pointLabel)
                 pointsDiv.appendChild(pointXInput)
@@ -117,6 +135,7 @@ export default class PolygonRoom extends Konva.Line {
             else{
                 const pointYInput = document.createElement('input');
                 pointYInput.type='number'
+                pointYInput.size = 5;
                 pointYInput.value = points[i]
                 pointsDiv.appendChild(pointYInput)
 

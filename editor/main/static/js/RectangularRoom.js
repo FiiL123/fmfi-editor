@@ -272,25 +272,25 @@ function haveIntersection(r1, r2) {
 
 
 
-document.getElementById('roomDetailsForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    // Update the selected room with the edited details
-    const newID = document.getElementById('roomID').value;
-    const newNumber = document.getElementById('roomNumber').value;
-    const newWidth = Math.floor(Number(document.getElementById('roomWidth').value));
-    const newHeight = Math.floor(Number(document.getElementById('roomHeight').value));
-    const newX = Math.floor(Number(document.getElementById('roomX').value));
-    const newY = Math.floor(Number(document.getElementById('roomY').value));
-
-    selectedRoom.id = newID;
-    selectedRoom.number = newNumber;
-    selectedRoom.width(newWidth);
-    selectedRoom.height(newHeight);
-    selectedRoom.x(newX);
-    selectedRoom.y(newY);
-    selectedRoom.numberText.text(newNumber);
-    selectedRoom.updateTextPosition()
-
-
-});
+// document.getElementById('roomDetailsForm').addEventListener('submit', function (event) {
+//     event.preventDefault();
+//
+//     // Update the selected room with the edited details
+//     const newID = document.getElementById('roomID').value;
+//     const newNumber = document.getElementById('roomNumber').value;
+//     const newWidth = Math.floor(Number(document.getElementById('roomWidth').value));
+//     const newHeight = Math.floor(Number(document.getElementById('roomHeight').value));
+//     const newX = Math.floor(Number(document.getElementById('roomX').value));
+//     const newY = Math.floor(Number(document.getElementById('roomY').value));
+//
+//     selectedRoom.id = newID;
+//     selectedRoom.number = newNumber;
+//     selectedRoom.width(newWidth);
+//     selectedRoom.height(newHeight);
+//     selectedRoom.x(newX);
+//     selectedRoom.y(newY);
+//     selectedRoom.numberText.text(newNumber);
+//     selectedRoom.updateTextPosition()
+//
+//
+// });
