@@ -1,7 +1,7 @@
 import {DeleteAction} from "./Actions.js";
 
 document.addEventListener("keydown", function(event) {
-  if (event.key === "Backspace" || event.key === "Delete") {
+  if (event.key === "Delete") {
     // Find the selected object and remove it
       console.log("delettttin");
     if (selectedRoom) {

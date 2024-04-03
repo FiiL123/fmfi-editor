@@ -9,13 +9,12 @@ export default class RectangularRoom extends Konva.Rect {
                 width: 100,
                 height: 90,
                 fill: Konva.Util.getRandomColor(),
-                name: 'rect',
                 stroke: 'black',
                 draggable: true,
             },
         );
         this.id = id;
-        this.number = "test";
+        this.number = number;
         super.on('transformstart', function () {
             console.log('transform start');
             this.prevX = this.x()
@@ -45,16 +44,20 @@ export default class RectangularRoom extends Konva.Rect {
         super.on('transform', function () {
             // updateText();
             console.log('transform');
-            this.handleSizeChange();
             handleRoomClick(this);
-            this.updateTextPosition()
+            this.updateTextPosition();
+
         });
 
         super.on('transformend', function () {
             console.log('transform end');
             this.handlePositionChange();
+            this.handleSizeChange();
+
             handleRoomClick(this);
+            this.updateTextPosition();
             actionManager.addAction(new TransformAction(this, this.prevX, this.prevY, this.prevW, this.prevH));
+
         });
 
         super.on('click', function () {
@@ -154,7 +157,7 @@ export default class RectangularRoom extends Konva.Rect {
 }
 
 export function addRoom(){
-    var room = new RectangularRoom(100, 200,tr, "5")
+    var room = new RectangularRoom(100, 200,tr, "rect", "I-H6")
     layer.add(room)
     room.updateTextPosition()
     layer.add(room.numberText)
