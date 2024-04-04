@@ -31,6 +31,33 @@ export default class PolygonRoom extends Konva.Line {
             this.updateSidebar()
         })
 
+        super.on('transformstart', function () {
+
+        })
+        super.on('transformend', function () {
+            this.updateScale()
+            this.updatePosition()
+            this.updateSidebar()
+        })
+
+
+    }
+
+    updateScale(){
+        let points = this.points()
+        for (let i = 0; i < points.length; i++) {
+            if (i%2===0){
+                points[i]= Math.floor(this.startingPoints[i] * this.scaleX())
+            }
+            else{
+                points[i]= Math.floor(this.startingPoints[i] * this.scaleY())
+            }
+        }
+
+        this.scaleX(1)
+        this.scaleY(1)
+        this.points(points)
+        this.startingPoints = points
 
     }
 
@@ -41,19 +68,17 @@ export default class PolygonRoom extends Konva.Line {
         // console.log(this.y())
 
         for (let i = 0; i < points.length; i++) {
-            // console.log("starting: " + points[i])
             if (i%2===0){
                 points[i]= Math.floor(this.startingPoints[i] + this.x())
             }
             else{
                 points[i]= Math.floor(this.startingPoints[i] + this.y())
             }
-            // console.log("after: " + points[i])
-
         }
         this.x(0)
         this.y(0)
         this.points(points)
+        this.startingPoints = points
         console.log("points: "+points)
         console.log("starting poiuits:" + this.startingPoints)
     }
@@ -129,7 +154,6 @@ export default class PolygonRoom extends Konva.Line {
             selectedRoom.id = newID;
             selectedRoom.number = newNumber;
             selectedRoom.points(points)
-            selectedRoom.startingPoints = points
             console.log(selectedRoom.points())
             selectedRoom.updateSidebar()
 

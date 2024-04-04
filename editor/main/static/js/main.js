@@ -136,7 +136,7 @@ stage.add(layer);
 
 // create new transformer
 
-var tr = new Konva.Transformer();
+var tr = new Konva.Transformer({rotateEnabled: false});
 
 layer.add(tr);
 
