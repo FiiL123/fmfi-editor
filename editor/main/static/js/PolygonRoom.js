@@ -36,17 +36,26 @@ export default class PolygonRoom extends Konva.Line {
 
     updatePosition(){
         let points = this.points()
+        // console.log(points)
+        // console.log(this.x())
+        // console.log(this.y())
+
         for (let i = 0; i < points.length; i++) {
+            // console.log("starting: " + points[i])
             if (i%2===0){
                 points[i]= Math.floor(this.startingPoints[i] + this.x())
             }
             else{
                 points[i]= Math.floor(this.startingPoints[i] + this.y())
             }
+            // console.log("after: " + points[i])
+
         }
         this.x(0)
         this.y(0)
         this.points(points)
+        console.log("points: "+points)
+        console.log("starting poiuits:" + this.startingPoints)
     }
 
     updateSidebar(){
@@ -106,15 +115,17 @@ export default class PolygonRoom extends Konva.Line {
             const newID = document.getElementById('roomID').value;
             const newNumber = document.getElementById('roomNumber').value;
             var pointInputs = document.querySelectorAll('[id^="pointInput"]')
-            console.log(pointInputs);
             let points = []
             pointInputs.forEach(inp=>{
                 points.push(Math.floor(inp.value))
+
             })
             console.log(points)
             selectedRoom.id = newID;
             selectedRoom.number = newNumber;
             selectedRoom.points(points)
+            selectedRoom.startingPoints = points
+            console.log(selectedRoom.points())
 
         });
     }
@@ -124,12 +135,24 @@ export default class PolygonRoom extends Konva.Line {
         pointsDiv.id = 'pointsDiv';
         pointsDiv.classList.add('attributes');
         let points = this.points()
-        console.log(points)
         for (let i = 0; i < points.length; ++i) {
             if (i%2===0){
                 const pointLabel = document.createElement('label')
                 pointLabel.for = 'pointInput'+i
                 pointLabel.textContent = 'Point('+i/2+'):'
+                pointLabel.id = 'pointLabel'+i
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.id = 'pointDelete'+i
+                deleteButton.addEventListener('click', function() {
+                    console.log("deleting")
+                    console.log(points)
+                    document.getElementById('pointInput'+i).remove()
+                    document.getElementById('pointInput'+(i+1)).remove()
+                    document.getElementById('pointLabel'+i).remove()
+                    document.getElementById('pointDelete'+i).remove()
+                });
+                pointsDiv.appendChild(deleteButton);
                 const pointXInput = document.createElement('input');
                 pointXInput.id = "pointInput"+i
                 pointXInput.type='number'

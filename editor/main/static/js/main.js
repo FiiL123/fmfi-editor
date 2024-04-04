@@ -141,3 +141,8 @@ var tr = new Konva.Transformer();
 layer.add(tr);
 
 var selectedRoom = null;
+
+// stage.on('mousemove', function (e) {
+//     const mousePos = stage.getPointerPosition();
+//     console.log("Cursor position - x: " + mousePos.x + ", y: " + mousePos.y);
+// });
