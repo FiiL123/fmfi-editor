@@ -91,8 +91,13 @@ export default class PolygonRoom extends Konva.Line {
         roomNumberLabel.textContent = 'Number:'
         polygonRoomForm.appendChild(roomNumberLabel)
         polygonRoomForm.appendChild(roomNumberInput)
-
-
+        const addPointButton = document.createElement('button');
+        addPointButton.textContent = 'Add point';
+        addPointButton.id = 'addPointButton'
+        addPointButton.addEventListener('click', function() {
+            selectedRoom.addPoint()
+        });
+        polygonRoomForm.appendChild(addPointButton)
         this.makePointForm(polygonRoomForm)
 
 
@@ -126,6 +131,7 @@ export default class PolygonRoom extends Konva.Line {
             selectedRoom.points(points)
             selectedRoom.startingPoints = points
             console.log(selectedRoom.points())
+            selectedRoom.updateSidebar()
 
         });
     }
@@ -135,45 +141,53 @@ export default class PolygonRoom extends Konva.Line {
         pointsDiv.id = 'pointsDiv';
         pointsDiv.classList.add('attributes');
         let points = this.points()
-        for (let i = 0; i < points.length; ++i) {
-            if (i%2===0){
-                const pointLabel = document.createElement('label')
-                pointLabel.for = 'pointInput'+i
-                pointLabel.textContent = 'Point('+i/2+'):'
-                pointLabel.id = 'pointLabel'+i
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.id = 'pointDelete'+i
-                deleteButton.addEventListener('click', function() {
-                    console.log("deleting")
-                    console.log(points)
-                    document.getElementById('pointInput'+i).remove()
-                    document.getElementById('pointInput'+(i+1)).remove()
-                    document.getElementById('pointLabel'+i).remove()
-                    document.getElementById('pointDelete'+i).remove()
-                });
-                pointsDiv.appendChild(deleteButton);
-                const pointXInput = document.createElement('input');
-                pointXInput.id = "pointInput"+i
-                pointXInput.type='number'
-                pointXInput.size = 5;
-                pointXInput.value = points[i]
-                pointsDiv.appendChild(pointLabel)
-                pointsDiv.appendChild(pointXInput)
-            }
-            else{
-                const pointYInput = document.createElement('input');
-                pointYInput.id = "pointInput"+i
-                pointYInput.type='number'
-                pointYInput.size = 5;
-                pointYInput.value = points[i]
-                pointsDiv.appendChild(pointYInput)
+        for (let i = 0; i < points.length/2; ++i) {
+            this.makePointInput(pointsDiv,i)
 
-            }
         }
 
 
         mainDiv.appendChild(pointsDiv);
+    }
+    addPoint(){
+        this.points().push(0)
+        this.points().push(0)
+        const pointsDiv = document.getElementById('pointsDiv')
+        this.makePointInput(pointsDiv,this.points().length)
+    }
+
+    makePointInput(mainComponent, i){
+        let points = this.points()
+        i = i*2
+
+        const pointLabel = document.createElement('label')
+        pointLabel.for = 'pointInput'+i
+        pointLabel.textContent = 'Point('+i/2+'):'
+        pointLabel.id = 'pointLabel'+i
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.id = 'pointDelete'+i
+        deleteButton.addEventListener('click', function() {
+            console.log("deleting")
+            document.getElementById('pointInput'+i).remove()
+            document.getElementById('pointInput'+(i+1)).remove()
+            document.getElementById('pointLabel'+i).remove()
+            document.getElementById('pointDelete'+i).remove()
+        });
+        mainComponent.appendChild(deleteButton);
+        const pointXInput = document.createElement('input');
+        pointXInput.id = "pointInput"+i
+        pointXInput.type='number'
+        pointXInput.size = 5;
+        pointXInput.value = points[i]
+        mainComponent.appendChild(pointLabel)
+        mainComponent.appendChild(pointXInput)
+        const pointYInput = document.createElement('input');
+        pointYInput.id = "pointInput"+(i+1)
+        pointYInput.type='number'
+        pointYInput.size = 5;
+        pointYInput.value = points[i+1]
+        mainComponent.appendChild(pointYInput)
     }
 }
 
