@@ -105,11 +105,16 @@ export default class PolygonRoom extends Konva.Line {
             // Update the selected room with the edited details
             const newID = document.getElementById('roomID').value;
             const newNumber = document.getElementById('roomNumber').value;
-
-
+            var pointInputs = document.querySelectorAll('[id^="pointInput"]')
+            console.log(pointInputs);
+            let points = []
+            pointInputs.forEach(inp=>{
+                points.push(Math.floor(inp.value))
+            })
+            console.log(points)
             selectedRoom.id = newID;
             selectedRoom.number = newNumber;
-
+            selectedRoom.points(points)
 
         });
     }
@@ -123,9 +128,10 @@ export default class PolygonRoom extends Konva.Line {
         for (let i = 0; i < points.length; ++i) {
             if (i%2===0){
                 const pointLabel = document.createElement('label')
-                pointLabel.for = 'pointXInput'+i
+                pointLabel.for = 'pointInput'+i
                 pointLabel.textContent = 'Point('+i/2+'):'
                 const pointXInput = document.createElement('input');
+                pointXInput.id = "pointInput"+i
                 pointXInput.type='number'
                 pointXInput.size = 5;
                 pointXInput.value = points[i]
@@ -134,6 +140,7 @@ export default class PolygonRoom extends Konva.Line {
             }
             else{
                 const pointYInput = document.createElement('input');
+                pointYInput.id = "pointInput"+i
                 pointYInput.type='number'
                 pointYInput.size = 5;
                 pointYInput.value = points[i]
