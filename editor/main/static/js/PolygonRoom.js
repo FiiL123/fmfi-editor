@@ -14,17 +14,13 @@ export default class PolygonRoom extends Konva.Line {
         this.id = id;
         this.number = number;
 
-        super.on('click', function () {
-            selectedRoom = this;
-            tr.nodes([this]);
-            this.updateSidebar();
-        });
+        super.on('click', this.handleRoomClick);
         super.on('dragmove', function () {
 
         })
         super.on('dragstart', function () {
             this.prevPoints = [...this.points()]
-
+            this.handleRoomClick()
         })
         super.on('dragend', function () {
             this.updatePosition()
@@ -35,6 +31,7 @@ export default class PolygonRoom extends Konva.Line {
 
         super.on('transformstart', function () {
             this.prevPoints = [...this.points()]
+            this.handleRoomClick()
         })
         super.on('transformend', function () {
             this.updateScale()
@@ -229,6 +226,12 @@ export default class PolygonRoom extends Konva.Line {
     moveBack(prevPoints){
         this.points(prevPoints)
         this.startingPoints = prevPoints
+        this.updateSidebar()
+    }
+
+    handleRoomClick(){
+        selectedRoom = this;
+        tr.nodes([this]);
         this.updateSidebar()
     }
 }
