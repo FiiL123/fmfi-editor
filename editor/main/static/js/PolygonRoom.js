@@ -1,4 +1,4 @@
-import {TransformAction} from "./Actions.js";
+import {TransformPolyAction} from "./Actions.js";
 
 export default class PolygonRoom extends Konva.Line {
     constructor(points, id="", number="") {
@@ -23,21 +23,25 @@ export default class PolygonRoom extends Konva.Line {
 
         })
         super.on('dragstart', function () {
-
+            this.prevPoints = [...this.points()]
 
         })
         super.on('dragend', function () {
             this.updatePosition()
             this.updateSidebar()
+            actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
+
         })
 
         super.on('transformstart', function () {
-
+            this.prevPoints = [...this.points()]
         })
         super.on('transformend', function () {
             this.updateScale()
             this.updatePosition()
             this.updateSidebar()
+            actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
+
         })
 
 
@@ -212,6 +216,20 @@ export default class PolygonRoom extends Konva.Line {
         pointYInput.size = 5;
         pointYInput.value = points[i+1]
         mainComponent.appendChild(pointYInput)
+    }
+
+    delete(){
+        tr.nodes([]);
+    }
+
+    ressurect(){
+        layer.add(this);
+    }
+
+    moveBack(prevPoints){
+        this.points(prevPoints)
+        this.startingPoints = prevPoints
+        this.updateSidebar()
     }
 }
 

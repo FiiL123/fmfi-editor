@@ -48,3 +48,19 @@ export class TransformAction{
     }
 
 }
+
+export class TransformPolyAction{
+    constructor(obj, points) {
+        this.obj = obj;
+        this.prevPoints= points;
+    }
+
+    make(){
+
+    }
+
+    revert(){
+        this.obj.moveBack(this.prevPoints)
+    }
+
+}
