@@ -146,3 +146,15 @@ var selectedRoom = null;
 //     const mousePos = stage.getPointerPosition();
 //     console.log("Cursor position - x: " + mousePos.x + ", y: " + mousePos.y);
 // });
+
+function getRandomInt(min, max) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+}
+
+function getRandomColor(from=150, to = 230){
+    let colorStr = "rgb(" + getRandomInt(from, to) + "," + getRandomInt(from, to) + "," + getRandomInt(from, to) + ")"
+    console.log(colorStr)
+    return colorStr
+}

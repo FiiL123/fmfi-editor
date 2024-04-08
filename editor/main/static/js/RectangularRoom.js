@@ -8,7 +8,7 @@ export default class RectangularRoom extends Konva.Rect {
                 y: y,
                 width: 100,
                 height: 90,
-                fill: Konva.Util.getRandomColor(),
+                fill: getRandomColor(),
                 stroke: 'black',
                 draggable: true,
             },

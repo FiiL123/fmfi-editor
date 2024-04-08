@@ -4,7 +4,7 @@ export default class PolygonRoom extends Konva.Line {
     constructor(points, id="", number="") {
         super({
                 points: points,
-                fill: Konva.Util.getRandomColor(),
+                fill: getRandomColor(),
                 stroke: 'black',
                 closed: true,
                 draggable: true,
