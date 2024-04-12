@@ -177,6 +177,9 @@ export default class PolygonRoom extends Konva.Line {
     addPoint(){
         this.points().push(0)
         this.points().push(0)
+        this.startingPoints = this.points()
+        this.prevPoints = [...this.points()]
+        actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
         const pointsDiv = document.getElementById('pointsDiv')
         this.makePointInput(pointsDiv,this.points().length)
     }
@@ -190,7 +193,7 @@ export default class PolygonRoom extends Konva.Line {
         pointLabel.textContent = 'Point('+i/2+'):'
         pointLabel.id = 'pointLabel'+i
         const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
+        deleteButton.textContent = '-';
         deleteButton.id = 'pointDelete'+i
         deleteButton.addEventListener('click', function() {
             console.log("deleting")
@@ -240,6 +243,6 @@ export default class PolygonRoom extends Konva.Line {
 
 
 export function addPolygonRoom(){
-    var room = new PolygonRoom([23, 20, 23, 160, 70, 93, 150, 109, 290, 139, 270, 93], "polygon","WC")
+    var room = new PolygonRoom([200,200,100,200,100,100,200,100], "polygon","WC")
     layer.add(room);
 }
