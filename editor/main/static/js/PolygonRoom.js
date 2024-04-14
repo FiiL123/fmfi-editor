@@ -155,6 +155,7 @@ export default class PolygonRoom extends Konva.Line {
             selectedRoom.id = newID;
             selectedRoom.number = newNumber;
             selectedRoom.points(points)
+            selectedRoom.startingPoints = points
             console.log(selectedRoom.points())
             selectedRoom.updateSidebar()
 
