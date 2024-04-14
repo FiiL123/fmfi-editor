@@ -130,8 +130,25 @@ stage.on('touchend', function (e) {
     lastCenter = null;
 });
 
+var bottom_layer = new Konva.Layer();
+stage.add(bottom_layer)
+
+var imageObj = new Image();
+imageObj.onload = function () {
+    var map = new Konva.Image({
+      x: 0,
+      y: 0,
+      image: imageObj,
+      width: 3809,
+      height: 2741,
+    });
+      // add the shape to the layer
+      bottom_layer.add(map);
+  };
+imageObj.src = 'static/I - prizemie.jpg';
 
 var layer = new Konva.Layer();
+layer.opacity(0.7)
 stage.add(layer);
 
 // create new transformer
