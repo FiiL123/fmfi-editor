@@ -5,13 +5,13 @@ import {addDoor} from "./Door.js";
 function toolbarClickFunc(element) {
     console.log(element.title)
     switch (element.title) {
-        case "Create room":
+        case "Create rectangular room":
             addRoom();
             break;
-        case "Create doors":
+        case "Create polygon room":
             addPolygonRoom();
             break;
-        case "Create elevators/stairs":
+        case "Create doors":
             addDoor();
             break;
     }
