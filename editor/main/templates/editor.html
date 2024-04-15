@@ -18,6 +18,12 @@
         <title>FMFI editor</title>
     </head>
     <body>
+        <script>
+            var img_src = '{{ image.url }}';
+            var img_wid = '{{ image.width }}'
+            var img_hei = '{{ image.height }}'
+            console.log(img_src)
+        </script>
         {% include 'toolbar.html' %}
         <div class="container-fluid p-0">
             <div class="row w-100 m-0 p-0">

@@ -6,3 +6,4 @@ db.*
 /uploads/
 /static/
 *.pdf
+/media/

@@ -22,12 +22,14 @@
                     {#                    TODO Renderovat mapu#}
                     <h2>Rendered map</h2>
                 </div>
-                <div id="sidebar" class="col-3 bg-secondary p-0">
+                <div id="sidebar" class="col-3 bg-secondary p-0 h-100">
                     <h2>Parts</h2>
                     <ul>
-                        <li>
-                            Part 1: <a href="{% url 'editor' %}">Edit</a>
-                        </li>
+                        {% for part in parts %}
+                            <li>
+                                {{ part.name }}: <a href="{% url 'editor' part.id %}">Edit</a>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>

@@ -133,19 +133,23 @@ stage.on('touchend', function (e) {
 var bottom_layer = new Konva.Layer();
 stage.add(bottom_layer)
 
+console.log(img_src)
 var imageObj = new Image();
 imageObj.onload = function () {
     var map = new Konva.Image({
       x: 0,
       y: 0,
       image: imageObj,
-      width: 3809,
-      height: 2741,
+      width: img_wid,
+      height: img_hei,
     });
-      // add the shape to the layer
-      bottom_layer.add(map);
-  };
-imageObj.src = 'static/I - prizemie.jpg';
+    // add the shape to the layer
+    bottom_layer.add(map);
+};
+imageObj.onerror = function() {
+    console.error("Error loading image:", img_src);
+};
+imageObj.src = img_src;
 
 var layer = new Konva.Layer();
 layer.opacity(0.7)
