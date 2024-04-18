@@ -1,13 +1,13 @@
 import {TransformAction} from "./Actions.js";
 
 export default class RectangularRoom extends Konva.Rect {
-    constructor(x, y, tr, id="", number="") {
+    constructor(x, y,w, h, tr, id="", number="") {
         console.log(x+" "+y)
         super({
                 x: x,
                 y: y,
-                width: 100,
-                height: 90,
+                width: w,
+                height: h,
                 fill: getRandomColor(),
                 stroke: 'black',
                 draggable: true,
@@ -156,8 +156,8 @@ export default class RectangularRoom extends Konva.Rect {
     }
 }
 
-export function addRoom(){
-    var room = new RectangularRoom(100, 200,tr, "rect", "I-H6")
+export function addRoom(x=100,y=90,w=100,h=100,id="test",number="test"){
+    var room = new RectangularRoom(x,y,w,h,tr, id, number)
     layer.add(room)
     room.updateTextPosition()
     layer.add(room.numberText)

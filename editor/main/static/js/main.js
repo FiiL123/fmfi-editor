@@ -1,6 +1,5 @@
 
 var width = 10 * (window.innerWidth / 12) - 10;
-console.log(width)
 var height = window.innerHeight;
 
 var stage = new Konva.Stage({
@@ -188,10 +187,3 @@ Levely su relativne k matike
  */
 
 // console.log(part_xml)
-
-parser = new DOMParser();
-xmlDoc = parser.parseFromString(part_xml,"text/xml");
-console.log(part_xml)
-xmlDoc.childNodes.forEach((elem)=>{
-    console.log(elem)
-})
