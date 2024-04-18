@@ -11,8 +11,6 @@ def home(request):
 
 
 def editor(request, id):
-    plan = Part.objects.filter(id=id).get()
-    image = plan.plan_image
-    context = {"image": image}
-    print(image.url)
+    part = Part.objects.filter(id=id).get()
+    context = {"part": part}
     return render(request, "editor.html", context=context)

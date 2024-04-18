@@ -18,11 +18,14 @@
         <title>FMFI editor</title>
     </head>
     <body>
+        {{ part.part_xml|json_script:"part_xml" }}
         <script>
-            var img_src = '{{ image.url }}';
-            var img_wid = '{{ image.width }}'
-            var img_hei = '{{ image.height }}'
-            console.log(img_src)
+            var img_src = '{{ part.plan_image.url }}';
+            var img_wid = '{{ part.plan_image.width }}';
+            var img_hei = '{{ part.plan_image.height }}';
+            var part_xml = JSON.parse(document.getElementById('part_xml').textContent);
+            
+            {#console.log(img_src)#}
         </script>
         {% include 'toolbar.html' %}
         <div class="container-fluid p-0">

@@ -179,3 +179,19 @@ function getRandomColor(from=150, to = 230){
     console.log(colorStr)
     return colorStr
 }
+
+/*TODO
+Presuvanie viacerych objektov naraz
+Snapovanie++
+Snapovanie dveri
+Levely su relativne k matike
+ */
+
+// console.log(part_xml)
+
+parser = new DOMParser();
+xmlDoc = parser.parseFromString(part_xml,"text/xml");
+console.log(part_xml)
+xmlDoc.childNodes.forEach((elem)=>{
+    console.log(elem)
+})
