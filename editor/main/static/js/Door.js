@@ -190,8 +190,8 @@ export default class Door extends Konva.Line {
 }
 
 
-export function addDoor() {
-    var door = new Door([50,50,80,50], "d-0-0")
-    console.log("adding door")
+export function addDoor(points = [], id ="d-0-0") {
+    if (points===[]) points = [50,50,80,50];
+    var door = new Door(points, id)
     layer.add(door)
 }

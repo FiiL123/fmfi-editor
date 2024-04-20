@@ -1,5 +1,6 @@
 import {addRoom as addRectangularRoom} from "./RectangularRoom.js";
 import {addPolygonRoom} from "./PolygonRoom.js";
+import {addDoor} from "./Door.js";
 
 export default class XMLReader{
     constructor(xml_text) {
@@ -10,30 +11,69 @@ export default class XMLReader{
     const part_elem = xmlDoc.getElementsByTagName("part")[0]
     let part_children = part_elem.children
     for (let elem of part_children){
-        if (elem.tagName==="room" && elem.children[0].tagName==="rectangle"){
-            const rectangle = elem.children[0];
-            const x1 = parseInt(rectangle.getAttribute('x1'));
-            const x2 = parseInt(rectangle.getAttribute('x2'));
-            const y1 = parseInt(rectangle.getAttribute('y1'));
-            const y2 = parseInt(rectangle.getAttribute('y2'));
+        switch (elem.tagName) {
+            case "room":
+                if (elem.children[0].tagName==="rectangle"){
+                    const rectangle = elem.children[0];
+                    const rectPoints = this.readRectanglePoints(rectangle);
 
-            addRectangularRoom(x1,y1,x2-x1,y2-y1,elem.getAttribute('id'),elem.getAttribute('number'))
+                    addRectangularRoom(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
+                        rectPoints.y2-rectPoints.y1,elem.getAttribute('id'),
+                        elem.getAttribute('number'))
+                }
+                else if (elem.children[0].tagName==="polygon"){
+                    const polygon = elem.children[0];
+                    let points = this.readPolygonPoints(polygon);
+                    addPolygonRoom(points, elem.getAttribute('id'), elem.getAttribute('number'))
+                }
+                break;
+            case "door":
+                const line= elem.children[0]
+                const x1 = parseInt(line.getAttribute('x1'));
+                const x2 = parseInt(line.getAttribute('x2'));
+                const y1 = parseInt(line.getAttribute('y1'));
+                const y2 = parseInt(line.getAttribute('y2'));
+                addDoor([x1,y1,x2,y2], elem.getAttribute('id'));
+                break;
+            case "floor":
+                if (elem.children[0].tagName==="rectangle"){
+                    const rectangle = elem.children[0];
+                    const rectPoints = this.readRectanglePoints(rectangle);
+
+                    addRectangularRoom(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
+                        rectPoints.y2-rectPoints.y1,elem.getAttribute('id'),
+                        "")
+                }
+                else if (elem.children[0].tagName==="polygon"){
+                    const polygon = elem.children[0];
+                    let points = this.readPolygonPoints(polygon);
+                    addPolygonRoom(points, elem.getAttribute('id'), "")
+                }
+                break;
+        }
+
 
         }
-        else if (elem.tagName==="room" && elem.children[0].tagName==="polygon") {
-            const polygon = elem.children[0];
-            let points = []
-            for (let point of polygon.children) {
-                const x = parseInt(point.getAttribute('x'));
-                const y = parseInt(point.getAttribute('y'));
-                points.push(x)
-                points.push(y)
-            }
-            addPolygonRoom(points, elem.getAttribute('id'), elem.getAttribute('number'))
-        }
 
-        }
+    }
 
+    readPolygonPoints(polygon){
+        let points = []
+        for (let point of polygon.children) {
+            const x = parseInt(point.getAttribute('x'));
+            const y = parseInt(point.getAttribute('y'));
+            points.push(x)
+            points.push(y)
+        }
+        return points;
+    }
+
+    readRectanglePoints(rectangle){
+        const x1 = parseInt(rectangle.getAttribute('x1'));
+        const x2 = parseInt(rectangle.getAttribute('x2'));
+        const y1 = parseInt(rectangle.getAttribute('y1'));
+        const y2 = parseInt(rectangle.getAttribute('y2'));
+        return {'x1':x1,'x2':x2,'y1':y1,'y2':y2}
     }
 }
 
