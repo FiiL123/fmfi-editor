@@ -128,6 +128,10 @@ stage.on('touchend', function (e) {
     lastDist = 0;
     lastCenter = null;
 });
+
+stage.getContainer().style.backgroundColor = "#ffefe0";
+var layer = new Konva.Layer();
+
 if (img_src != null){
     var bottom_layer = new Konva.Layer();
     stage.add(bottom_layer)
@@ -147,12 +151,9 @@ if (img_src != null){
         console.error("Error loading image:", img_src);
     };
     imageObj.src = img_src;
+    layer.opacity(0.7)
 }
 
-
-
-var layer = new Konva.Layer();
-layer.opacity(0.7)
 stage.add(layer);
 
 // create new transformer

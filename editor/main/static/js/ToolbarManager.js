@@ -14,6 +14,16 @@ function toolbarClickFunc(element) {
         case "Create doors":
             addDoor();
             break;
+        case "Toggle plan view":
+            if (bottom_layer.visible()){
+                console.log("is visible")
+                bottom_layer.visible(false);
+                layer.opacity = 1;
+            }else{
+                bottom_layer.visible(true);
+                layer.opacity = 0.7;
+            }
+            break;
     }
 }
 
