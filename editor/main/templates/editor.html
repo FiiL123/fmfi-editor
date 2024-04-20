@@ -21,13 +21,17 @@
     <body>
         {{ part.part_xml|json_script:"part_xml" }}
         <script>
+            var part_xml = JSON.parse(document.getElementById('part_xml').textContent);
+            var img_src = null;
+        </script>
+        {% if part.plan_image %}
+            <script>
+            console.log("IM INNNNN")
             var img_src = '{{ part.plan_image.url }}';
             var img_wid = '{{ part.plan_image.width }}';
             var img_hei = '{{ part.plan_image.height }}';
-            var part_xml = JSON.parse(document.getElementById('part_xml').textContent);
-            
-            {#console.log(img_src)#}
-        </script>
+            </script>
+        {% endif %}
         {% include 'toolbar.html' %}
         <div class="container-fluid p-0">
             <div class="row w-100 m-0 p-0">

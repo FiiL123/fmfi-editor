@@ -128,27 +128,28 @@ stage.on('touchend', function (e) {
     lastDist = 0;
     lastCenter = null;
 });
+if (img_src != null){
+    var bottom_layer = new Konva.Layer();
+    stage.add(bottom_layer)
 
-var bottom_layer = new Konva.Layer();
-stage.add(bottom_layer)
+    var imageObj = new Image();
+    imageObj.onload = function () {
+        var map = new Konva.Image({
+          x: 0,
+          y: 0,
+          image: imageObj,
+          width: img_wid,
+          height: img_hei,
+        });
+        bottom_layer.add(map);
+    };
+    imageObj.onerror = function() {
+        console.error("Error loading image:", img_src);
+    };
+    imageObj.src = img_src;
+}
 
-console.log(img_src)
-var imageObj = new Image();
-imageObj.onload = function () {
-    var map = new Konva.Image({
-      x: 0,
-      y: 0,
-      image: imageObj,
-      width: img_wid,
-      height: img_hei,
-    });
-    // add the shape to the layer
-    bottom_layer.add(map);
-};
-imageObj.onerror = function() {
-    console.error("Error loading image:", img_src);
-};
-imageObj.src = img_src;
+
 
 var layer = new Konva.Layer();
 layer.opacity(0.7)
@@ -175,7 +176,6 @@ function getRandomInt(min, max) {
 
 function getRandomColor(from=150, to = 230){
     let colorStr = "rgb(" + getRandomInt(from, to) + "," + getRandomInt(from, to) + "," + getRandomInt(from, to) + ")"
-    console.log(colorStr)
     return colorStr
 }
 
