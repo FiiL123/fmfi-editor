@@ -2,7 +2,7 @@ import {TransformPolyAction} from "./Actions.js";
 
 export default class PolygonRoom extends Konva.Line {
     constructor(points, id = "", number = "", color) {
-        color = (color === null) ? getRandomColor() : "rgb("+color+")";
+        color = (color === null || color === "") ? "gray" : "rgb("+color+")";
         super({
                 points: points,
                 fill: color,

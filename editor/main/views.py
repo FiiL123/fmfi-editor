@@ -1,6 +1,7 @@
+from django.core.serializers import serialize
 from django.shortcuts import render
 
-from editor.main.models import Part
+from editor.main.models import Part, Purpose
 
 
 def home(request):
@@ -12,5 +13,6 @@ def home(request):
 
 def editor(request, id):
     part = Part.objects.filter(id=id).get()
-    context = {"part": part}
+    purposes = serialize("json", Purpose.objects.all())
+    context = {"part": part, "purposes": purposes}
     return render(request, "editor.html", context=context)

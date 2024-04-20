@@ -22,11 +22,11 @@
         {{ part.part_xml|json_script:"part_xml" }}
         <script>
             var part_xml = JSON.parse(document.getElementById('part_xml').textContent);
+            var purposesData = JSON.parse('{{ purposes|safe }}');
             var img_src = null;
         </script>
         {% if part.plan_image %}
             <script>
-            console.log("IM INNNNN")
             var img_src = '{{ part.plan_image.url }}';
             var img_wid = '{{ part.plan_image.width }}';
             var img_hei = '{{ part.plan_image.height }}';

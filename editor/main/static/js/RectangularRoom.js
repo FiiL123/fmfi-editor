@@ -3,7 +3,7 @@ import {TransformAction} from "./Actions.js";
 export default class RectangularRoom extends Konva.Rect {
     constructor(x, y, w, h, tr, id = "", number = "", color) {
         console.log(x+" "+y)
-        color = (color === null) ? getRandomColor() : "rgb("+color+")";
+        color = (color === null || color === "") ? "gray" : "rgb("+color+")";
         super({
                 x: x,
                 y: y,
