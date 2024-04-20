@@ -1,9 +1,13 @@
 import {TransformAction} from "./Actions.js";
 
 export default class RectangularRoom extends Konva.Rect {
-    constructor(x, y, w, h, tr, id = "", number = "", color) {
-        console.log(x+" "+y)
-        color = (color === null || color === "") ? "gray" : "rgb("+color+")";
+    constructor(x, y, w, h, tr, attributes = new Map()) {
+        const purpose = purposesData.find(function(purpose) {
+                    return purpose.pk === attributes.get('purpose');
+                });
+
+        let color = (purpose && purpose.fields.colour!== "") ? "rgb("+purpose.fields.colour+")" : "lightgray";
+        if (attributes.get('id').startsWith('f-')) color = 'white'
         super({
                 x: x,
                 y: y,
@@ -14,8 +18,10 @@ export default class RectangularRoom extends Konva.Rect {
                 draggable: true,
             },
         );
-        this.id = id;
-        this.number = number;
+        this.attributes = attributes;
+        this.id = attributes.get('id');
+        this.number = (attributes.has('number')) ? attributes.get('number'): "";
+        // console.log(this.number + ":  "+color + "  ("+purpose.fields.colour)
         super.on('transformstart', function () {
             console.log('transform start');
             this.prevX = this.x()
@@ -66,12 +72,13 @@ export default class RectangularRoom extends Konva.Rect {
             tr.nodes([this]);
             handleRoomClick(this)
         })
-
+        this.text = (attributes.has('custom-map-label')) ? attributes.get('custom-map-label') : this.number;
+        this.text = this.text.replace("\\n", "\n");
         this.numberText = new Konva.Text({
-        text: this.number,
+        text: this.text,
         x: x+2,
         y: y+2,
-        fontSize: 24,
+        fontSize: (attributes.has('important')) ? 30 : 24,
       });
 
     }
@@ -161,8 +168,8 @@ export default class RectangularRoom extends Konva.Rect {
     }
 }
 
-export function addRoom(x=100,y=90,w=100,h=100,id="test",number="test", color = null){
-    var room = new RectangularRoom(x,y,w,h,tr, id, number, color)
+export function addRoom(x=100,y=90,w=100,h=100,attributes = new Map()){
+    const room = new RectangularRoom(x, y, w, h, tr, attributes);
     layer.add(room)
     layer.add(room.numberText)
     return(room);

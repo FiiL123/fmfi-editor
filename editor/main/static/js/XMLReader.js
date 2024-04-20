@@ -11,24 +11,22 @@ export default class XMLReader{
     const part_elem = xmlDoc.getElementsByTagName("part")[0]
     let part_children = part_elem.children
     for (let elem of part_children){
+        let attributes = new Map()
+        for (let attribute of elem.attributes) {
+            attributes.set(attribute.name, attribute.value)
+        }
         switch (elem.tagName) {
             case "room":
-                const purpose = purposesData.find(function(purpose) {
-                    return purpose.pk === elem.getAttribute('purpose');
-                });
-                const color = purpose ? purpose.fields.colour : null;
                 if (elem.children[0].tagName==="rectangle"){
                     const rectangle = elem.children[0];
                     const rectPoints = this.readRectanglePoints(rectangle);
-
                     addRectangularRoom(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
-                        rectPoints.y2-rectPoints.y1,elem.getAttribute('id'),
-                        elem.getAttribute('number'), color)
+                        rectPoints.y2-rectPoints.y1,attributes)
                 }
                 else if (elem.children[0].tagName==="polygon"){
                     const polygon = elem.children[0];
                     let points = this.readPolygonPoints(polygon);
-                    addPolygonRoom(points, elem.getAttribute('id'), elem.getAttribute('number'), color)
+                    addPolygonRoom(points, attributes)
                 }
                 break;
             case "door":
@@ -45,14 +43,13 @@ export default class XMLReader{
                     const rectPoints = this.readRectanglePoints(rectangle);
 
                     const r = addRectangularRoom(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
-                        rectPoints.y2-rectPoints.y1,elem.getAttribute('id'),
-                        "", "255,255,255")
+                        rectPoints.y2-rectPoints.y1,attributes)
                     r.lockDragging();
                 }
                 else if (elem.children[0].tagName==="polygon"){
                     const polygon = elem.children[0];
                     let points = this.readPolygonPoints(polygon);
-                    const r = addPolygonRoom(points, elem.getAttribute('id'), "","255,255,255")
+                    const r = addPolygonRoom(points, attributes);
                     r.lockDragging();
                 }
                 break;

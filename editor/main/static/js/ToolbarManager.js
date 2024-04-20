@@ -18,10 +18,10 @@ function toolbarClickFunc(element) {
             if (bottom_layer.visible()){
                 console.log("is visible")
                 bottom_layer.visible(false);
-                layer.opacity = 1;
+                layer.opacity(1);
             }else{
                 bottom_layer.visible(true);
-                layer.opacity = 0.7;
+                layer.opacity(0.7);
             }
             break;
     }

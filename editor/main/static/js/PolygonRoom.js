@@ -1,8 +1,13 @@
 import {TransformPolyAction} from "./Actions.js";
 
 export default class PolygonRoom extends Konva.Line {
-    constructor(points, id = "", number = "", color) {
-        color = (color === null || color === "") ? "gray" : "rgb("+color+")";
+    constructor(points,attributes = new Map()) {
+        const purpose = purposesData.find(function(purpose) {
+                    return purpose.pk === attributes.get('purpose');
+                });
+        let color = purpose ? "rgb("+purpose.fields.colour+")" : "lightgray";
+        if (attributes.get('id').startsWith('f-')) color = 'white'
+
         super({
                 points: points,
                 fill: color,
@@ -12,9 +17,8 @@ export default class PolygonRoom extends Konva.Line {
             },
         );
         this.startingPoints = points;
-        this.id = id;
-        this.number = number;
-
+        this.id = attributes.get('id');
+        this.number = (attributes.has('number')) ? attributes.get('number'): "";
         super.on('click', this.handleRoomClick);
         super.on('dragmove', function () {
 
@@ -46,11 +50,13 @@ export default class PolygonRoom extends Konva.Line {
             actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
 
         })
+        this.text = (attributes.has('custom-map-label')) ? attributes.get('custom-map-label') : this.number;
+        this.text = this.text.replace("\\n", "\n");
         this.numberText = new Konva.Text({
-        text: this.number,
+        text: this.text,
         x: this.points()[0]+2,
         y: this.points()[1]+2,
-        fontSize: 24,
+        fontSize: (attributes.has('important')) ? 30 : 24,
       });
 
     }
@@ -266,9 +272,9 @@ export default class PolygonRoom extends Konva.Line {
 
 
 
-export function addPolygonRoom(points = [],id="test",number="test", color = null){
+export function addPolygonRoom(points = [], attributes){
     if (points===[]) points = [200,200,100,200,100,100,200,100];
-    var room = new PolygonRoom(points, id,number,color)
+    const room = new PolygonRoom(points, attributes);
     layer.add(room);
     layer.add(room.numberText)
     return room;
