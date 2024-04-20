@@ -243,7 +243,8 @@ export default class PolygonRoom extends Konva.Line {
 
 
 
-export function addPolygonRoom(){
-    var room = new PolygonRoom([200,200,100,200,100,100,200,100], "polygon","WC")
+export function addPolygonRoom(points = [],id="test",number="test"){
+    if (points===[]) points = [200,200,100,200,100,100,200,100];
+    var room = new PolygonRoom(points, id,number)
     layer.add(room);
 }
