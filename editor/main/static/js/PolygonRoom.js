@@ -1,10 +1,11 @@
 import {TransformPolyAction} from "./Actions.js";
 
 export default class PolygonRoom extends Konva.Line {
-    constructor(points, id="", number="") {
+    constructor(points, id = "", number = "", color) {
+        color = (color === null) ? getRandomColor() : "rgb("+color+")";
         super({
                 points: points,
-                fill: getRandomColor(),
+                fill: color,
                 stroke: 'black',
                 closed: true,
                 draggable: true,
@@ -243,8 +244,8 @@ export default class PolygonRoom extends Konva.Line {
 
 
 
-export function addPolygonRoom(points = [],id="test",number="test"){
+export function addPolygonRoom(points = [],id="test",number="test", color = null){
     if (points===[]) points = [200,200,100,200,100,100,200,100];
-    var room = new PolygonRoom(points, id,number)
+    var room = new PolygonRoom(points, id,number,color)
     layer.add(room);
 }
