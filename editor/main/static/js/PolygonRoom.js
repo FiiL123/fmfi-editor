@@ -26,8 +26,12 @@ export default class PolygonRoom extends Konva.Line {
         super.on('dragend', function () {
             this.updatePosition()
             this.updateSidebar()
+            this.updateTextPosition()
             actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
+        })
 
+        super.on('transform',function () {
+            this.updateTextPosition();
         })
 
         super.on('transformstart', function () {
@@ -38,10 +42,16 @@ export default class PolygonRoom extends Konva.Line {
             this.updateScale()
             this.updatePosition()
             this.updateSidebar()
+            this.updateTextPosition();
             actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
 
         })
-
+        this.numberText = new Konva.Text({
+        text: this.number,
+        x: this.points()[0]+2,
+        y: this.points()[1]+2,
+        fontSize: 24,
+      });
 
     }
 
@@ -85,6 +95,11 @@ export default class PolygonRoom extends Konva.Line {
         console.log("starting poiuits:" + this.startingPoints)
     }
 
+    updateTextPosition(){
+        let textX = this.points()[0]+2; // Adjust for bottom right corner
+        let textY = this.points()[1]+2; // Adjust for bottom right corner
+        this.numberText.position({ x: textX, y: textY });
+    }
     updateSidebar(){
         // Access the sidebar form elements
         var existingAttributesDiv = document.getElementById('attributesDiv');
@@ -221,17 +236,20 @@ export default class PolygonRoom extends Konva.Line {
     }
 
     delete(){
+        this.numberText.remove()
         tr.nodes([]);
     }
 
     ressurect(){
         layer.add(this);
+        layer.add(this.numberText);
     }
 
     moveBack(prevPoints){
         this.points(prevPoints)
         this.startingPoints = prevPoints
         this.updateSidebar()
+        this.updateTextPosition()
     }
 
     handleRoomClick(){
@@ -252,5 +270,6 @@ export function addPolygonRoom(points = [],id="test",number="test", color = null
     if (points===[]) points = [200,200,100,200,100,100,200,100];
     var room = new PolygonRoom(points, id,number,color)
     layer.add(room);
+    layer.add(room.numberText)
     return room;
 }

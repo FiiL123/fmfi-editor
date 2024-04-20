@@ -69,9 +69,9 @@ export default class RectangularRoom extends Konva.Rect {
 
         this.numberText = new Konva.Text({
         text: this.number,
-        x: x,
-        y: y,
-        fontSize: 16,
+        x: x+2,
+        y: y+2,
+        fontSize: 24,
       });
 
     }
@@ -112,8 +112,8 @@ export default class RectangularRoom extends Konva.Rect {
 
     }
     updateTextPosition(){
-        let textX = this.x() + this.width() - this.numberText.width()-2; // Adjust for bottom right corner
-        let textY = this.y() + this.height() - this.numberText.height(); // Adjust for bottom right corner
+        let textX = this.x()+2; // Adjust for bottom right corner
+        let textY = this.y()+2; // Adjust for bottom right corner
         this.numberText.position({ x: textX, y: textY });
     }
     handleSizeChange(){
@@ -164,7 +164,6 @@ export default class RectangularRoom extends Konva.Rect {
 export function addRoom(x=100,y=90,w=100,h=100,id="test",number="test", color = null){
     var room = new RectangularRoom(x,y,w,h,tr, id, number, color)
     layer.add(room)
-    room.updateTextPosition()
     layer.add(room.numberText)
     return(room);
 }
