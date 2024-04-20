@@ -40,14 +40,16 @@ export default class XMLReader{
                     const rectangle = elem.children[0];
                     const rectPoints = this.readRectanglePoints(rectangle);
 
-                    addRectangularRoom(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
+                    const r = addRectangularRoom(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
                         rectPoints.y2-rectPoints.y1,elem.getAttribute('id'),
                         "", "255,255,255")
+                    r.lockDragging();
                 }
                 else if (elem.children[0].tagName==="polygon"){
                     const polygon = elem.children[0];
                     let points = this.readPolygonPoints(polygon);
-                    addPolygonRoom(points, elem.getAttribute('id'), "","255,255,255")
+                    const r = addPolygonRoom(points, elem.getAttribute('id'), "","255,255,255")
+                    r.lockDragging();
                 }
                 break;
         }

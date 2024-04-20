@@ -155,6 +155,10 @@ export default class RectangularRoom extends Konva.Rect {
         this.updateTextPosition();
         updateSidebar(this);
     }
+
+    lockDragging(){
+        this.draggable(false)
+    }
 }
 
 export function addRoom(x=100,y=90,w=100,h=100,id="test",number="test", color = null){
@@ -162,6 +166,7 @@ export function addRoom(x=100,y=90,w=100,h=100,id="test",number="test", color = 
     layer.add(room)
     room.updateTextPosition()
     layer.add(room.numberText)
+    return(room);
 }
 
 function updateSidebar(room) {

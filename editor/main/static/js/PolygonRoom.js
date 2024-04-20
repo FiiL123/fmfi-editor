@@ -239,6 +239,10 @@ export default class PolygonRoom extends Konva.Line {
         tr.nodes([this]);
         this.updateSidebar()
     }
+
+    lockDragging(){
+        this.draggable(false)
+    }
 }
 
 
@@ -248,4 +252,5 @@ export function addPolygonRoom(points = [],id="test",number="test", color = null
     if (points===[]) points = [200,200,100,200,100,100,200,100];
     var room = new PolygonRoom(points, id,number,color)
     layer.add(room);
+    return room;
 }
