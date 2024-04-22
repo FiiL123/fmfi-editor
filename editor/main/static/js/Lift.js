@@ -1,43 +1,19 @@
 import {TransformAction} from "./Actions.js";
 
-export default class RectangularRoom extends Konva.Rect {
+export default class Lift extends Konva.Rect{
     constructor(x, y, w, h, tr, attributes = new Map()) {
-        const purpose = purposesData.find(function(purpose) {
-                    return purpose.pk === attributes.get('purpose');
-                });
-        let color = getRandomColor()
-        if (attributes.size>0){
-            color = (purpose && purpose.fields.colour!== "") ? "rgb("+purpose.fields.colour+")" : "lightgray";
-            if (attributes.get('id').startsWith('f-')) color = 'white'
-        }
         super({
                 x: x,
                 y: y,
                 width: w,
                 height: h,
-                fill: color,
+                fill: 'blue',
                 stroke: 'black',
                 draggable: true,
             },
         );
         this.attributes = attributes;
         this.id = (attributes.has('id')) ? attributes.get('id'): "";
-        this.number = (attributes.has('number')) ? attributes.get('number'): "";
-        // console.log(this.number + ":  "+color + "  ("+purpose.fields.colour)
-        super.on('transformstart', function () {
-            console.log('transform start');
-            this.prevX = this.x()
-            this.prevY = this.y()
-            this.prevW = this.width()
-            this.prevH = this.height()
-            this.handleRoomClick();
-        });
-
-        super.on('dragmove', function () {
-            // updateText();
-            this.handlePositionChange();
-            this.updateTextPosition();
-        });
 
         super.on('dragstart', function (){
             console.log("drag start");
@@ -45,101 +21,65 @@ export default class RectangularRoom extends Konva.Rect {
             this.prevY = this.y()
             this.prevW = this.width()
             this.prevH = this.height()
-            this.handleRoomClick();
+            this.handleClick();
 
         });
+
+        super.on('dragmove', function () {
+            // updateText();
+            this.handlePositionChange();
+        });
+
         super.on('dragend', function (){
             console.log("drag end");
             actionManager.addAction(new TransformAction(this, this.prevX, this.prevY, this.prevW, this.prevH));
         });
-        super.on('transform', function () {
-            // updateText();
-            console.log('transform');
-            this.updateTextPosition();
 
+
+        super.on('transformstart', function () {
+            console.log('transform start');
+            this.prevX = this.x()
+            this.prevY = this.y()
+            this.prevW = this.width()
+            this.prevH = this.height()
+            this.handleClick();
         });
 
         super.on('transformend', function () {
             console.log('transform end');
             this.handlePositionChange();
             this.handleSizeChange();
-            this.updateTextPosition();
             actionManager.addAction(new TransformAction(this, this.prevX, this.prevY, this.prevW, this.prevH));
 
         });
 
-        super.on('click', this.handleRoomClick);
-
-        this.text = (attributes.has('custom-map-label')) ? attributes.get('custom-map-label') : this.number;
-        this.text = this.text.replace("\\n", "\n");
-        this.numberText = new Konva.Text({
-        text: this.text,
-        x: x+2,
-        y: y+2,
-        fontSize: (attributes.has('important')) ? 30 : 24,
-      });
+        super.on('click', this.handleClick);
 
     }
     toString(){
-        return `RectRoom(${this.x()}-${this.y()})`
+        return `Lift(${this.x()}-${this.y()})`
     }
+
+    handleClick(){
+        selectedRoom = this;
+        tr.nodes([this]);
+        this.updateSidebar()
+    }
+
     handlePositionChange(){
-        let intersectObj = this.isIntersecting();
-        if (intersectObj === null){
-            let roomX = Math.floor(this.x());
-            let roomY = Math.floor(this.y());
-            this.x(roomX);
-            this.y(roomY);
-        }
-        else {
-            let snapDistance = Math.sqrt((Math.pow(this.width(),2)+Math.pow(this.height(),2)))/4; // Adjust this value as needed for your snapping sensitivity, 1/4 of the diagonal
-            console.log("snp dist:" + snapDistance);
-            // Snap horizontally
-            if (Math.abs(this.y() + this.height() / 2 - intersectObj.y() - intersectObj.height() / 2) < snapDistance) {
-                if (this.x() + this.width() < intersectObj.x() + snapDistance) {
-                    this.x(intersectObj.x() - this.width());
-                } else if (this.x() > intersectObj.x() + intersectObj.width() - snapDistance) {
-                    this.x(intersectObj.x() + intersectObj.width());
-                }
-            }
-
-            // Snap vertically
-            if (Math.abs(this.x() + this.width() / 2 - intersectObj.x() - intersectObj.width() / 2) < snapDistance) {
-                if (this.y() + this.height() < intersectObj.y() + snapDistance) {
-                    this.y(intersectObj.y() - this.height());
-                } else if (this.y() > intersectObj.y() + intersectObj.height() - snapDistance) {
-                    this.y(intersectObj.y() + intersectObj.height());
-                }
-            }
-
-
-        }
-
+        let x = Math.floor(this.x());
+        let y = Math.floor(this.y());
+        this.x(x);
+        this.y(y);
     }
-    updateTextPosition(){
-        let textX = this.x()+2; // Adjust for bottom right corner
-        let textY = this.y()+2; // Adjust for bottom right corner
-        this.numberText.position({ x: textX, y: textY });
-    }
+
     handleSizeChange(){
-        let roomWidth = Math.floor(this.width()*this.scaleX());
-        let roomHeight = Math.floor(this.height()*this.scaleY());
+        let w = Math.floor(this.width()*this.scaleX());
+        let h = Math.floor(this.height()*this.scaleY());
         this.scaleX(1)
         this.scaleY(1)
-        this.width(roomWidth);
-        this.height(roomHeight);
-    }
-
-    isIntersecting() {
-        let layer = this.getLayer();
-        let children = layer.getChildren();
-        for (const obj of children) {
-            if ((obj instanceof RectangularRoom) && haveIntersection(this, obj) && !(this === obj)) {
-                console.log("Overlap:" + this + " - > " + obj);
-                return obj;
-            }
-        }
-        return null;
+        this.width(w);
+        this.height(h);
     }
 
     updateSidebar() {
@@ -165,17 +105,6 @@ export default class RectangularRoom extends Konva.Rect {
         roomIDLabel.textContent = 'ID:'
         rectRoomForm.appendChild(roomIDLabel)
         rectRoomForm.appendChild(roomIDInput)
-
-        var roomNumberInput = document.createElement('input')
-        roomNumberInput.id = 'roomNumber'
-        roomNumberInput.type = 'text'
-        roomNumberInput.name = 'roomNumber'
-        roomNumberInput.value = (this.number);
-        var roomNumberLabel = document.createElement('label')
-        roomNumberLabel.for = 'roomNumber'
-        roomNumberLabel.textContent = 'Number:'
-        rectRoomForm.appendChild(roomNumberLabel)
-        rectRoomForm.appendChild(roomNumberInput)
 
         var roomWidthInput = document.createElement('input')
         roomWidthInput.id = 'roomWidth'
@@ -235,32 +164,20 @@ export default class RectangularRoom extends Konva.Rect {
         rectRoomForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
-            // Update the selected room with the edited details
             const newID = document.getElementById('roomID').value;
-            const newNumber = document.getElementById('roomNumber').value;
             const newWidth = Math.floor(Number(document.getElementById('roomWidth').value));
             const newHeight = Math.floor(Number(document.getElementById('roomHeight').value));
             const newX = Math.floor(Number(document.getElementById('roomX').value));
             const newY = Math.floor(Number(document.getElementById('roomY').value));
 
             selectedRoom.id = newID;
-            selectedRoom.number = newNumber;
             selectedRoom.width(newWidth);
             selectedRoom.height(newHeight);
             selectedRoom.x(newX);
             selectedRoom.y(newY);
-            selectedRoom.numberText.text(newNumber);
-            selectedRoom.updateTextPosition()
         })
 
     }
-
-    handleRoomClick(){
-        selectedRoom = this;
-        tr.nodes([this]);
-        this.updateSidebar()
-    }
-
     delete(){
         this.numberText.remove()
         tr.nodes([]);
@@ -276,7 +193,6 @@ export default class RectangularRoom extends Konva.Rect {
         this.y(prevY);
         this.width(prevW);
         this.height(prevH);
-        this.updateTextPosition();
         this.updateSidebar();
     }
 
@@ -285,21 +201,8 @@ export default class RectangularRoom extends Konva.Rect {
     }
 }
 
-export function addRoom(x=100,y=90,w=100,h=100,attributes = new Map()){
-    const room = new RectangularRoom(x, y, w, h, tr, attributes);
-    layer.add(room)
-    layer.add(room.numberText)
-    return(room);
+export function addLift(x=100,y=90,w=100,h=100,attributes = new Map()){
+    const lift = new Lift(x, y, w, h, tr, attributes);
+    layer.add(lift)
+    return(lift);
 }
-
-
-
-
-function haveIntersection(r1, r2) {
-        return !(
-          r2.x() > r1.x() + r1.width() ||
-          r2.x() + r2.width() < r1.x() ||
-          r2.y() > r1.y() + r1.height() ||
-          r2.y() + r2.height() < r1.y()
-        );
-      }

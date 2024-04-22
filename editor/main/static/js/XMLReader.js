@@ -1,6 +1,7 @@
 import {addRoom as addRectangularRoom} from "./RectangularRoom.js";
 import {addPolygonRoom} from "./PolygonRoom.js";
 import {addDoor} from "./Door.js";
+import {addLift} from "./Lift.js";
 
 export default class XMLReader{
     constructor(xml_text) {
@@ -52,6 +53,14 @@ export default class XMLReader{
                     const r = addPolygonRoom(points, attributes);
                     r.lockDragging();
                 }
+                break;
+
+            case "lift":
+                const rectangle = elem.children[0];
+                const rectPoints = this.readRectanglePoints(rectangle);
+
+                const r = addLift(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
+                    rectPoints.y2-rectPoints.y1,attributes)
                 break;
         }
 

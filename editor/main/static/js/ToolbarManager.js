@@ -1,6 +1,7 @@
 import {addRoom} from "./RectangularRoom.js";
 import {addPolygonRoom} from "./PolygonRoom.js";
 import {addDoor} from "./Door.js";
+import {addLift} from "./Lift.js";
 
 function toolbarClickFunc(element) {
     console.log(element.title)
@@ -13,6 +14,9 @@ function toolbarClickFunc(element) {
             break;
         case "Create doors":
             addDoor();
+            break;
+        case "Create lift/stairs":
+            addLift();
             break;
         case "Toggle plan view":
             if (bottom_layer.visible()){
