@@ -194,4 +194,6 @@ export function addDoor(points = [], id ="d-0-0") {
     if (points===[]) points = [50,50,80,50];
     var door = new Door(points, id)
     layer.add(door)
+    door.moveToTop()
+
 }

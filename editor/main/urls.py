@@ -8,6 +8,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("home", views.home, name="home"),
     path("editor/<int:id>", views.editor, name="editor"),
+    path("editor", views.empty_editor, name="editor"),
 ]
 
 if settings.DEBUG:

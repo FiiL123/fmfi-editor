@@ -46,12 +46,15 @@ export default class XMLReader{
                     const r = addRectangularRoom(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
                         rectPoints.y2-rectPoints.y1,attributes)
                     r.lockDragging();
+                    r.moveToBottom();
+
                 }
                 else if (elem.children[0].tagName==="polygon"){
                     const polygon = elem.children[0];
                     let points = this.readPolygonPoints(polygon);
                     const r = addPolygonRoom(points, attributes);
                     r.lockDragging();
+                    r.moveToBottom();
                 }
                 break;
 

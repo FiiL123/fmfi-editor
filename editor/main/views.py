@@ -16,3 +16,9 @@ def editor(request, id):
     purposes = serialize("json", Purpose.objects.all())
     context = {"part": part, "purposes": purposes}
     return render(request, "editor.html", context=context)
+
+
+def empty_editor(request):
+    purposes = serialize("json", Purpose.objects.all())
+    context = {"purposes": purposes}
+    return render(request, "editor.html", context=context)
