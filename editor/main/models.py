@@ -7,6 +7,8 @@ class Part(models.Model):
     name = models.CharField(max_length=30)
     part_xml = models.TextField()
     plan_image = models.ImageField(upload_to="plans", null=True, blank=True)
+    plan_x_offset = models.IntegerField(default=0)
+    plan_y_offset = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

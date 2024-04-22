@@ -139,8 +139,8 @@ if (img_src != null){
     var imageObj = new Image();
     imageObj.onload = function () {
         var map = new Konva.Image({
-          x: 0,
-          y: 0,
+          x: -img_x_offset,
+          y: -img_y_offset,
           image: imageObj,
           width: img_wid,
           height: img_hei,
