@@ -80,6 +80,12 @@ export default class XMLReader{
                     const s = addStairs(points,attributes);
                 }
                 break;
+            case "vending-machine":
+                const rect = elem.children[0];
+                const rp = this.readRectanglePoints(rect);
+                addRectangularRoom(rp.x1,rp.y1,rp.x2-rp.x1,
+                    rp.y2-rp.y1,attributes)
+
         }
 
 
