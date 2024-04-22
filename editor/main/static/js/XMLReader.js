@@ -2,6 +2,7 @@ import {addRoom as addRectangularRoom} from "./RectangularRoom.js";
 import {addPolygonRoom} from "./PolygonRoom.js";
 import {addDoor} from "./Door.js";
 import {addLift} from "./Lift.js";
+import {addStairs} from "./Stairs.js";
 
 export default class XMLReader{
     constructor(xml_text) {
@@ -32,11 +33,7 @@ export default class XMLReader{
                 break;
             case "door":
                 const line= elem.children[0]
-                const x1 = parseInt(line.getAttribute('x1'));
-                const x2 = parseInt(line.getAttribute('x2'));
-                const y1 = parseInt(line.getAttribute('y1'));
-                const y2 = parseInt(line.getAttribute('y2'));
-                addDoor([x1,y1,x2,y2], elem.getAttribute('id'));
+                addDoor(this.readLinePoints(line), elem.getAttribute('id'));
                 break;
             case "floor":
                 if (elem.children[0].tagName==="rectangle"){
@@ -65,6 +62,15 @@ export default class XMLReader{
                 const r = addLift(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
                     rectPoints.y2-rectPoints.y1,attributes)
                 break;
+
+            case "stairs":
+                const line0 = elem.children[0];
+                const line1 = elem.children[1];
+                const points = [...this.readLinePoints(line0),
+                    ...this.reverseLinePoints(this.readLinePoints(line1))]
+                console.log(points)
+                const s = addStairs(points,attributes);
+                break;
         }
 
 
@@ -89,6 +95,18 @@ export default class XMLReader{
         const y1 = parseInt(rectangle.getAttribute('y1'));
         const y2 = parseInt(rectangle.getAttribute('y2'));
         return {'x1':x1,'x2':x2,'y1':y1,'y2':y2}
+    }
+
+    readLinePoints(line){
+        const x1 = parseInt(line.getAttribute('x1'));
+        const x2 = parseInt(line.getAttribute('x2'));
+        const y1 = parseInt(line.getAttribute('y1'));
+        const y2 = parseInt(line.getAttribute('y2'));
+        return [x1,y1,x2,y2];
+    }
+
+    reverseLinePoints(points = [0,0,0,0]){
+        return [points[2],points[3],points[0],points[1]]
     }
 }
 
