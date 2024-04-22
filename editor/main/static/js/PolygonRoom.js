@@ -5,9 +5,11 @@ export default class PolygonRoom extends Konva.Line {
         const purpose = purposesData.find(function(purpose) {
                     return purpose.pk === attributes.get('purpose');
                 });
-        let color = purpose ? "rgb("+purpose.fields.colour+")" : "lightgray";
-        if (attributes.get('id').startsWith('f-')) color = 'white'
-
+        let color = getRandomColor()
+        if (attributes.size>0){
+            color = (purpose && purpose.fields.colour!== "") ? "rgb("+purpose.fields.colour+")" : "lightgray";
+            if (attributes.get('id').startsWith('f-')) color = 'white'
+        }
         super({
                 points: points,
                 fill: color,
@@ -16,8 +18,9 @@ export default class PolygonRoom extends Konva.Line {
                 draggable: true,
             },
         );
+        this.attributes = attributes;
         this.startingPoints = points;
-        this.id = attributes.get('id');
+        this.id = (attributes.has('id')) ? attributes.get('id'): "";
         this.number = (attributes.has('number')) ? attributes.get('number'): "";
         super.on('click', this.handleRoomClick);
         super.on('dragmove', function () {
@@ -180,7 +183,6 @@ export default class PolygonRoom extends Konva.Line {
             selectedRoom.startingPoints = points
             console.log(selectedRoom.points())
             selectedRoom.updateSidebar()
-
         });
     }
 
@@ -272,7 +274,7 @@ export default class PolygonRoom extends Konva.Line {
 
 
 
-export function addPolygonRoom(points = [], attributes){
+export function addPolygonRoom(points = [], attributes=new Map()){
     if (points===[]) points = [200,200,100,200,100,100,200,100];
     const room = new PolygonRoom(points, attributes);
     layer.add(room);

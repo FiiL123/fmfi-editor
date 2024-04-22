@@ -5,9 +5,11 @@ export default class RectangularRoom extends Konva.Rect {
         const purpose = purposesData.find(function(purpose) {
                     return purpose.pk === attributes.get('purpose');
                 });
-
-        let color = (purpose && purpose.fields.colour!== "") ? "rgb("+purpose.fields.colour+")" : "lightgray";
-        if (attributes.get('id').startsWith('f-')) color = 'white'
+        let color = getRandomColor()
+        if (attributes.size>0){
+            color = (purpose && purpose.fields.colour!== "") ? "rgb("+purpose.fields.colour+")" : "lightgray";
+            if (attributes.get('id').startsWith('f-')) color = 'white'
+        }
         super({
                 x: x,
                 y: y,
@@ -19,7 +21,7 @@ export default class RectangularRoom extends Konva.Rect {
             },
         );
         this.attributes = attributes;
-        this.id = attributes.get('id');
+        this.id = (attributes.has('id')) ? attributes.get('id'): "";
         this.number = (attributes.has('number')) ? attributes.get('number'): "";
         // console.log(this.number + ":  "+color + "  ("+purpose.fields.colour)
         super.on('transformstart', function () {
@@ -28,13 +30,14 @@ export default class RectangularRoom extends Konva.Rect {
             this.prevY = this.y()
             this.prevW = this.width()
             this.prevH = this.height()
+            this.handleRoomClick();
         });
 
         super.on('dragmove', function () {
             // updateText();
             this.handlePositionChange();
-            handleRoomClick(this);
-            this.updateTextPosition()
+            this.updateTextPosition();
+            this.handleRoomClick();
         });
 
         super.on('dragstart', function (){
@@ -51,7 +54,6 @@ export default class RectangularRoom extends Konva.Rect {
         super.on('transform', function () {
             // updateText();
             console.log('transform');
-            handleRoomClick(this);
             this.updateTextPosition();
 
         });
@@ -60,18 +62,13 @@ export default class RectangularRoom extends Konva.Rect {
             console.log('transform end');
             this.handlePositionChange();
             this.handleSizeChange();
-
-            handleRoomClick(this);
             this.updateTextPosition();
             actionManager.addAction(new TransformAction(this, this.prevX, this.prevY, this.prevW, this.prevH));
 
         });
 
-        super.on('click', function () {
-            console.log("klikikik")
-            tr.nodes([this]);
-            handleRoomClick(this)
-        })
+        super.on('click', this.handleRoomClick);
+
         this.text = (attributes.has('custom-map-label')) ? attributes.get('custom-map-label') : this.number;
         this.text = this.text.replace("\\n", "\n");
         this.numberText = new Konva.Text({
@@ -144,6 +141,125 @@ export default class RectangularRoom extends Konva.Rect {
         return null;
     }
 
+    updateSidebar() {
+        // Access the sidebar form elements
+        var existingAttributesDiv = document.getElementById('attributesDiv');
+        if (existingAttributesDiv) {
+            existingAttributesDiv.parentNode.removeChild(existingAttributesDiv);
+        }
+        var attributesDiv = document.createElement('div');
+        attributesDiv.id = 'attributesDiv';
+        attributesDiv.classList.add('attributes'); // You can add CSS classes for styling
+        var rectRoomForm = document.createElement('form')
+            rectRoomForm.id = "polygonRoomForm";
+
+
+        var roomIDInput = document.createElement('input')
+        roomIDInput.id = 'roomID'
+        roomIDInput.type = 'text'
+        roomIDInput.name = 'roomID'
+        roomIDInput.value = (this.id);
+        var roomIDLabel = document.createElement('label')
+        roomIDLabel.for = 'RoomID'
+        roomIDLabel.textContent = 'ID:'
+        rectRoomForm.appendChild(roomIDLabel)
+        rectRoomForm.appendChild(roomIDInput)
+
+        var roomNumberInput = document.createElement('input')
+        roomNumberInput.id = 'roomNumber'
+        roomNumberInput.type = 'text'
+        roomNumberInput.name = 'roomNumber'
+        roomNumberInput.value = (this.number);
+        var roomNumberLabel = document.createElement('label')
+        roomNumberLabel.for = 'roomNumber'
+        roomNumberLabel.textContent = 'Number:'
+        rectRoomForm.appendChild(roomNumberLabel)
+        rectRoomForm.appendChild(roomNumberInput)
+
+        var roomWidthInput = document.createElement('input')
+        roomWidthInput.id = 'roomWidth'
+        roomWidthInput.type = 'number'
+        roomWidthInput.name = 'roomWidth'
+        var roomWidthLabel = document.createElement('label')
+        roomWidthLabel.for = 'roomWidth'
+        roomWidthLabel.textContent = 'Width:'
+        rectRoomForm.appendChild(roomWidthLabel)
+        roomWidthInput.value = (this.width() * this.scaleX());
+
+        rectRoomForm.appendChild(roomWidthInput)
+
+        var roomHeightInput = document.createElement('input')
+        roomHeightInput.id = 'roomHeight'
+        roomHeightInput.type = 'number'
+        roomHeightInput.name = 'roomHeight'
+        roomHeightInput.value = (this.height() * this.scaleY());
+        var roomHeightLabel = document.createElement('label')
+        roomHeightLabel.for = 'roomHeight'
+        roomHeightLabel.textContent = 'Height:'
+        rectRoomForm.appendChild(roomHeightLabel)
+        rectRoomForm.appendChild(roomHeightInput)
+
+        var roomXInput = document.createElement('input')
+        roomXInput.id = 'roomX'
+        roomXInput.type = 'number'
+        roomXInput.name = 'roomX'
+        roomXInput.value = this.x();
+        var roomXLabel = document.createElement('label')
+        roomXLabel.for = 'roomX'
+        roomXLabel.textContent = 'X:'
+        rectRoomForm.appendChild(roomXLabel)
+        rectRoomForm.appendChild(roomXInput)
+
+        var roomYInput = document.createElement('input')
+        roomYInput.id = 'roomY'
+        roomYInput.type = 'number'
+        roomYInput.name = 'roomY'
+        roomYInput.value = this.y();
+        var roomYLabel = document.createElement('label')
+        roomYLabel.for = 'roomY'
+        roomYLabel.textContent = 'Y:'
+        rectRoomForm.appendChild(roomYLabel)
+        rectRoomForm.appendChild(roomYInput)
+
+
+        var formButton = document.createElement('button')
+        formButton.type='submit'
+        formButton.id='updateRoomDetailsBtn'
+        formButton.style.display = 'block'
+        formButton.textContent='Update'
+        attributesDiv.appendChild(rectRoomForm)
+        rectRoomForm.appendChild(formButton)
+        document.getElementById('sidebar').appendChild(attributesDiv)
+
+        rectRoomForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Update the selected room with the edited details
+            const newID = document.getElementById('roomID').value;
+            const newNumber = document.getElementById('roomNumber').value;
+            const newWidth = Math.floor(Number(document.getElementById('roomWidth').value));
+            const newHeight = Math.floor(Number(document.getElementById('roomHeight').value));
+            const newX = Math.floor(Number(document.getElementById('roomX').value));
+            const newY = Math.floor(Number(document.getElementById('roomY').value));
+
+            selectedRoom.id = newID;
+            selectedRoom.number = newNumber;
+            selectedRoom.width(newWidth);
+            selectedRoom.height(newHeight);
+            selectedRoom.x(newX);
+            selectedRoom.y(newY);
+            selectedRoom.numberText.text(newNumber);
+            selectedRoom.updateTextPosition()
+        })
+
+    }
+
+    handleRoomClick(){
+        selectedRoom = this;
+        tr.nodes([this]);
+        this.updateSidebar()
+    }
+
     delete(){
         this.numberText.remove()
         tr.nodes([]);
@@ -175,108 +291,8 @@ export function addRoom(x=100,y=90,w=100,h=100,attributes = new Map()){
     return(room);
 }
 
-function updateSidebar(room) {
-    // Access the sidebar form elements
-    var existingAttributesDiv = document.getElementById('attributesDiv');
-    if (existingAttributesDiv) {
-        existingAttributesDiv.parentNode.removeChild(existingAttributesDiv);
-    }
-    var attributesDiv = document.createElement('div');
-    attributesDiv.id = 'attributesDiv';
-    attributesDiv.classList.add('attributes'); // You can add CSS classes for styling
-    var rectRoomForm = document.createElement('form')
-        rectRoomForm.id = "polygonRoomForm";
 
 
-    var roomIDInput = document.createElement('input')
-    roomIDInput.id = 'roomID'
-    roomIDInput.type = 'text'
-    roomIDInput.name = 'roomID'
-    roomIDInput.value = (room.id);
-    var roomIDLabel = document.createElement('label')
-    roomIDLabel.for = 'RoomID'
-    roomIDLabel.textContent = 'ID:'
-    rectRoomForm.appendChild(roomIDLabel)
-    rectRoomForm.appendChild(roomIDInput)
-
-    var roomNumberInput = document.createElement('input')
-    roomNumberInput.id = 'roomNumber'
-    roomNumberInput.type = 'text'
-    roomNumberInput.name = 'roomNumber'
-    roomNumberInput.value = (room.number);
-    var roomNumberLabel = document.createElement('label')
-    roomNumberLabel.for = 'roomNumber'
-    roomNumberLabel.textContent = 'Number:'
-    rectRoomForm.appendChild(roomNumberLabel)
-    rectRoomForm.appendChild(roomNumberInput)
-
-    var roomWidthInput = document.createElement('input')
-    roomWidthInput.id = 'roomWidth'
-    roomWidthInput.type = 'number'
-    roomWidthInput.name = 'roomWidth'
-    var roomWidthLabel = document.createElement('label')
-    roomWidthLabel.for = 'roomWidth'
-    roomWidthLabel.textContent = 'Width:'
-    rectRoomForm.appendChild(roomWidthLabel)
-    roomWidthInput.value = (room.width() * room.scaleX());
-
-    rectRoomForm.appendChild(roomWidthInput)
-
-    var roomHeightInput = document.createElement('input')
-    roomHeightInput.id = 'roomHeight'
-    roomHeightInput.type = 'number'
-    roomHeightInput.name = 'roomHeight'
-    roomHeightInput.value = (room.height() * room.scaleY());
-    var roomHeightLabel = document.createElement('label')
-    roomHeightLabel.for = 'roomHeight'
-    roomHeightLabel.textContent = 'Height:'
-    rectRoomForm.appendChild(roomHeightLabel)
-    rectRoomForm.appendChild(roomHeightInput)
-
-    var roomXInput = document.createElement('input')
-    roomXInput.id = 'roomX'
-    roomXInput.type = 'number'
-    roomXInput.name = 'roomX'
-    roomXInput.value = room.x();
-    var roomXLabel = document.createElement('label')
-    roomXLabel.for = 'roomX'
-    roomXLabel.textContent = 'X:'
-    rectRoomForm.appendChild(roomXLabel)
-    rectRoomForm.appendChild(roomXInput)
-
-    var roomYInput = document.createElement('input')
-    roomYInput.id = 'roomY'
-    roomYInput.type = 'number'
-    roomYInput.name = 'roomY'
-    roomYInput.value = room.y();
-    var roomYLabel = document.createElement('label')
-    roomYLabel.for = 'roomY'
-    roomYLabel.textContent = 'Y:'
-    rectRoomForm.appendChild(roomYLabel)
-    rectRoomForm.appendChild(roomYInput)
-
-
-    var formButton = document.createElement('button')
-    formButton.type='submit'
-    formButton.id='updateRoomDetailsBtn'
-    formButton.style.display = 'block'
-    formButton.textContent='Update'
-    attributesDiv.appendChild(rectRoomForm)
-    rectRoomForm.appendChild(formButton)
-    document.getElementById('sidebar').appendChild(attributesDiv)
-
-    rectRoomForm.addEventListener('submit', listener)
-
-}
-
-// Function to handle the click event on RectangularRoom objects
-function handleRoomClick(room) {
-    // Store the selected room
-    selectedRoom = room;
-
-    // Update the sidebar with room details
-    updateSidebar(selectedRoom);
-}
 
 function haveIntersection(r1, r2) {
         return !(
@@ -286,25 +302,3 @@ function haveIntersection(r1, r2) {
           r2.y() + r2.height() < r1.y()
         );
       }
-
-
-function listener(event){
-    event.preventDefault();
-
-    // Update the selected room with the edited details
-    const newID = document.getElementById('roomID').value;
-    const newNumber = document.getElementById('roomNumber').value;
-    const newWidth = Math.floor(Number(document.getElementById('roomWidth').value));
-    const newHeight = Math.floor(Number(document.getElementById('roomHeight').value));
-    const newX = Math.floor(Number(document.getElementById('roomX').value));
-    const newY = Math.floor(Number(document.getElementById('roomY').value));
-
-    selectedRoom.id = newID;
-    selectedRoom.number = newNumber;
-    selectedRoom.width(newWidth);
-    selectedRoom.height(newHeight);
-    selectedRoom.x(newX);
-    selectedRoom.y(newY);
-    selectedRoom.numberText.text(newNumber);
-    selectedRoom.updateTextPosition()
-}
