@@ -62,14 +62,23 @@ export default class XMLReader{
                 const r = addLift(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
                     rectPoints.y2-rectPoints.y1,attributes)
                 break;
-
+            case "stairway":
             case "stairs":
-                const line0 = elem.children[0];
-                const line1 = elem.children[1];
-                const points = [...this.readLinePoints(line0),
-                    ...this.reverseLinePoints(this.readLinePoints(line1))]
-                console.log(points)
-                const s = addStairs(points,attributes);
+                if (elem.children[0].tagName==="line"){
+                    const line0 = elem.children[0];
+                    const line1 = elem.children[1];
+                    const points = [...this.readLinePoints(line0),
+                        ...this.reversePoints(this.readLinePoints(line1))]
+                    console.log(points)
+                    const s = addStairs(points,attributes);
+                }else if (elem.children[0].tagName==="polyline"){
+                    const line0 = elem.children[0];
+                    const line1 = elem.children[1];
+                    const points = [...this.readPolygonPoints(line0),
+                        ...this.reversePoints(this.readPolygonPoints(line1))]
+                    console.log(points)
+                    const s = addStairs(points,attributes);
+                }
                 break;
         }
 
@@ -98,6 +107,7 @@ export default class XMLReader{
     }
 
     readLinePoints(line){
+        let points = []
         const x1 = parseInt(line.getAttribute('x1'));
         const x2 = parseInt(line.getAttribute('x2'));
         const y1 = parseInt(line.getAttribute('y1'));
@@ -105,9 +115,18 @@ export default class XMLReader{
         return [x1,y1,x2,y2];
     }
 
-    reverseLinePoints(points = [0,0,0,0]){
-        return [points[2],points[3],points[0],points[1]]
+    reversePoints(points) {
+    if (points.length % 2 !== 0) {
+        throw new Error('Invalid number of coordinates. Coordinates should be even.');
     }
+
+    let reversedPoints = [];
+    for (let i = 0; i < points.length; i += 2) {
+        // Insert each pair at the beginning of the new array
+        reversedPoints.unshift(points[i], points[i+1]);
+    }
+    return reversedPoints;
+}
 }
 
 /*
