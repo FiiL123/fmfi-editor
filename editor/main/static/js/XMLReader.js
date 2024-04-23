@@ -8,7 +8,6 @@ export default class XMLReader{
     constructor(xml_text) {
     let parser = new DOMParser();
     let xmlDoc = parser.parseFromString(part_xml,"text/xml");
-    // console.log(part_xml)
 
     const part_elem = xmlDoc.getElementsByTagName("part")[0]
     let part_children = part_elem.children

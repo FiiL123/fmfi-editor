@@ -21,10 +21,8 @@ export default class RectangularRoom extends Konva.Rect {
             },
         );
         this.attributes = attributes;
-        console.log(attributes)
         this.id = (attributes.has('id')) ? attributes.get('id'): "";
         this.number = (attributes.has('number')) ? attributes.get('number'): "";
-        // console.log(this.number + ":  "+color + "  ("+purpose.fields.colour)
         super.on('transformstart', function () {
             console.log('transform start');
             this.prevX = this.x()
@@ -156,27 +154,24 @@ export default class RectangularRoom extends Konva.Rect {
             rectRoomForm.id = "polygonRoomForm";
 
 
-        var roomIDInput = document.createElement('input')
-        roomIDInput.id = 'roomID'
-        roomIDInput.type = 'text'
-        roomIDInput.name = 'roomID'
-        roomIDInput.value = (this.id);
-        var roomIDLabel = document.createElement('label')
-        roomIDLabel.for = 'RoomID'
-        roomIDLabel.textContent = 'ID:'
-        rectRoomForm.appendChild(roomIDLabel)
-        rectRoomForm.appendChild(roomIDInput)
+        this.attributes.forEach(function(value, key) {
+            console.log("creating: "+key)
+            var input = document.createElement('input');
+            var label = document.createElement('label');
+            var inputId = key.replace(/[^a-zA-Z0-9]/g, '_'); // Creating a safe id by replacing non-alphanumerics
 
-        var roomNumberInput = document.createElement('input')
-        roomNumberInput.id = 'roomNumber'
-        roomNumberInput.type = 'text'
-        roomNumberInput.name = 'roomNumber'
-        roomNumberInput.value = (this.number);
-        var roomNumberLabel = document.createElement('label')
-        roomNumberLabel.for = 'roomNumber'
-        roomNumberLabel.textContent = 'Number:'
-        rectRoomForm.appendChild(roomNumberLabel)
-        rectRoomForm.appendChild(roomNumberInput)
+            input.id = inputId;
+            input.name = key;
+            input.type = 'text'; // Default to text, adjust as necessary
+            input.value = value;
+
+            label.htmlFor = inputId;
+            label.textContent = key.charAt(0).toUpperCase() + key.slice(1).replace(/-/g, ' ') + ':';
+
+            rectRoomForm.appendChild(label);
+            rectRoomForm.appendChild(input);
+            rectRoomForm.appendChild(document.createElement('br')); // Optional: add line break for better readability
+        });
 
         var roomWidthInput = document.createElement('input')
         roomWidthInput.id = 'roomWidth'
@@ -237,20 +232,31 @@ export default class RectangularRoom extends Konva.Rect {
             event.preventDefault();
 
             // Update the selected room with the edited details
-            const newID = document.getElementById('roomID').value;
-            const newNumber = document.getElementById('roomNumber').value;
+            var newAttributes = new Map()
+            selectedRoom.attributes.forEach(function(value, key) {
+                var inputId = key.replace(/[^a-zA-Z0-9]/g, '_');
+                var inputValue = document.getElementById(inputId).value;
+                newAttributes.set(key, inputValue)
+                // Assuming selectedRoom is an object that has methods or properties matching keys
+                if (typeof selectedRoom[key] === 'function') {
+                    selectedRoom[key](inputValue); // If it's a method, call it
+                } else {
+                    selectedRoom[key] = inputValue; // Otherwise, set the property
+                }
+            });
+            selectedRoom.attributes = newAttributes;
             const newWidth = Math.floor(Number(document.getElementById('roomWidth').value));
             const newHeight = Math.floor(Number(document.getElementById('roomHeight').value));
             const newX = Math.floor(Number(document.getElementById('roomX').value));
             const newY = Math.floor(Number(document.getElementById('roomY').value));
 
-            selectedRoom.id = newID;
-            selectedRoom.number = newNumber;
+
             selectedRoom.width(newWidth);
             selectedRoom.height(newHeight);
             selectedRoom.x(newX);
             selectedRoom.y(newY);
-            selectedRoom.numberText.text(newNumber);
+            selectedRoom.numberText.text((newAttributes.has('custom-map-label')) ?
+                newAttributes.get('custom-map-label') : selectedRoom.number);
             selectedRoom.updateTextPosition()
         })
 
