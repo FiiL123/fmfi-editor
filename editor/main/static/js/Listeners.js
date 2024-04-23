@@ -15,6 +15,10 @@ document.addEventListener("keydown", function(event) {
   if (event.key === "Escape"){
       tr.nodes([])
       selectedRoom = null
+      var existingAttributesDiv = document.getElementById('attributesDiv');
+        if (existingAttributesDiv) {
+            existingAttributesDiv.parentNode.removeChild(existingAttributesDiv);
+        }
   }
 });
 
