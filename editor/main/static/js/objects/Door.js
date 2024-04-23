@@ -1,4 +1,4 @@
-import {TransformPolyAction} from "./Actions.js";
+import {TransformPolyAction} from "../Actions.js";
 
 export default class Door extends Konva.Line {
     constructor(points, id = "") {

@@ -1,7 +1,7 @@
-import {addRoom} from "./RectangularRoom.js";
-import {addPolygonRoom} from "./PolygonRoom.js";
-import {addDoor} from "./Door.js";
-import {addLift} from "./Lift.js";
+import {addRoom} from "./objects/RectangularRoom.js";
+import {addPolygonRoom} from "./objects/PolygonRoom.js";
+import {addDoor} from "./objects/Door.js";
+import {addLift} from "./objects/Lift.js";
 
 function toolbarClickFunc(element) {
     console.log(element.title)

@@ -1,8 +1,8 @@
-import {addRoom as addRectangularRoom} from "./RectangularRoom.js";
-import {addPolygonRoom} from "./PolygonRoom.js";
-import {addDoor} from "./Door.js";
-import {addLift} from "./Lift.js";
-import {addStairs} from "./Stairs.js";
+import {addRoom as addRectangularRoom} from "./objects/RectangularRoom.js";
+import {addPolygonRoom} from "./objects/PolygonRoom.js";
+import {addDoor} from "./objects/Door.js";
+import {addLift} from "./objects/Lift.js";
+import {addStairs} from "./objects/Stairs.js";
 
 export default class XMLReader{
     constructor(xml_text) {

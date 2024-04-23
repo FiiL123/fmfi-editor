@@ -1,4 +1,4 @@
-import {TransformAction} from "./Actions.js";
+import {TransformAction} from "../Actions.js";
 
 export default class Lift extends Konva.Rect{
     constructor(x, y, w, h, tr, attributes = new Map()) {

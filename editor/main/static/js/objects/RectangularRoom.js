@@ -1,4 +1,4 @@
-import {TransformAction} from "./Actions.js";
+import {TransformAction} from "../Actions.js";
 
 export default class RectangularRoom extends Konva.Rect {
     constructor(x, y, w, h, tr, attributes = new Map()) {
@@ -21,6 +21,7 @@ export default class RectangularRoom extends Konva.Rect {
             },
         );
         this.attributes = attributes;
+        console.log(attributes)
         this.id = (attributes.has('id')) ? attributes.get('id'): "";
         this.number = (attributes.has('number')) ? attributes.get('number'): "";
         // console.log(this.number + ":  "+color + "  ("+purpose.fields.colour)
@@ -78,7 +79,7 @@ export default class RectangularRoom extends Konva.Rect {
         y: y+2,
         fontSize: (attributes.has('important')) ? 30 : 24,
       });
-
+        // this.numberText.on('click',this.handleRoomClick)
     }
     toString(){
         return `RectRoom(${this.x()}-${this.y()})`

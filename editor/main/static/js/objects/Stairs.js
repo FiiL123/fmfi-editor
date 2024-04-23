@@ -1,4 +1,4 @@
-import {TransformPolyAction} from "./Actions.js";
+import {TransformPolyAction} from "../Actions.js";
 
 export default class Stairs extends Konva.Line {
     constructor(points,attributes = new Map()) {

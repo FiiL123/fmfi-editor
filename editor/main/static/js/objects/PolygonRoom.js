@@ -1,4 +1,4 @@
-import {TransformPolyAction} from "./Actions.js";
+import {TransformPolyAction} from "../Actions.js";
 
 export default class PolygonRoom extends Konva.Line {
     constructor(points,attributes = new Map()) {
@@ -61,7 +61,7 @@ export default class PolygonRoom extends Konva.Line {
         y: this.points()[1]+2,
         fontSize: (attributes.has('important')) ? 30 : 24,
       });
-
+        // this.numberText.on('click',this.handleRoomClick)
     }
 
     updateScale(){
