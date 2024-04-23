@@ -17,17 +17,18 @@
     </head>
     <body>
         <div class="container-fluid p-0">
-            <div class="row w-100 m-0 p-0">
+            <div class="row w-100 m-0 p-0 vh-100">
                 <div id="canvas-container" class="col-9 p-0">
                     {#                    TODO Renderovat mapu#}
                     <h2>Rendered map</h2>
                 </div>
-                <div id="sidebar" class="col-3 bg-secondary p-0 h-100">
-                    <h2>Parts</h2>
-                    <ul>
+                <div id="sidebar" class="col-3 bg-secondary p-4 h-100 overflow-auto">
+                    <h2 class="text-white mb-3">Parts</h2>
+                    <ul class="list-group">
                         {% for part in parts %}
-                            <li>
-                                {{ part.name }}: <a href="{% url 'editor' part.id %}">Edit</a>
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+                                {{ part.name }}
+                                <a class="btn btn-primary btn-sm" href="{% url 'editor' part.id %}">Edit</a>
                             </li>
                         {% endfor %}
                     </ul>
