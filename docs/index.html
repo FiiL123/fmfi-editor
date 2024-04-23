@@ -206,7 +206,6 @@
                 const date = new Date(commit.commit.author.date).toDateString();
                 commitCounts[date] = (commitCounts[date] || 0) + 1;
             });
-
             return {
                 labels: Object.keys(commitCounts),
                 data: Object.values(commitCounts),
@@ -247,9 +246,12 @@
                         const commitList = document.getElementById('commit-list');
 
                         commits.forEach(commit => {
+                            const dateUTC = new Date(commit.commit.author.date);
+                            const dateLocal = dateUTC.toLocaleString(); // Converts date to local timezone string
+
                             const commitItem = document.createElement('li');
                             commitItem.innerHTML = `
-                            <a href='${commit.html_url}'>${commit.commit.message} </a>(${commit.commit.author.date})`;
+                            <a href='${commit.html_url}'>${commit.commit.message} </a>(${dateLocal})`;
                             commitList.appendChild(commitItem);
                         });
                     })
