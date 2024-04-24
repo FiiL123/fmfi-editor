@@ -34,22 +34,22 @@ export default class Door extends Konva.Line {
 		});
 	}
 	updateSidebar() {
-		var existingAttributesDiv = document.getElementById("attributesDiv");
+		const existingAttributesDiv = document.getElementById("attributesDiv");
 		if (existingAttributesDiv) {
 			existingAttributesDiv.parentNode.removeChild(existingAttributesDiv);
 		}
-		var attributesDiv = document.createElement("div");
+		const attributesDiv = document.createElement("div");
 		attributesDiv.id = "attributesDiv";
 		attributesDiv.classList.add("attributes");
-		var doorForm = document.createElement("form");
+		const doorForm = document.createElement("form");
 		doorForm.id = "doorForm";
 
-		var doorIDInput = document.createElement("input");
+		const doorIDInput = document.createElement("input");
 		doorIDInput.id = "doorID";
 		doorIDInput.type = "text";
 		doorIDInput.name = "doorID";
 		doorIDInput.value = this.id;
-		var doorIDLabel = document.createElement("label");
+		const doorIDLabel = document.createElement("label");
 		doorIDLabel.for = "doorID";
 		doorIDLabel.textContent = "ID:";
 		doorForm.appendChild(doorIDLabel);
@@ -58,17 +58,17 @@ export default class Door extends Konva.Line {
 		const points = this.points();
 		const pointLabel = document.createElement("label");
 		pointLabel.for = "pointInput1";
-		pointLabel.textContent = "Point(" + 1 + "):";
+		pointLabel.textContent = "Point(1):";
 		pointLabel.id = "pointLabel" + 1;
 		const pointXInput = document.createElement("input");
-		pointXInput.id = "pointInput" + 1;
+		pointXInput.id = "pointInput1";
 		pointXInput.type = "number";
 		pointXInput.size = 5;
 		pointXInput.value = points[0];
 		doorForm.appendChild(pointLabel);
 		doorForm.appendChild(pointXInput);
 		const pointYInput = document.createElement("input");
-		pointYInput.id = "pointInput" + 2;
+		pointYInput.id = "pointInput2";
 		pointYInput.type = "number";
 		pointYInput.size = 5;
 		pointYInput.value = points[1];
@@ -76,23 +76,23 @@ export default class Door extends Konva.Line {
 
 		const pointLabel2 = document.createElement("label");
 		pointLabel2.for = "pointInput3";
-		pointLabel2.textContent = "Point(" + 2 + "):";
+		pointLabel2.textContent = "Point(2):";
 		pointLabel2.id = "pointLabel" + 2;
 		const pointXInput2 = document.createElement("input");
-		pointXInput2.id = "pointInput" + 3;
+		pointXInput2.id = "pointInput3";
 		pointXInput2.type = "number";
 		pointXInput2.size = 5;
 		pointXInput2.value = points[2];
 		doorForm.appendChild(pointLabel2);
 		doorForm.appendChild(pointXInput2);
 		const pointYInput2 = document.createElement("input");
-		pointYInput2.id = "pointInput" + 4;
+		pointYInput2.id = "pointInput4";
 		pointYInput2.type = "number";
 		pointYInput2.size = 5;
 		pointYInput2.value = points[3];
 		doorForm.appendChild(pointYInput2);
 
-		var formButton = document.createElement("button");
+		const formButton = document.createElement("button");
 		formButton.type = "submit";
 		formButton.id = "updateDoorDetailsBtn";
 		formButton.style.display = "block";
@@ -101,15 +101,13 @@ export default class Door extends Konva.Line {
 		doorForm.appendChild(formButton);
 		document.getElementById("sidebar").appendChild(attributesDiv);
 		doorForm.addEventListener("submit", (event) => {
-			console.log("UpdateDoor");
 			const newID = document.getElementById("doorID").value;
 			selectedRoom.id = newID;
-			var pointInputs = document.querySelectorAll('[id^="pointInput"]');
+			const pointInputs = document.querySelectorAll('[id^="pointInput"]');
 			const points = [];
 			pointInputs.forEach((inp) => {
 				points.push(Math.floor(inp.value));
 			});
-			console.log(points);
 			selectedRoom.points(points);
 			selectedRoom.updateSidebar();
 		});
@@ -153,8 +151,6 @@ export default class Door extends Konva.Line {
 		this.y(0);
 		this.points(points);
 		this.startingPoints = points;
-		console.log("points: " + points);
-		console.log("starting poiuits:" + this.startingPoints);
 	}
 	delete() {
 		tr.nodes([]);
@@ -169,17 +165,12 @@ export default class Door extends Konva.Line {
 		this.startingPoints = prevPoints;
 		this.updateSidebar();
 	}
-
-	handleRoomClick() {
-		selectedRoom = this;
-		tr.nodes([this]);
-		this.updateSidebar();
-	}
 }
 
 export function addDoor(points = [], id = "d-0-0") {
-	if (points === []) points = [50, 50, 80, 50];
-	var door = new Door(points, id);
+	if (points.length === 0) points = [50, 50, 80, 50];
+	const door = new Door(points, id);
+	console.log(door);
 	layer.add(door);
 	door.moveToTop();
 }

@@ -88,7 +88,7 @@ export default class Polygon extends Konva.Line {
 	}
 
 	createFormItems(elemtent) {
-		var pointsDiv = document.createElement("div");
+		const pointsDiv = document.createElement("div");
 		pointsDiv.id = "pointsDiv";
 		pointsDiv.classList.add("attributes");
 		const points = this.points();
@@ -103,29 +103,29 @@ export default class Polygon extends Konva.Line {
 		i = i * 2;
 
 		const pointLabel = document.createElement("label");
-		pointLabel.for = "pointInput" + i;
-		pointLabel.textContent = "Point(" + i / 2 + "):";
-		pointLabel.id = "pointLabel" + i;
+		pointLabel.for = `pointInput${i}`;
+		pointLabel.textContent = `Point(${i / 2}):`;
+		pointLabel.id = `pointLabel${i}`;
 		const deleteButton = document.createElement("button");
 		deleteButton.textContent = "-";
-		deleteButton.id = "pointDelete" + i;
+		deleteButton.id = `pointDelete${i}`;
 		deleteButton.addEventListener("click", () => {
 			console.log("deleting");
-			document.getElementById("pointInput" + i).remove();
-			document.getElementById("pointInput" + (i + 1)).remove();
-			document.getElementById("pointLabel" + i).remove();
-			document.getElementById("pointDelete" + i).remove();
+			document.getElementById(`pointInput${i}`).remove();
+			document.getElementById(`pointInput${i + 1}`).remove();
+			document.getElementById(`pointLabel${i + 1}`).remove();
+			document.getElementById(`pointDelete${i + 1}`).remove();
 		});
 		mainComponent.appendChild(deleteButton);
 		const pointXInput = document.createElement("input");
-		pointXInput.id = "pointInput" + i;
+		pointXInput.id = `pointInput${i}`;
 		pointXInput.type = "number";
 		pointXInput.size = 5;
 		pointXInput.value = points[i];
 		mainComponent.appendChild(pointLabel);
 		mainComponent.appendChild(pointXInput);
 		const pointYInput = document.createElement("input");
-		pointYInput.id = "pointInput" + (i + 1);
+		pointYInput.id = `pointInput${i + 1}`;
 		pointYInput.type = "number";
 		pointYInput.size = 5;
 		pointYInput.value = points[i + 1];
@@ -133,17 +133,18 @@ export default class Polygon extends Konva.Line {
 	}
 
 	getFormData() {
-		var pointInputs = document.querySelectorAll('[id^="pointInput"]');
+		const pointInputs = document.querySelectorAll('[id^="pointInput"]');
 		const points = [];
-		pointInputs.forEach((inp) => {
-			points.push(Math.floor(inp.value));
-		});
-		selectedRoom.points(points);
-		selectedRoom.startingPoints = points;
+		for (const pointInput of pointInputs) {
+			points.push(Math.floor(pointInput.value));
+		}
+		console.log(selectedRoom);
+		selectedRoom.geometry.points(points);
+		selectedRoom.geometry.startingPoints = points;
 	}
 
 	toString() {
-		return "Polygon(" + this.points() + ")";
+		return `Polygon(${this.points()})`;
 	}
 
 	moveBack(prevPoints) {

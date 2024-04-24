@@ -87,15 +87,15 @@ export default class Rectangle extends Konva.Rect {
 	}
 
 	getLabelPoint() {
-		return { x: this.x(), y: this.y() };
+		return `Rectangle(${this.x},${this.y})`;
 	}
 
 	createFormItems(elemtent) {
-		var roomWidthInput = document.createElement("input");
+		const roomWidthInput = document.createElement("input");
 		roomWidthInput.id = "roomWidth";
 		roomWidthInput.type = "number";
 		roomWidthInput.name = "roomWidth";
-		var roomWidthLabel = document.createElement("label");
+		const roomWidthLabel = document.createElement("label");
 		roomWidthLabel.for = "roomWidth";
 		roomWidthLabel.textContent = "Width:";
 		elemtent.appendChild(roomWidthLabel);
@@ -103,34 +103,34 @@ export default class Rectangle extends Konva.Rect {
 
 		elemtent.appendChild(roomWidthInput);
 
-		var roomHeightInput = document.createElement("input");
+		const roomHeightInput = document.createElement("input");
 		roomHeightInput.id = "roomHeight";
 		roomHeightInput.type = "number";
 		roomHeightInput.name = "roomHeight";
 		roomHeightInput.value = this.height() * this.scaleY();
-		var roomHeightLabel = document.createElement("label");
+		const roomHeightLabel = document.createElement("label");
 		roomHeightLabel.for = "roomHeight";
 		roomHeightLabel.textContent = "Height:";
 		elemtent.appendChild(roomHeightLabel);
 		elemtent.appendChild(roomHeightInput);
 
-		var roomXInput = document.createElement("input");
+		const roomXInput = document.createElement("input");
 		roomXInput.id = "roomX";
 		roomXInput.type = "number";
 		roomXInput.name = "roomX";
 		roomXInput.value = this.x();
-		var roomXLabel = document.createElement("label");
+		const roomXLabel = document.createElement("label");
 		roomXLabel.for = "roomX";
 		roomXLabel.textContent = "X:";
 		elemtent.appendChild(roomXLabel);
 		elemtent.appendChild(roomXInput);
 
-		var roomYInput = document.createElement("input");
+		const roomYInput = document.createElement("input");
 		roomYInput.id = "roomY";
 		roomYInput.type = "number";
 		roomYInput.name = "roomY";
 		roomYInput.value = this.y();
-		var roomYLabel = document.createElement("label");
+		const roomYLabel = document.createElement("label");
 		roomYLabel.for = "roomY";
 		roomYLabel.textContent = "Y:";
 		elemtent.appendChild(roomYLabel);
@@ -147,10 +147,10 @@ export default class Rectangle extends Konva.Rect {
 		const newX = Math.floor(Number(document.getElementById("roomX").value));
 		const newY = Math.floor(Number(document.getElementById("roomY").value));
 
-		selectedRoom.width(newWidth);
-		selectedRoom.height(newHeight);
-		selectedRoom.x(newX);
-		selectedRoom.y(newY);
+		selectedRoom.geometry.width(newWidth);
+		selectedRoom.geometry.height(newHeight);
+		selectedRoom.geometry.x(newX);
+		selectedRoom.geometry.y(newY);
 	}
 
 	toString() {
