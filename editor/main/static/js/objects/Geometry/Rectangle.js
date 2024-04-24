@@ -87,54 +87,81 @@ export default class Rectangle extends Konva.Rect {
 	}
 
 	getLabelPoint() {
-		return `Rectangle(${this.x},${this.y})`;
+		return { x: this.x(), y: this.y() };
 	}
 
 	createFormItems(elemtent) {
+		const roomWidthDiv = document.createElement("div");
+		roomWidthDiv.classList.add("mb-3");
 		const roomWidthInput = document.createElement("input");
+		roomWidthInput.classList.add("form-control");
 		roomWidthInput.id = "roomWidth";
 		roomWidthInput.type = "number";
 		roomWidthInput.name = "roomWidth";
-		const roomWidthLabel = document.createElement("label");
-		roomWidthLabel.for = "roomWidth";
-		roomWidthLabel.textContent = "Width:";
-		elemtent.appendChild(roomWidthLabel);
 		roomWidthInput.value = this.width() * this.scaleX();
 
-		elemtent.appendChild(roomWidthInput);
+		const roomWidthLabel = document.createElement("label");
+		roomWidthLabel.classList.add("form-label");
+		roomWidthLabel.htmlFor = "roomWidth";
+		roomWidthLabel.textContent = "Width:";
 
+		roomWidthDiv.appendChild(roomWidthLabel);
+		roomWidthDiv.appendChild(roomWidthInput);
+		elemtent.appendChild(roomWidthDiv);
+
+		const roomHeightDiv = document.createElement("div");
+		roomHeightDiv.classList.add("mb-3");
 		const roomHeightInput = document.createElement("input");
+		roomHeightInput.classList.add("form-control");
 		roomHeightInput.id = "roomHeight";
 		roomHeightInput.type = "number";
 		roomHeightInput.name = "roomHeight";
 		roomHeightInput.value = this.height() * this.scaleY();
-		const roomHeightLabel = document.createElement("label");
-		roomHeightLabel.for = "roomHeight";
-		roomHeightLabel.textContent = "Height:";
-		elemtent.appendChild(roomHeightLabel);
-		elemtent.appendChild(roomHeightInput);
 
+		const roomHeightLabel = document.createElement("label");
+		roomHeightLabel.classList.add("form-label");
+		roomHeightLabel.htmlFor = "roomHeight";
+		roomHeightLabel.textContent = "Height:";
+
+		roomHeightDiv.appendChild(roomHeightLabel);
+		roomHeightDiv.appendChild(roomHeightInput);
+		elemtent.appendChild(roomHeightDiv);
+
+		const roomXDiv = document.createElement("div");
+		roomXDiv.classList.add("mb-3");
 		const roomXInput = document.createElement("input");
+		roomXInput.classList.add("form-control");
 		roomXInput.id = "roomX";
 		roomXInput.type = "number";
 		roomXInput.name = "roomX";
 		roomXInput.value = this.x();
-		const roomXLabel = document.createElement("label");
-		roomXLabel.for = "roomX";
-		roomXLabel.textContent = "X:";
-		elemtent.appendChild(roomXLabel);
-		elemtent.appendChild(roomXInput);
 
+		const roomXLabel = document.createElement("label");
+		roomXLabel.classList.add("form-label");
+		roomXLabel.htmlFor = "roomX";
+		roomXLabel.textContent = "X:";
+
+		roomXDiv.appendChild(roomXLabel);
+		roomXDiv.appendChild(roomXInput);
+		elemtent.appendChild(roomXDiv);
+
+		const roomYDiv = document.createElement("div");
+		roomYDiv.classList.add("mb-3");
 		const roomYInput = document.createElement("input");
+		roomYInput.classList.add("form-control");
 		roomYInput.id = "roomY";
 		roomYInput.type = "number";
 		roomYInput.name = "roomY";
 		roomYInput.value = this.y();
+
 		const roomYLabel = document.createElement("label");
-		roomYLabel.for = "roomY";
+		roomYLabel.classList.add("form-label");
+		roomYLabel.htmlFor = "roomY";
 		roomYLabel.textContent = "Y:";
-		elemtent.appendChild(roomYLabel);
-		elemtent.appendChild(roomYInput);
+
+		roomYDiv.appendChild(roomYLabel);
+		roomYDiv.appendChild(roomYInput);
+		elemtent.appendChild(roomYDiv);
 	}
 
 	getFormData() {

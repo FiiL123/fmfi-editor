@@ -170,7 +170,6 @@ export default class Door extends Konva.Line {
 export function addDoor(points = [], id = "d-0-0") {
 	if (points.length === 0) points = [50, 50, 80, 50];
 	const door = new Door(points, id);
-	console.log(door);
 	layer.add(door);
 	door.moveToTop();
 }

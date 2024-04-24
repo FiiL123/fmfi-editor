@@ -57,21 +57,26 @@ export default class Room {
 	}
 
 	updateSidebar() {
-		var existingAttributesDiv = document.getElementById("attributesDiv");
+		const existingAttributesDiv = document.getElementById("attributesDiv");
 		if (existingAttributesDiv) {
 			existingAttributesDiv.parentNode.removeChild(existingAttributesDiv);
 		}
-		var attributesDiv = document.createElement("div");
+		const attributesDiv = document.createElement("div");
 		attributesDiv.id = "attributesDiv";
-		attributesDiv.classList.add("attributes"); // You can add CSS classes for styling
-		var roomForm = document.createElement("form");
+		attributesDiv.classList.add("attributes"); // This can be replaced or enhanced with Bootstrap classes if needed
+		const roomForm = document.createElement("form");
 		roomForm.id = "roomForm";
+		roomForm.classList.add("row", "g-3"); // Adds grid with gutter
 
 		this.attributes.forEach((value, key) => {
-			var input = document.createElement("input");
-			var label = document.createElement("label");
-			var inputId = key.replace(/[^a-zA-Z0-9]/g, "_"); // Creating a safe id by replacing non-alphanumerics
+			const formGroup = document.createElement("div");
+			formGroup.classList.add("mb-3"); // Adds margin bottom to each form group
 
+			const label = document.createElement("label");
+			const inputId = key.replace(/[^a-zA-Z0-9]/g, "_"); // Creating a safe id by replacing non-alphanumerics
+
+			const input = document.createElement("input");
+			input.classList.add("form-control"); // Bootstrap class for styling text inputs
 			input.id = inputId;
 			input.name = key;
 			input.type = "text"; // Default to text, adjust as necessary
@@ -80,30 +85,33 @@ export default class Room {
 			label.htmlFor = inputId;
 			label.textContent =
 				key.charAt(0).toUpperCase() + key.slice(1).replace(/-/g, " ") + ":";
+			label.classList.add("form-label"); // Bootstrap class for labels
 
-			roomForm.appendChild(label);
-			roomForm.appendChild(input);
-			roomForm.appendChild(document.createElement("br")); // Optional: add line break for better readability
+			formGroup.appendChild(label);
+			formGroup.appendChild(input);
+			roomForm.appendChild(formGroup);
 		});
-		this.geometry.createFormItems(roomForm);
 
-		var formButton = document.createElement("button");
+		this.geometry.createFormItems(roomForm); // Ensure this method also uses Bootstrap styles
+
+		const formButton = document.createElement("button");
 		formButton.type = "submit";
 		formButton.id = "updateRoomDetailsBtn";
-		formButton.style.display = "block";
+		formButton.classList.add("btn", "btn-primary", "mt-3"); // Bootstrap classes for buttons
 		formButton.textContent = "Update";
-		attributesDiv.appendChild(roomForm);
 		roomForm.appendChild(formButton);
+
+		attributesDiv.appendChild(roomForm);
 		document.getElementById("sidebar").appendChild(attributesDiv);
 
 		roomForm.addEventListener("submit", (event) => {
 			event.preventDefault();
 
 			// Update the selected room with the edited details
-			var newAttributes = new Map();
+			const newAttributes = new Map();
 			selectedRoom.attributes.forEach((value, key) => {
-				var inputId = key.replace(/[^a-zA-Z0-9]/g, "_");
-				var inputValue = document.getElementById(inputId).value;
+				const inputId = key.replace(/[^a-zA-Z0-9]/g, "_");
+				const inputValue = document.getElementById(inputId).value;
 				newAttributes.set(key, inputValue);
 				// Assuming selectedRoom is an object that has methods or properties matching keys
 				if (typeof selectedRoom[key] === "function") {

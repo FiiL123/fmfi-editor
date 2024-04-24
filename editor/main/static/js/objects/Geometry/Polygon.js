@@ -102,22 +102,24 @@ export default class Polygon extends Konva.Line {
 		const points = this.points();
 		let i = index * 2;
 
+		// Create a div for each point to contain the label, inputs, and buttons
+		const pointDiv = document.createElement("div");
+		pointDiv.classList.add("mb-3", "d-flex", "align-items-center"); // Bootstrap classes for margin and flex layout
+
 		// Label for X and Y inputs
 		const pointLabel = document.createElement("label");
-		pointLabel.for = `pointInput${i}`;
+		pointLabel.htmlFor = `pointInput${i}`;
 		pointLabel.textContent = `Point(${index}):`;
 		pointLabel.id = `pointLabel${i}`;
+		pointLabel.classList.add("form-label", "me-2"); // Bootstrap label class with right margin
 
 		// Delete button
 		const deleteButton = document.createElement("button");
 		deleteButton.textContent = "-";
 		deleteButton.id = `pointDelete${i}`;
+		deleteButton.classList.add("btn", "btn-danger", "btn-sm", "ms-2"); // Bootstrap button classes
 		deleteButton.addEventListener("click", () => {
-			document.getElementById(`pointInput${i}`).remove();
-			document.getElementById(`pointInput${i + 1}`).remove();
-			document.getElementById(`pointLabel${i}`).remove();
-			document.getElementById(`pointDelete${i}`).remove();
-			document.getElementById(`pointInsert${i}`).remove();
+			pointDiv.remove(); // Removes the entire div containing inputs and buttons
 			// Potentially update the data structure here
 		});
 
@@ -125,14 +127,12 @@ export default class Polygon extends Konva.Line {
 		const insertButton = document.createElement("button");
 		insertButton.textContent = "+";
 		insertButton.id = `pointInsert${i}`;
+		insertButton.classList.add("btn", "btn-success", "btn-sm", "ms-2"); // Bootstrap button classes
 		insertButton.addEventListener("click", () => {
 			// Calculate new index for the point to be inserted
-			const newPointIndex = (index + 1) * 2;
-			console.log(newPointIndex);
-			console.log(index);
-			this.points().splice(newPointIndex, 0, 0);
-			this.points().splice(newPointIndex, 0, 0);
-			console.log(this.points());
+			const newPointIndex = index + 1;
+			console.log(newPointIndex); // Debugging output
+			this.points().splice(newPointIndex * 2, 0, 0, 0); // Corrected insertion of two zeros
 			selectedRoom.updateSidebar();
 		});
 
@@ -140,22 +140,25 @@ export default class Polygon extends Konva.Line {
 		const pointXInput = document.createElement("input");
 		pointXInput.id = `pointInput${i}`;
 		pointXInput.type = "number";
-		pointXInput.size = 5;
+		pointXInput.classList.add("form-control", "form-control-sm", "me-2"); // Bootstrap input class
 		pointXInput.value = points[i];
 
 		// Input for Y coordinate
 		const pointYInput = document.createElement("input");
 		pointYInput.id = `pointInput${i + 1}`;
 		pointYInput.type = "number";
-		pointYInput.size = 5;
+		pointYInput.classList.add("form-control", "form-control-sm", "me-2"); // Bootstrap input class
 		pointYInput.value = points[i + 1];
 
-		// Append all elements
-		mainComponent.appendChild(pointLabel);
-		mainComponent.appendChild(pointXInput);
-		mainComponent.appendChild(pointYInput);
-		mainComponent.appendChild(deleteButton);
-		mainComponent.appendChild(insertButton);
+		// Append all elements to the div
+		pointDiv.appendChild(pointLabel);
+		pointDiv.appendChild(pointXInput);
+		pointDiv.appendChild(pointYInput);
+		pointDiv.appendChild(deleteButton);
+		pointDiv.appendChild(insertButton);
+
+		// Append the entire point div to the main component
+		mainComponent.appendChild(pointDiv);
 	}
 
 	getFormData() {
