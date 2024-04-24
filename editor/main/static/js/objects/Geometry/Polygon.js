@@ -98,38 +98,64 @@ export default class Polygon extends Konva.Line {
 		elemtent.appendChild(pointsDiv);
 	}
 
-	makePointInput(mainComponent, i) {
+	makePointInput(mainComponent, index) {
 		const points = this.points();
-		i = i * 2;
+		let i = index * 2;
 
+		// Label for X and Y inputs
 		const pointLabel = document.createElement("label");
 		pointLabel.for = `pointInput${i}`;
-		pointLabel.textContent = `Point(${i / 2}):`;
+		pointLabel.textContent = `Point(${index}):`;
 		pointLabel.id = `pointLabel${i}`;
+
+		// Delete button
 		const deleteButton = document.createElement("button");
 		deleteButton.textContent = "-";
 		deleteButton.id = `pointDelete${i}`;
 		deleteButton.addEventListener("click", () => {
-			console.log("deleting");
 			document.getElementById(`pointInput${i}`).remove();
 			document.getElementById(`pointInput${i + 1}`).remove();
-			document.getElementById(`pointLabel${i + 1}`).remove();
-			document.getElementById(`pointDelete${i + 1}`).remove();
+			document.getElementById(`pointLabel${i}`).remove();
+			document.getElementById(`pointDelete${i}`).remove();
+			document.getElementById(`pointInsert${i}`).remove();
+			// Potentially update the data structure here
 		});
-		mainComponent.appendChild(deleteButton);
+
+		// Insert button
+		const insertButton = document.createElement("button");
+		insertButton.textContent = "+";
+		insertButton.id = `pointInsert${i}`;
+		insertButton.addEventListener("click", () => {
+			// Calculate new index for the point to be inserted
+			const newPointIndex = (index + 1) * 2;
+			console.log(newPointIndex);
+			console.log(index);
+			this.points().splice(newPointIndex, 0, 0);
+			this.points().splice(newPointIndex, 0, 0);
+			console.log(this.points());
+			selectedRoom.updateSidebar();
+		});
+
+		// Input for X coordinate
 		const pointXInput = document.createElement("input");
 		pointXInput.id = `pointInput${i}`;
 		pointXInput.type = "number";
 		pointXInput.size = 5;
 		pointXInput.value = points[i];
-		mainComponent.appendChild(pointLabel);
-		mainComponent.appendChild(pointXInput);
+
+		// Input for Y coordinate
 		const pointYInput = document.createElement("input");
 		pointYInput.id = `pointInput${i + 1}`;
 		pointYInput.type = "number";
 		pointYInput.size = 5;
 		pointYInput.value = points[i + 1];
+
+		// Append all elements
+		mainComponent.appendChild(pointLabel);
+		mainComponent.appendChild(pointXInput);
 		mainComponent.appendChild(pointYInput);
+		mainComponent.appendChild(deleteButton);
+		mainComponent.appendChild(insertButton);
 	}
 
 	getFormData() {
