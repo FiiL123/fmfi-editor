@@ -1,62 +1,48 @@
-class EmptyAction{
-    constructor(props) {
+class EmptyAction {
+	constructor(props) {}
 
-    }
+	make() {}
 
-    make(){
-
-    }
-
-    revert(){
-
-    }
-
+	revert() {}
 }
 
+export class DeleteAction {
+	constructor(obj) {
+		this.obj = obj;
+	}
 
-export class DeleteAction{
-    constructor(obj) {
-        this.obj = obj;
-    }
+	make() {
+		this.obj.delete();
+		selectedRoom = null;
+	}
 
-    make(){
-        this.obj.delete();
-        selectedRoom = null;
-    }
-
-    revert(){
-        this.obj.ressurect();
-    }
+	revert() {
+		this.obj.ressurect();
+	}
 }
 
-export class TransformAction{
-    constructor(obj,prevX, prevY, prevW, prevH) {
-        this.obj = obj;
-        this.prevPostition = {x: prevX,y: prevY,w: prevW,h: prevH}
-    }
+export class TransformAction {
+	constructor(obj, prevX, prevY, prevW, prevH) {
+		this.obj = obj;
+		this.prevPostition = { x: prevX, y: prevY, w: prevW, h: prevH };
+	}
 
-    make(){
+	make() {}
 
-    }
-
-    revert(){
-        this.obj.moveBack(this.prevPostition);
-    }
-
+	revert() {
+		this.obj.moveBack(this.prevPostition);
+	}
 }
 
-export class TransformPolyAction{
-    constructor(obj, points) {
-        this.obj = obj;
-        this.prevPoints= points;
-    }
+export class TransformPolyAction {
+	constructor(obj, points) {
+		this.obj = obj;
+		this.prevPoints = points;
+	}
 
-    make(){
+	make() {}
 
-    }
-
-    revert(){
-        this.obj.moveBack(this.prevPoints)
-    }
-
+	revert() {
+		this.obj.moveBack(this.prevPoints);
+	}
 }
