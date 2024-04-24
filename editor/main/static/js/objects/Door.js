@@ -154,6 +154,7 @@ export default class Door extends Konva.Line {
 	}
 	delete() {
 		tr.nodes([]);
+		this.remove();
 	}
 
 	ressurect() {
