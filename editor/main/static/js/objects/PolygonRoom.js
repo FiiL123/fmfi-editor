@@ -53,6 +53,7 @@ export default class PolygonRoom extends Konva.Line {
             actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
 
         })
+        // TODO velkost fontu na zaklade skaly partu?
         this.text = (attributes.has('custom-map-label')) ? attributes.get('custom-map-label') : this.number;
         this.text = this.text.replace("\\n", "\n");
         this.numberText = new Konva.Text({
@@ -133,7 +134,7 @@ export default class PolygonRoom extends Konva.Line {
         polygonRoomForm.appendChild(roomIDInput)
 
         var roomNumberInput = document.createElement('input')
-        roomNumberInput.id = 'roomNumber'
+        roomNumberInput.id = 'roomNumber' 
         roomNumberInput.type = 'text'
         roomNumberInput.name = 'roomNumber'
         roomNumberInput.value = (this.number);
@@ -249,6 +250,7 @@ export default class PolygonRoom extends Konva.Line {
     }
 
     ressurect(){
+        // TODO if floor, move to bottom
         layer.add(this);
         layer.add(this.numberText);
     }

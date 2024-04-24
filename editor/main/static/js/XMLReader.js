@@ -1,5 +1,6 @@
-import {addRoom as addRectangularRoom} from "./objects/RectangularRoom.js";
+import {addRoom} from "./objects/Room.js";
 import {addPolygonRoom} from "./objects/PolygonRoom.js";
+import {addRectRoom} from "./objects/RectangularRoom.js";
 import {addDoor} from "./objects/Door.js";
 import {addLift} from "./objects/Lift.js";
 import {addStairs} from "./objects/Stairs.js";
@@ -21,13 +22,15 @@ export default class XMLReader{
                 if (elem.children[0].tagName==="rectangle"){
                     const rectangle = elem.children[0];
                     const rectPoints = this.readRectanglePoints(rectangle);
-                    addRectangularRoom(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
-                        rectPoints.y2-rectPoints.y1,attributes)
+                    const geometry = {x:rectPoints.x1, y:rectPoints.y1,
+                    w:rectPoints.x2-rectPoints.x1,h:rectPoints.y2-rectPoints.y1}
+                    const r = addRoom(attributes,"rectangle", geometry);
                 }
                 else if (elem.children[0].tagName==="polygon"){
                     const polygon = elem.children[0];
                     let points = this.readPolygonPoints(polygon);
-                    addPolygonRoom(points, attributes)
+                    const r = addRoom(attributes,"polygon", points)
+                    // addPolygonRoom(points, attributes)
                 }
                 break;
             case "door":
@@ -39,7 +42,7 @@ export default class XMLReader{
                     const rectangle = elem.children[0];
                     const rectPoints = this.readRectanglePoints(rectangle);
 
-                    const r = addRectangularRoom(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
+                    const r = addRectRoom(rectPoints.x1,rectPoints.y1,rectPoints.x2-rectPoints.x1,
                         rectPoints.y2-rectPoints.y1,attributes)
                     r.lockDragging();
                     r.moveToBottom();
@@ -68,21 +71,19 @@ export default class XMLReader{
                     const line1 = elem.children[1];
                     const points = [...this.readLinePoints(line0),
                         ...this.reversePoints(this.readLinePoints(line1))]
-                    console.log(points)
                     const s = addStairs(points,attributes);
                 }else if (elem.children[0].tagName==="polyline"){
                     const line0 = elem.children[0];
                     const line1 = elem.children[1];
                     const points = [...this.readPolygonPoints(line0),
                         ...this.reversePoints(this.readPolygonPoints(line1))]
-                    console.log(points)
                     const s = addStairs(points,attributes);
                 }
                 break;
             case "vending-machine":
                 const rect = elem.children[0];
                 const rp = this.readRectanglePoints(rect);
-                addRectangularRoom(rp.x1,rp.y1,rp.x2-rp.x1,
+                addRectRoom(rp.x1,rp.y1,rp.x2-rp.x1,
                     rp.y2-rp.y1,attributes)
 
         }

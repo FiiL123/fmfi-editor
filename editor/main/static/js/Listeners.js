@@ -22,7 +22,7 @@ document.addEventListener("keydown", function(event) {
   }
 });
 
-
+// TODO applove klavesove
 document.addEventListener("keydown", function(event) {
     // Check if CTRL key is pressed and Z key is pressed
     if (event.ctrlKey && event.key === "z") {

@@ -21,7 +21,6 @@ export class DeleteAction{
 
     make(){
         this.obj.delete();
-        this.obj.remove();
         selectedRoom = null;
     }
 
@@ -33,10 +32,7 @@ export class DeleteAction{
 export class TransformAction{
     constructor(obj,prevX, prevY, prevW, prevH) {
         this.obj = obj;
-        this.prevX= prevX;
-        this.prevY= prevY;
-        this.prevW= prevW;
-        this.prevH= prevH;
+        this.prevPostition = {x: prevX,y: prevY,w: prevW,h: prevH}
     }
 
     make(){
@@ -44,7 +40,7 @@ export class TransformAction{
     }
 
     revert(){
-        this.obj.moveBack(this.prevX,this.prevY,this.prevW,this.prevH);
+        this.obj.moveBack(this.prevPostition);
     }
 
 }

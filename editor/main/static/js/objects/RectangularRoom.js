@@ -292,7 +292,7 @@ export default class RectangularRoom extends Konva.Rect {
     }
 }
 
-export function addRoom(x=100,y=90,w=100,h=100,attributes = new Map()){
+export function addRectRoom(x=100,y=90,w=100,h=100,attributes = new Map()){
     const room = new RectangularRoom(x, y, w, h, tr, attributes);
     layer.add(room)
     layer.add(room.numberText)
