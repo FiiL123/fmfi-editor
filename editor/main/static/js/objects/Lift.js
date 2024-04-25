@@ -222,5 +222,6 @@ export function addLift(
 ) {
 	const lift = new Lift(x, y, w, h, tr, attributes);
 	layer.add(lift);
+	objects.push(lift);
 	return lift;
 }

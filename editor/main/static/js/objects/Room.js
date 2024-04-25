@@ -167,5 +167,7 @@ export default class Room {
 
 export function addRoom(attributes, geometryType, geometry) {
 	const room = new Room(attributes, geometryType, geometry);
+	objects.push(room);
+	console.log(objects);
 	return room;
 }

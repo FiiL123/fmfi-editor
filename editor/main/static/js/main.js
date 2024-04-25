@@ -168,6 +168,9 @@ var selectedRoom = null;
 //     console.log("Cursor position - x: " + mousePos.x + ", y: " + mousePos.y);
 // });
 
+// used for keeping track of all objects for exporting
+var objects = [];
+
 function getRandomInt(min, max) {
 	const minCeiled = Math.ceil(min);
 	const maxFloored = Math.floor(max);

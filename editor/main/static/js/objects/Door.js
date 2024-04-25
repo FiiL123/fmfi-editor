@@ -172,5 +172,7 @@ export function addDoor(points = [], id = "d-0-0") {
 	if (points.length === 0) points = [50, 50, 80, 50];
 	const door = new Door(points, id);
 	layer.add(door);
+	objects.push(door);
 	door.moveToTop();
+	return door;
 }

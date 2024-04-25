@@ -229,5 +229,6 @@ export function addStairs(points = [], attributes = new Map()) {
 	if (points === []) points = [200, 200, 100, 200, 100, 100, 200, 100];
 	const stairs = new Stairs(points, attributes);
 	layer.add(stairs);
+	objects.push(stairs);
 	return stairs;
 }
