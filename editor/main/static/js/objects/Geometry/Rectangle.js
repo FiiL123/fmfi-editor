@@ -64,6 +64,7 @@ export default class Rectangle extends Konva.Rect {
 		});
 
 		super.on("click", this.handleRoomClick);
+		console.log(this.toXML());
 	}
 
 	handleRoomClick() {
@@ -191,5 +192,11 @@ export default class Rectangle extends Konva.Rect {
 		this.height(prev.h);
 		this.room.updateSidebar();
 		this.room.updateText();
+	}
+
+	toXML() {
+		return `<rectangle x1="${this.x()}" x1="${
+			this.x() + this.width()
+		}" y1="${this.y()}" y2="${this.y() + this.height()}"/>`;
 	}
 }

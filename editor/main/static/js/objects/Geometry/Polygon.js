@@ -43,6 +43,7 @@ export default class Polygon extends Konva.Line {
 			this.room.updateText();
 			actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
 		});
+		console.log(this.toXML());
 	}
 
 	handleRoomClick() {
@@ -181,5 +182,14 @@ export default class Polygon extends Konva.Line {
 		this.startingPoints = prevPoints;
 		this.room.updateSidebar();
 		this.room.updateText();
+	}
+
+	toXML() {
+		let out = "<polygon>";
+		for (let i = 0; i < this.points().length; i += 2) {
+			out += `\n\t<point x="${this.points()[i]}" y="${this.points()[i + 1]}"/>`;
+		}
+		out += "\n</polygon>";
+		return out;
 	}
 }
