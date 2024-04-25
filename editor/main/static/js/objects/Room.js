@@ -34,6 +34,7 @@ export default class Room {
 			fontSize: attributes.has("important") ? 30 : 24,
 		});
 		layer.add(this.numberText);
+		console.log(this.toXML());
 	}
 
 	createGeometry(geometryType, geometry) {
@@ -162,6 +163,16 @@ export default class Room {
 
 	lockDragging() {
 		this.draggable(false);
+	}
+	toXML() {
+		let out = "<room ";
+		this.attributes.forEach((val, key) => {
+			out += `${key}="${val}" `;
+		});
+		out += ">\n\t";
+		out += this.geometry.toXML();
+		out += "\n</room>";
+		return out;
 	}
 }
 

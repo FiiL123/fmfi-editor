@@ -64,7 +64,6 @@ export default class Rectangle extends Konva.Rect {
 		});
 
 		super.on("click", this.handleRoomClick);
-		console.log(this.toXML());
 	}
 
 	handleRoomClick() {
