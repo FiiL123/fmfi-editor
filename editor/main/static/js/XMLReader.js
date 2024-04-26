@@ -64,14 +64,13 @@ export default class XMLReader {
 				case "lift":
 					const rectangle = elem.children[0];
 					const rectPoints = this.readRectanglePoints(rectangle);
-
-					const r = addLift(
-						rectPoints.x1,
-						rectPoints.y1,
-						rectPoints.x2 - rectPoints.x1,
-						rectPoints.y2 - rectPoints.y1,
-						attributes,
-					);
+					const geometry = {
+						x: rectPoints.x1,
+						y: rectPoints.y1,
+						w: rectPoints.x2 - rectPoints.x1,
+						h: rectPoints.y2 - rectPoints.y1,
+					};
+					const r = addLift(attributes, "rectangle", geometry);
 					break;
 				case "stairway":
 				case "stairs":

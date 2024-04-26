@@ -20,7 +20,6 @@ export default class Floor {
 	}
 
 	ressurect() {
-		// TODO if floor, move to bottom
 		layer.add(this.geometry);
 		this.geometry.moveToBottom();
 	}
