@@ -37,6 +37,15 @@ export default class Floor {
 	lockDragging() {
 		this.geometry.draggable(false);
 	}
+
+	toXML(doc, parent) {
+		const floorElem = doc.createElement("floor");
+		this.attributes.forEach((val, key) => {
+			floorElem.setAttribute(key, val);
+		});
+		this.geometry.toXML(doc, floorElem);
+		parent.appendChild(floorElem);
+	}
 }
 
 export function addFloor(attributes, geometryType, geometry) {

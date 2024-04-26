@@ -41,6 +41,15 @@ export default class Lift {
 	lockDragging() {
 		this.geometry.draggable(false);
 	}
+
+	toXML(doc, parent) {
+		const liftElem = doc.createElement("lift");
+		this.attributes.forEach((val, key) => {
+			liftElem.setAttribute(key, val);
+		});
+		this.geometry.toXML(doc, liftElem);
+		parent.appendChild(liftElem);
+	}
 }
 
 export function addLift(attributes, geometryType, geometry) {

@@ -81,7 +81,6 @@ export default class Room {
 			roomElem.setAttribute(key, val);
 		});
 		this.geometry.toXML(doc, roomElem);
-		console.log(roomElem);
 		parent.appendChild(roomElem);
 	}
 }
