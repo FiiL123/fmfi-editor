@@ -1,7 +1,5 @@
 import Door, { addDoor } from "./objects/Door.js";
 import { addLift } from "./objects/Lift.js";
-import { addPolygonRoom } from "./objects/PolygonRoom.js";
-import { addRectRoom } from "./objects/RectangularRoom.js";
 import Room, { addRoom } from "./objects/Room.js";
 import { addStairs } from "./objects/Stairs.js";
 
@@ -40,28 +38,28 @@ export default class XMLReader {
 					const line = elem.children[0];
 					addDoor(this.readLinePoints(line), elem.getAttribute("id"));
 					break;
-				case "floor":
-					if (elem.children[0].tagName === "rectangle") {
-						const rectangle = elem.children[0];
-						const rectPoints = this.readRectanglePoints(rectangle);
-
-						const r = addRectRoom(
-							rectPoints.x1,
-							rectPoints.y1,
-							rectPoints.x2 - rectPoints.x1,
-							rectPoints.y2 - rectPoints.y1,
-							attributes,
-						);
-						r.lockDragging();
-						r.moveToBottom();
-					} else if (elem.children[0].tagName === "polygon") {
-						const polygon = elem.children[0];
-						const points = this.readPolygonPoints(polygon);
-						const r = addPolygonRoom(points, attributes);
-						r.lockDragging();
-						r.moveToBottom();
-					}
-					break;
+				// case "floor":
+				// 	if (elem.children[0].tagName === "rectangle") {
+				// 		const rectangle = elem.children[0];
+				// 		const rectPoints = this.readRectanglePoints(rectangle);
+				//
+				// 		const r = addRectRoom(
+				// 			rectPoints.x1,
+				// 			rectPoints.y1,
+				// 			rectPoints.x2 - rectPoints.x1,
+				// 			rectPoints.y2 - rectPoints.y1,
+				// 			attributes,
+				// 		);
+				// 		r.lockDragging();
+				// 		r.moveToBottom();
+				// 	} else if (elem.children[0].tagName === "polygon") {
+				// 		const polygon = elem.children[0];
+				// 		const points = this.readPolygonPoints(polygon);
+				// 		const r = addPolygonRoom(points, attributes);
+				// 		r.lockDragging();
+				// 		r.moveToBottom();
+				// 	}
+				// 	break;
 
 				case "lift":
 					const rectangle = elem.children[0];
@@ -95,10 +93,10 @@ export default class XMLReader {
 						const s = addStairs(points, attributes);
 					}
 					break;
-				case "vending-machine":
-					const rect = elem.children[0];
-					const rp = this.readRectanglePoints(rect);
-					addRectRoom(rp.x1, rp.y1, rp.x2 - rp.x1, rp.y2 - rp.y1, attributes);
+				// case "vending-machine":
+				// 	const rect = elem.children[0];
+				// 	const rp = this.readRectanglePoints(rect);
+				// 	addRectRoom(rp.x1, rp.y1, rp.x2 - rp.x1, rp.y2 - rp.y1, attributes);
 			}
 		}
 	}
@@ -196,4 +194,4 @@ export default class XMLReader {
  */
 
 const xmlReader = new XMLReader(part_xml);
-xmlReader.exportXML();
+// xmlReader.exportXML();

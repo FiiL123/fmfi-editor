@@ -63,7 +63,7 @@ export default class Room {
 		}
 		const attributesDiv = document.createElement("div");
 		attributesDiv.id = "attributesDiv";
-		attributesDiv.classList.add("attributes"); // This can be replaced or enhanced with Bootstrap classes if needed
+		attributesDiv.classList.add("attributes", "md-3"); // This can be replaced or enhanced with Bootstrap classes if needed
 		const roomForm = document.createElement("form");
 		roomForm.id = "roomForm";
 		roomForm.classList.add("row", "g-3"); // Adds grid with gutter
@@ -89,19 +89,29 @@ export default class Room {
 
 			formGroup.appendChild(label);
 			formGroup.appendChild(input);
-			roomForm.appendChild(formGroup);
+			attributesDiv.appendChild(formGroup);
 		});
 
-		this.geometry.createFormItems(roomForm); // Ensure this method also uses Bootstrap styles
+		const addAttrBtn = document.createElement("button");
+		addAttrBtn.type = "button";
+		addAttrBtn.textContent = "Add Attribute";
+		addAttrBtn.classList.add("btn", "btn-info", "mt-3", "mb-3");
+		attributesDiv.appendChild(addAttrBtn);
 
+		addAttrBtn.onclick = function () {
+			selectedRoom.showAttributeDropdown(attributesDiv); // Show dropdown to select new attribute
+		};
+
+		attributesDiv.appendChild(roomForm);
+
+		this.geometry.createFormItems(roomForm); // Ensure this method also uses Bootstrap styles
 		const formButton = document.createElement("button");
 		formButton.type = "submit";
 		formButton.id = "updateRoomDetailsBtn";
 		formButton.classList.add("btn", "btn-primary", "mt-3"); // Bootstrap classes for buttons
 		formButton.textContent = "Update";
-		roomForm.appendChild(formButton);
 
-		attributesDiv.appendChild(roomForm);
+		roomForm.appendChild(formButton);
 		document.getElementById("sidebar").appendChild(attributesDiv);
 
 		roomForm.addEventListener("submit", (event) => {
@@ -126,6 +136,38 @@ export default class Room {
 		});
 	}
 
+	addAttributeField(form, key, value) {
+		if (!selectedRoom.attributes.has(key)) {
+			selectedRoom.attributes.set(key, value);
+			selectedRoom.updateSidebar();
+		}
+	}
+
+	showAttributeDropdown(form) {
+		const dropdown = document.createElement("select");
+		dropdown.classList.add("form-control", "mb-2");
+		const options = ["name", "number", "purpose", "important"];
+		options.forEach((option) => {
+			const opt = document.createElement("option");
+			opt.value = option;
+			opt.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+			dropdown.appendChild(opt);
+		});
+
+		const addBtn = document.createElement("button");
+		addBtn.textContent = "Add Selected Attribute";
+		addBtn.classList.add("btn", "btn-success", "mt-2", "mb-2");
+		addBtn.onclick = function () {
+			const selectedOption = dropdown.value;
+			selectedRoom.addAttributeField(form, selectedOption, "");
+			form.removeChild(dropdown); // Remove dropdown after adding
+			form.removeChild(addBtn); // Remove button after adding
+		};
+
+		form.insertBefore(dropdown, form.lastChild);
+		form.insertBefore(addBtn, form.lastChild);
+	}
+
 	updateText() {
 		this.numberText.text(
 			this.attributes.has("custom-map-label")
@@ -133,8 +175,6 @@ export default class Room {
 				: this.number,
 		);
 		const textPosition = this.geometry.getLabelPoint();
-		console.log(this.numberText.position());
-		console.log(textPosition);
 		this.numberText.position({ x: textPosition.x, y: textPosition.y });
 	}
 
