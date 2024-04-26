@@ -166,6 +166,18 @@ export default class Door extends Konva.Line {
 		this.startingPoints = prevPoints;
 		this.updateSidebar();
 	}
+
+	toXML(doc, parent) {
+		const doorElem = doc.createElement("door");
+		doorElem.setAttribute("id", this.id);
+		const lineElem = doc.createElement("line");
+		lineElem.setAttribute("x1", this.points()[0]);
+		lineElem.setAttribute("y1", this.points()[1]);
+		lineElem.setAttribute("x2", this.points()[2]);
+		lineElem.setAttribute("y2", this.points()[3]);
+		doorElem.appendChild(lineElem);
+		parent.appendChild(doorElem);
+	}
 }
 
 export function addDoor(points = [], id = "d-0-0") {

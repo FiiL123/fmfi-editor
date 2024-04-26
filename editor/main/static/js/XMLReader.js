@@ -1,8 +1,8 @@
-import { addDoor } from "./objects/Door.js";
+import Door, { addDoor } from "./objects/Door.js";
 import { addLift } from "./objects/Lift.js";
 import { addPolygonRoom } from "./objects/PolygonRoom.js";
 import { addRectRoom } from "./objects/RectangularRoom.js";
-import { addRoom } from "./objects/Room.js";
+import Room, { addRoom } from "./objects/Room.js";
 import { addStairs } from "./objects/Stairs.js";
 
 export default class XMLReader {
@@ -145,6 +145,39 @@ export default class XMLReader {
 		}
 		return reversedPoints;
 	}
+
+	exportXML() {
+		const doc = document.implementation.createDocument("", "", null);
+		const partElem = doc.createElement("part");
+		console.log(objects);
+		for (const obj of objects) {
+			if (obj instanceof Room || obj instanceof Door) {
+				console.log("calling to XML for " + obj);
+				obj.toXML(doc, partElem);
+			}
+		}
+
+		doc.appendChild(partElem); // Make sure to append your created element to the document
+
+		// Serialize the XML document to a string
+		const serializer = new XMLSerializer();
+		const xmlString = serializer.serializeToString(doc);
+
+		// Create a Blob from the XML string
+		const blob = new Blob([xmlString], { type: "application/xml" });
+
+		// Create a download link and trigger the download
+		const url = URL.createObjectURL(blob);
+		const downloadLink = document.createElement("a");
+		downloadLink.href = url;
+		downloadLink.download = "exported_file.xml"; // Name the file
+		document.body.appendChild(downloadLink); // Append link to the body
+		downloadLink.click(); // Programmatically click the link to trigger the download
+
+		// Clean up
+		document.body.removeChild(downloadLink);
+		URL.revokeObjectURL(url); // Free up the memory used by the Blob
+	}
 }
 
 /*
@@ -163,3 +196,4 @@ export default class XMLReader {
  */
 
 const xmlReader = new XMLReader(part_xml);
+xmlReader.exportXML();

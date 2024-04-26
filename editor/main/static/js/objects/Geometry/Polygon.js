@@ -183,14 +183,14 @@ export default class Polygon extends Konva.Line {
 		this.room.updateText();
 	}
 
-	toXML() {
-		let out = "<polygon>";
+	toXML(doc, parent) {
+		const polyElem = doc.createElement("polygon");
 		for (let i = 0; i < this.points().length; i += 2) {
-			out += `\n\t\t<point x="${this.points()[i]}" y="${
-				this.points()[i + 1]
-			}"/>`;
+			const pointElem = doc.createElement("point");
+			pointElem.setAttribute("x", this.points()[i]);
+			pointElem.setAttribute("y", this.points()[i + 1]);
+			polyElem.appendChild(pointElem);
 		}
-		out += "\n\t</polygon>";
-		return out;
+		parent.appendChild(polyElem);
 	}
 }

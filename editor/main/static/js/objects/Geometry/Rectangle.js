@@ -193,9 +193,12 @@ export default class Rectangle extends Konva.Rect {
 		this.room.updateText();
 	}
 
-	toXML() {
-		return `<rectangle x1="${this.x()}" x1="${
-			this.x() + this.width()
-		}" y1="${this.y()}" y2="${this.y() + this.height()}"/>`;
+	toXML(doc, parent) {
+		const rectElem = doc.createElement("rectangle");
+		rectElem.setAttribute("x1", this.x());
+		rectElem.setAttribute("y1", this.y());
+		rectElem.setAttribute("x2", this.x() + this.width());
+		rectElem.setAttribute("y2", this.y() + this.height());
+		parent.appendChild(rectElem);
 	}
 }
