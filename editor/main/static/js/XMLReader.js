@@ -2,6 +2,7 @@ import Door, { addDoor } from "./objects/Door.js";
 import { addLift } from "./objects/Lift.js";
 import Room, { addRoom } from "./objects/Room.js";
 import { addStairs } from "./objects/Stairs.js";
+import Floor, { addFloor } from "./objects/Floor.js";
 
 export default class XMLReader {
 	constructor(xml_text) {
@@ -38,28 +39,27 @@ export default class XMLReader {
 					const line = elem.children[0];
 					addDoor(this.readLinePoints(line), elem.getAttribute("id"));
 					break;
-				// case "floor":
-				// 	if (elem.children[0].tagName === "rectangle") {
-				// 		const rectangle = elem.children[0];
-				// 		const rectPoints = this.readRectanglePoints(rectangle);
-				//
-				// 		const r = addRectRoom(
-				// 			rectPoints.x1,
-				// 			rectPoints.y1,
-				// 			rectPoints.x2 - rectPoints.x1,
-				// 			rectPoints.y2 - rectPoints.y1,
-				// 			attributes,
-				// 		);
-				// 		r.lockDragging();
-				// 		r.moveToBottom();
-				// 	} else if (elem.children[0].tagName === "polygon") {
-				// 		const polygon = elem.children[0];
-				// 		const points = this.readPolygonPoints(polygon);
-				// 		const r = addPolygonRoom(points, attributes);
-				// 		r.lockDragging();
-				// 		r.moveToBottom();
-				// 	}
-				// 	break;
+				case "floor":
+					if (elem.children[0].tagName === "rectangle") {
+						const rectangle = elem.children[0];
+						const rectPoints = this.readRectanglePoints(rectangle);
+						const geometry = {
+							x: rectPoints.x1,
+							y: rectPoints.y1,
+							w: rectPoints.x2 - rectPoints.x1,
+							h: rectPoints.y2 - rectPoints.y1,
+						};
+						const f = addFloor(attributes, "rectangle", geometry);
+						f.lockDragging();
+						f.geometry.moveToBottom();
+					} else if (elem.children[0].tagName === "polygon") {
+						const polygon = elem.children[0];
+						const points = this.readPolygonPoints(polygon);
+						const f = addFloor(attributes, "polygon", points);
+						f.lockDragging();
+						f.geometry.moveToBottom();
+					}
+					break;
 
 				case "lift":
 					const rectangle = elem.children[0];
