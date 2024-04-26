@@ -7,8 +7,12 @@ class Part(models.Model):
     name = models.CharField(max_length=30)
     part_xml = models.TextField()
     plan_image = models.ImageField(upload_to="plans", null=True, blank=True)
-    plan_x_offset = models.IntegerField(default=0)
-    plan_y_offset = models.IntegerField(default=0)
+    dx = models.IntegerField(default=0)
+    dy = models.IntegerField(default=0)
+    level = models.IntegerField(default=0)
+    scale_x = models.FloatField(default=1)
+    scale_y = models.FloatField(default=1)
+    pavilion = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
