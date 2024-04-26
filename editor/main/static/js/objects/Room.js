@@ -1,5 +1,3 @@
-import Polygon from "./Geometry/Polygon.js";
-import Rectangle from "./Geometry/Rectangle.js";
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Room {

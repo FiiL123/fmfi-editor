@@ -1,5 +1,6 @@
 import Rectangle from "./Geometry/Rectangle.js";
 import Polygon from "./Geometry/Polygon.js";
+import Line from "./Geometry/Line.js";
 
 export function createGeometry(room, geometryType, geometry, color) {
 	let obj = null;
@@ -16,6 +17,10 @@ export function createGeometry(room, geometryType, geometry, color) {
 			break;
 		case "polygon":
 			obj = new Polygon(room, geometry, color);
+			break;
+		case "line":
+			obj = new Line(room, geometry, color);
+			break;
 	}
 
 	return obj;

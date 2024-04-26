@@ -1,7 +1,7 @@
 import Door, { addDoor } from "./objects/Door.js";
 import { addLift } from "./objects/Lift.js";
 import Room, { addRoom } from "./objects/Room.js";
-import { addStairs } from "./objects/Stairs.js";
+import Stairs, { addStairs } from "./objects/Stairs.js";
 import Floor, { addFloor } from "./objects/Floor.js";
 
 export default class XMLReader {
@@ -37,7 +37,8 @@ export default class XMLReader {
 					break;
 				case "door":
 					const line = elem.children[0];
-					addDoor(this.readLinePoints(line), elem.getAttribute("id"));
+					const points = this.readLinePoints(line);
+					addDoor(attributes, "line", points);
 					break;
 				case "floor":
 					if (elem.children[0].tagName === "rectangle") {
@@ -148,7 +149,7 @@ export default class XMLReader {
 		const partElem = doc.createElement("part");
 		console.log(objects);
 		for (const obj of objects) {
-			if (obj instanceof Room || obj instanceof Door) {
+			if (!(obj instanceof Stairs)) {
 				console.log("calling to XML for " + obj);
 				obj.toXML(doc, partElem);
 			}
@@ -177,20 +178,5 @@ export default class XMLReader {
 	}
 }
 
-/*
-<room custom-search-string="aquarium" id="r-0-m-M-II" important="true" custom-map-label="M II" number="M II" name="Aquarium" purpose="classroom" capacity="39" vertex="v-0-m-ii">
-            <polygon>
-                <point x="-693" y="4155"/>
-                <point x="17" y="4155"/>
-                <point x="17" y="4500"/>
-                <point x="-693" y="4500"/>
-            </polygon>
-        </room>
-
-<door id="d-0-m-304">
-    <line x1="17" x2="17" y1="4210" y2="4270"/>
-</door>
- */
-
 const xmlReader = new XMLReader(part_xml);
-// xmlReader.exportXML();
+xmlReader.exportXML();

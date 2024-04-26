@@ -1,16 +1,15 @@
-import { TransformAction, TransformPolyAction } from "../../Actions.js";
+import { TransformPolyAction } from "../../Actions.js";
 import {
 	handlePolyPositionChange,
 	handlePolySizeChange,
 } from "./GeometryHelper.js";
 
-export default class Polygon extends Konva.Line {
+export default class Line extends Konva.Line {
 	constructor(room, points, color) {
 		super({
 			points: points,
-			fill: color,
-			stroke: "black",
-			closed: true,
+			stroke: color,
+			closed: false,
 			draggable: true,
 		});
 		this.room = room;
@@ -23,7 +22,6 @@ export default class Polygon extends Konva.Line {
 		super.on("dragend", function () {
 			handlePolyPositionChange(this);
 			this.room.updateSidebar();
-			this.room.updateText();
 			actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
 		});
 		super.on("transformstart", function () {
@@ -31,15 +29,10 @@ export default class Polygon extends Konva.Line {
 			this.handleRoomClick();
 		});
 
-		super.on("transform", function () {
-			this.room.updateText();
-		});
-
 		super.on("transformend", function () {
 			console.log("transform end");
 			handlePolySizeChange(this);
 			this.room.updateSidebar();
-			this.room.updateText();
 			actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
 		});
 	}
@@ -48,10 +41,6 @@ export default class Polygon extends Konva.Line {
 		selectedRoom = this.room;
 		tr.nodes([this]);
 		this.room.updateSidebar();
-	}
-
-	getLabelPoint() {
-		return { x: this.points()[0], y: this.points()[1] };
 	}
 
 	createFormItems(elemtent) {
@@ -80,29 +69,6 @@ export default class Polygon extends Konva.Line {
 		pointLabel.id = `pointLabel${i}`;
 		pointLabel.classList.add("form-label", "me-2"); // Bootstrap label class with right margin
 
-		// Delete button
-		const deleteButton = document.createElement("button");
-		deleteButton.textContent = "-";
-		deleteButton.id = `pointDelete${i}`;
-		deleteButton.classList.add("btn", "btn-danger", "btn-sm", "ms-2"); // Bootstrap button classes
-		deleteButton.addEventListener("click", () => {
-			pointDiv.remove(); // Removes the entire div containing inputs and buttons
-			// Potentially update the data structure here
-		});
-
-		// Insert button
-		const insertButton = document.createElement("button");
-		insertButton.textContent = "+";
-		insertButton.id = `pointInsert${i}`;
-		insertButton.classList.add("btn", "btn-success", "btn-sm", "ms-2"); // Bootstrap button classes
-		insertButton.addEventListener("click", () => {
-			// Calculate new index for the point to be inserted
-			const newPointIndex = index + 1;
-			console.log(newPointIndex); // Debugging output
-			this.points().splice(newPointIndex * 2, 0, 0, 0); // Corrected insertion of two zeros
-			selectedRoom.updateSidebar();
-		});
-
 		// Input for X coordinate
 		const pointXInput = document.createElement("input");
 		pointXInput.id = `pointInput${i}`;
@@ -121,8 +87,6 @@ export default class Polygon extends Konva.Line {
 		pointDiv.appendChild(pointLabel);
 		pointDiv.appendChild(pointXInput);
 		pointDiv.appendChild(pointYInput);
-		pointDiv.appendChild(deleteButton);
-		pointDiv.appendChild(insertButton);
 
 		// Append the entire point div to the main component
 		mainComponent.appendChild(pointDiv);
@@ -134,30 +98,22 @@ export default class Polygon extends Konva.Line {
 		for (const pointInput of pointInputs) {
 			points.push(Math.floor(pointInput.value));
 		}
-		console.log(selectedRoom);
 		selectedRoom.geometry.points(points);
 		selectedRoom.geometry.startingPoints = points;
-	}
-
-	toString() {
-		return `Polygon(${this.points()})`;
 	}
 
 	moveBack(prevPoints) {
 		this.points(prevPoints);
 		this.startingPoints = prevPoints;
 		this.room.updateSidebar();
-		this.room.updateText();
 	}
 
 	toXML(doc, parent) {
-		const polyElem = doc.createElement("polygon");
-		for (let i = 0; i < this.points().length; i += 2) {
-			const pointElem = doc.createElement("point");
-			pointElem.setAttribute("x", this.points()[i]);
-			pointElem.setAttribute("y", this.points()[i + 1]);
-			polyElem.appendChild(pointElem);
-		}
-		parent.appendChild(polyElem);
+		const lineElem = doc.createElement("line");
+		lineElem.setAttribute("x1", this.points()[0]);
+		lineElem.setAttribute("y1", this.points()[1]);
+		lineElem.setAttribute("x2", this.points()[2]);
+		lineElem.setAttribute("y2", this.points()[3]);
+		parent.appendChild(lineElem);
 	}
 }

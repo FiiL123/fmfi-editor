@@ -9,7 +9,7 @@ export default class Lift {
 		layer.add(this.geometry);
 	}
 	toString() {
-		return `Lift(${this.x()}-${this.y()})`;
+		return `Lift(${this.geometry.x()}-${this.geometry.y()})`;
 	}
 
 	updateSidebar() {
