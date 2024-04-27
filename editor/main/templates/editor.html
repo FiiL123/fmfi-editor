@@ -32,6 +32,7 @@
             var img_hei = '{{ part.plan_image.height }}';
             var img_x_offset = '{{ part.dx }}';
             var img_y_offset = '{{ part.dy }}';
+            var part_scale = (parseFloat('{{ part.scale_x }}') + parseFloat('{{ part.scale_x }}'))/2
             </script>
         {% endif %}
         {% include 'toolbar.html' %}

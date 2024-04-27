@@ -18,18 +18,20 @@ export default class Room {
 		this.geometry = createGeometry(this, geometryType, geometry, this.color);
 		layer.add(this.geometry);
 
-		// TODO velkost fontu na zaklade skaly partu?
 		this.text = attributes.has("custom-map-label")
 			? attributes.get("custom-map-label")
 			: this.number;
 		this.text = this.text.replace("\\n", "\n");
 
 		const textPosition = this.geometry.getLabelPoint();
+		this.fontSize = Math.floor(
+			(attributes.has("important") ? 30 : 16) * (1 / part_scale),
+		);
 		this.numberText = new Konva.Text({
 			text: this.text,
-			x: textPosition.x + 2,
-			y: textPosition.y + 2,
-			fontSize: attributes.has("important") ? 30 : 24,
+			x: textPosition.x + 4,
+			y: textPosition.y + 4,
+			fontSize: this.fontSize,
 		});
 		layer.add(this.numberText);
 	}
@@ -55,7 +57,6 @@ export default class Room {
 	}
 
 	ressurect() {
-		// TODO if floor, move to bottom
 		layer.add(this.geometry);
 		layer.add(this.numberText);
 	}

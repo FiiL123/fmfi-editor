@@ -179,4 +179,4 @@ export default class XMLReader {
 }
 
 const xmlReader = new XMLReader(part_xml);
-xmlReader.exportXML();
+// xmlReader.exportXML();
