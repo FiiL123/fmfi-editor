@@ -128,6 +128,10 @@ stage.on("touchend", (e) => {
 	lastCenter = null;
 });
 
+document.addEventListener("contextmenu", function (event) {
+	event.preventDefault();
+});
+
 stage.getContainer().style.backgroundColor = "#ffefe0";
 var layer = new Konva.Layer();
 
