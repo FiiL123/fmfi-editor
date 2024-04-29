@@ -4,9 +4,11 @@ from django.db import models
 
 class Part(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
     part_xml = models.TextField()
     plan_image = models.ImageField(upload_to="plans", null=True, blank=True)
+    plan_x_offset = models.IntegerField(default=0)
+    plan_y_offset = models.IntegerField(default=0)
     dx = models.IntegerField(default=0)
     dy = models.IntegerField(default=0)
     level = models.IntegerField(default=0)
@@ -66,7 +68,14 @@ class Purpose(models.Model):
         return self.text
 
 
+class Pavilion(models.Model):
+    id = models.CharField(max_length=100, primary_key=True)
+    name = models.CharField(max_length=100)
+    ground_level = models.IntegerField(default=0)
+
+
 admin.site.register(Part)
 admin.site.register(Department)
 admin.site.register(Item)
 admin.site.register(Purpose)
+admin.site.register(Pavilion)
