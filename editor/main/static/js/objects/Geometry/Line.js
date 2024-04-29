@@ -111,6 +111,8 @@ export default class Line extends Konva.Line {
 	}
 
 	toXML(doc, parent) {
+		console.log(this.type);
+
 		if (this.type === "line") {
 			const lineElem = doc.createElement("line");
 			lineElem.setAttribute("x1", this.points()[0]);

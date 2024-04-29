@@ -111,10 +111,11 @@ export default class XMLReader {
 					let points1 = [];
 					if (geo.tagName === "polyline") {
 						points1 = this.readPolygonPoints(elem.children[0]);
+						const l = addWall(attributes, "polyline", points1);
 					} else {
 						points1 = this.readLinePoints(geo);
+						const l = addWall(attributes, "line", points1);
 					}
-					const l = addWall(attributes, "line", points1);
 					break;
 			}
 		}
@@ -169,7 +170,7 @@ export default class XMLReader {
 		console.log(objects);
 		for (const obj of objects) {
 			if (!(obj instanceof Stairs)) {
-				console.log("calling to XML for " + obj);
+				// console.log("calling to XML for " + obj);
 				obj.toXML(doc, partElem);
 			}
 		}
@@ -198,4 +199,4 @@ export default class XMLReader {
 }
 
 const xmlReader = new XMLReader(part_xml);
-// xmlReader.exportXML();
+xmlReader.exportXML();
