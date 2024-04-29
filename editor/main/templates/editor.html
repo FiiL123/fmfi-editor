@@ -23,6 +23,7 @@
         <script>
             var part_xml = JSON.parse(document.getElementById('part_xml').textContent);
             var purposesData = JSON.parse('{{ purposes|safe }}');
+            var part_scale = (parseFloat('{{ part.scale_x }}') + parseFloat('{{ part.scale_x }}'))/2
             var img_src = null;
         </script>
         {% if part.plan_image %}
@@ -30,9 +31,8 @@
             var img_src = '{{ part.plan_image.url }}';
             var img_wid = '{{ part.plan_image.width }}';
             var img_hei = '{{ part.plan_image.height }}';
-            var img_x_offset = '{{ part.dx }}';
-            var img_y_offset = '{{ part.dy }}';
-            var part_scale = (parseFloat('{{ part.scale_x }}') + parseFloat('{{ part.scale_x }}'))/2
+            var img_x_offset = '{{ part.plan_x_offset }}';
+            var img_y_offset = '{{ part.plan_y_offset }}';
             </script>
         {% endif %}
         {% include 'toolbar.html' %}
