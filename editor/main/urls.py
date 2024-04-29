@@ -10,6 +10,7 @@ urlpatterns = [
     path("editor/<int:id>", views.editor, name="editor"),
     path("editor", views.empty_editor, name="editor"),
     path("xml_upload", views.xml_upload, name="xml_upload"),
+    path("part_xml/<int:id>/", views.receive_xml, name="receive_xml"),
 ]
 
 if settings.DEBUG:

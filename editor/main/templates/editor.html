@@ -24,6 +24,7 @@
             var part_xml = JSON.parse(document.getElementById('part_xml').textContent);
             var purposesData = JSON.parse('{{ purposes|safe }}');
             var part_scale = (parseFloat('{{ part.scale_x }}') + parseFloat('{{ part.scale_x }}'))/2
+            var part_id = '{{ part.id }}';
             var img_src = null;
         </script>
         {% if part.plan_image %}

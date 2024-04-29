@@ -189,22 +189,18 @@ export default class XMLReader {
 		const serializer = new XMLSerializer();
 		const xmlString = serializer.serializeToString(doc);
 
-		// Create a Blob from the XML string
-		const blob = new Blob([xmlString], { type: "application/xml" });
-
-		// Create a download link and trigger the download
-		const url = URL.createObjectURL(blob);
-		const downloadLink = document.createElement("a");
-		downloadLink.href = url;
-		downloadLink.download = "exported_file.xml"; // Name the file
-		document.body.appendChild(downloadLink); // Append link to the body
-		downloadLink.click(); // Programmatically click the link to trigger the download
-
-		// Clean up
-		document.body.removeChild(downloadLink);
-		URL.revokeObjectURL(url); // Free up the memory used by the Blob
+		fetch(`/part_xml/${part_id}/`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "text/xml",
+			},
+			body: xmlString,
+		})
+			.then((response) => response.json())
+			.then((data) => console.log(data))
+			.catch((error) => console.error("Error:", error));
 	}
 }
 
 const xmlReader = new XMLReader(part_xml);
-// xmlReader.exportXML();
+xmlReader.exportXML();
