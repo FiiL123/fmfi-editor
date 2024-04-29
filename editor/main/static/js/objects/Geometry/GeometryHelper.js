@@ -28,3 +28,12 @@ export function handlePolySizeChange(obj) {
 	obj.points(points);
 	obj.startingPoints = points;
 }
+
+export function createPointXMLElems(doc, parent, points) {
+	for (let i = 0; i < points().length; i += 2) {
+		const pointElem = doc.createElement("point");
+		pointElem.setAttribute("x", points()[i]);
+		pointElem.setAttribute("y", points()[i + 1]);
+		parent.appendChild(pointElem);
+	}
+}

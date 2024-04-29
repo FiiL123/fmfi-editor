@@ -3,6 +3,8 @@ import { addLift } from "./objects/Lift.js";
 import Room, { addRoom } from "./objects/Room.js";
 import Stairs, { addStairs } from "./objects/Stairs.js";
 import Floor, { addFloor } from "./objects/Floor.js";
+import { addVendingMachine } from "./objects/VendingMachine.js";
+import { addWall } from "./objects/Wall.js";
 
 export default class XMLReader {
 	constructor(xml_text) {
@@ -63,15 +65,15 @@ export default class XMLReader {
 					break;
 
 				case "lift":
-					const rectangle = elem.children[0];
-					const rectPoints = this.readRectanglePoints(rectangle);
-					const geometry = {
-						x: rectPoints.x1,
-						y: rectPoints.y1,
-						w: rectPoints.x2 - rectPoints.x1,
-						h: rectPoints.y2 - rectPoints.y1,
+					const rectangle1 = elem.children[0];
+					const rectPoints1 = this.readRectanglePoints(rectangle1);
+					const geometry1 = {
+						x: rectPoints1.x1,
+						y: rectPoints1.y1,
+						w: rectPoints1.x2 - rectPoints1.x1,
+						h: rectPoints1.y2 - rectPoints1.y1,
 					};
-					const r = addLift(attributes, "rectangle", geometry);
+					const r = addLift(attributes, "rectangle", geometry1);
 					break;
 				case "stairway":
 				case "stairs":
@@ -93,10 +95,27 @@ export default class XMLReader {
 						const s = addStairs(points, attributes);
 					}
 					break;
-				// case "vending-machine":
-				// 	const rect = elem.children[0];
-				// 	const rp = this.readRectanglePoints(rect);
-				// 	addRectRoom(rp.x1, rp.y1, rp.x2 - rp.x1, rp.y2 - rp.y1, attributes);
+				case "vending-machine":
+					const rectangle2 = elem.children[0];
+					const rectPoints2 = this.readRectanglePoints(rectangle2);
+					const geometry2 = {
+						x: rectPoints2.x1,
+						y: rectPoints2.y1,
+						w: rectPoints2.x2 - rectPoints2.x1,
+						h: rectPoints2.y2 - rectPoints2.y1,
+					};
+					const m = addVendingMachine(attributes, "rectangle", geometry2);
+					break;
+				case "wall":
+					const geo = elem.children[0];
+					let points1 = [];
+					if (geo.tagName === "polyline") {
+						points1 = this.readPolygonPoints(elem.children[0]);
+					} else {
+						points1 = this.readLinePoints(geo);
+					}
+					const l = addWall(attributes, "line", points1);
+					break;
 			}
 		}
 	}

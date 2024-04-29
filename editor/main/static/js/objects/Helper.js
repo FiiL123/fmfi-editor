@@ -19,7 +19,8 @@ export function createGeometry(room, geometryType, geometry, color) {
 			obj = new Polygon(room, geometry, color);
 			break;
 		case "line":
-			obj = new Line(room, geometry, color);
+		case "polyline":
+			obj = new Line(room, geometry, geometryType, color);
 			break;
 	}
 

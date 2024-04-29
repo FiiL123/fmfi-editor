@@ -1,5 +1,6 @@
 import { TransformAction, TransformPolyAction } from "../../Actions.js";
 import {
+	createPointXMLElems,
 	handlePolyPositionChange,
 	handlePolySizeChange,
 } from "./GeometryHelper.js";
@@ -152,12 +153,7 @@ export default class Polygon extends Konva.Line {
 
 	toXML(doc, parent) {
 		const polyElem = doc.createElement("polygon");
-		for (let i = 0; i < this.points().length; i += 2) {
-			const pointElem = doc.createElement("point");
-			pointElem.setAttribute("x", this.points()[i]);
-			pointElem.setAttribute("y", this.points()[i + 1]);
-			polyElem.appendChild(pointElem);
-		}
+		createPointXMLElems(doc, polyElem, this.points());
 		parent.appendChild(polyElem);
 	}
 }
