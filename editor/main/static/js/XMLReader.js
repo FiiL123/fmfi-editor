@@ -5,6 +5,8 @@ import Stairs, { addStairs } from "./objects/Stairs.js";
 import Floor, { addFloor } from "./objects/Floor.js";
 import { addVendingMachine } from "./objects/VendingMachine.js";
 import { addWall } from "./objects/Wall.js";
+import { addVertex } from "./objects/Vertex.js";
+import { addEdge } from "./objects/Edge.js";
 
 export default class XMLReader {
 	constructor(xml_text) {
@@ -117,6 +119,12 @@ export default class XMLReader {
 						const l = addWall(attributes, "line", points1);
 					}
 					break;
+				case "vertex":
+					const vertex = addVertex(attributes);
+					break;
+				case "edge":
+					const edge = addEdge(attributes);
+					break;
 			}
 		}
 	}
@@ -199,4 +207,4 @@ export default class XMLReader {
 }
 
 const xmlReader = new XMLReader(part_xml);
-xmlReader.exportXML();
+// xmlReader.exportXML();
