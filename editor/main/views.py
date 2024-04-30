@@ -1,8 +1,9 @@
+import xml.dom.minidom as DOM
 import xml.etree.ElementTree as ET
 
 from django.core.serializers import serialize
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
 from editor.main.forms import XMLUploadForm
@@ -51,14 +52,13 @@ def xml_upload(request):
 def receive_xml(request, id):
     if request.method == "POST":
         try:
-            xml_data = request.body  # Get XML data from request body
-            # Parse XML data
-            root = ET.fromstring(xml_data)
-            for element in root.iter():
-                print(f"Element tag: {element.tag}")
-
+            part = get_object_or_404(Part, pk=id)
+            xml_data = request.body
+            d = DOM.parseString(xml_data)
+            xml_str = d.toprettyxml().replace('<?xml version="1.0" ?>\n', "")
+            part.part_xml = xml_str
+            part.save()
             print(f"Received XML for ID: {id}")
-            # Here you might use the 'id' to associate the data with a specific entity
 
             return JsonResponse({"status": "success", "message": "XML processed successfully"})
         except Exception as e:
