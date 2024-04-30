@@ -24,6 +24,14 @@ class Part(models.Model):
     def to_xml(self, doc):
         part_dom = parseString(self.part_xml)
         part_element = doc.importNode(part_dom.documentElement, deep=True)
+        part_element.setAttribute("name", self.name)
+        part_element.setAttribute("dx", str(self.dx))
+        part_element.setAttribute("dy", str(self.dy))
+        part_element.setAttribute("level", str(self.level))
+        part_element.setAttribute("scalex", str(self.scale_y))
+        part_element.setAttribute("scaley", str(self.scale_y))
+        if self.pavilion:
+            part_element.setAttribute("pavilion", self.pavilion)
         self.remove_whitespace_nodes(part_element)
         return part_element
 
