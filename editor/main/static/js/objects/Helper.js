@@ -117,7 +117,7 @@ export function addAttributeField(form, key, value) {
 export function showAttributeDropdown(form) {
 	const dropdown = document.createElement("select");
 	dropdown.classList.add("form-control", "mb-2");
-	const options = ["name", "number", "purpose", "important"];
+	const options = ["id", "name", "number", "purpose", "important"];
 	options.forEach((option) => {
 		const opt = document.createElement("option");
 		opt.value = option;
