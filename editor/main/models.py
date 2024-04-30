@@ -28,7 +28,7 @@ class Part(models.Model):
         part_element.setAttribute("dx", str(self.dx))
         part_element.setAttribute("dy", str(self.dy))
         part_element.setAttribute("level", str(self.level))
-        part_element.setAttribute("scalex", str(self.scale_y))
+        part_element.setAttribute("scalex", str(self.scale_x))
         part_element.setAttribute("scaley", str(self.scale_y))
         if self.pavilion:
             part_element.setAttribute("pavilion", self.pavilion)
