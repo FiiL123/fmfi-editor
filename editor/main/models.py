@@ -1,3 +1,5 @@
+from xml.dom.minidom import parseString
+
 from django.contrib import admin
 from django.db import models
 
@@ -20,8 +22,17 @@ class Part(models.Model):
         return self.name
 
     def to_xml(self, doc):
-        part = doc.createElement(self.part_xml)
-        return part
+        part_dom = parseString(self.part_xml)
+        part_element = doc.importNode(part_dom.documentElement, deep=True)
+        self.remove_whitespace_nodes(part_element)
+        return part_element
+
+    def remove_whitespace_nodes(self, node):
+        if node.nodeType == node.TEXT_NODE and node.nodeValue.strip() == "":
+            node.parentNode.removeChild(node)
+            return
+        for child in list(node.childNodes):
+            self.remove_whitespace_nodes(child)
 
 
 class PartAdmin(admin.ModelAdmin):
