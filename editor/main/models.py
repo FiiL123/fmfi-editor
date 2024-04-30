@@ -19,6 +19,10 @@ class Part(models.Model):
     def __str__(self):
         return self.name
 
+    def to_xml(self, doc):
+        part = doc.createElement(self.part_xml)
+        return part
+
 
 class PartAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Part._meta.fields if field.name != "id"]
@@ -45,6 +49,12 @@ class Department(models.Model):
     def __str__(self):
         return self.id
 
+    def to_xml(self, doc):
+        department = doc.createElement("department")
+        department.setAttribute("id", self.id)
+        department.setAttribute("type", self.type)
+        return department
+
 
 class Item(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
@@ -53,6 +63,13 @@ class Item(models.Model):
 
     def __str__(self):
         return self.id
+
+    def to_xml(self, doc):
+        item = doc.createElement("item")
+        item.setAttribute("id", self.id)
+        item.setAttribute("text", self.text)
+        item.setAttribute("icon", self.icon)
+        return item
 
 
 class Purpose(models.Model):
@@ -67,11 +84,37 @@ class Purpose(models.Model):
     def __str__(self):
         return self.text
 
+    def to_xml(self, doc):
+        purpose = doc.createElement("purpose")
+
+        purpose.setAttribute("id", self.id)
+        purpose.setAttribute("text", self.text)
+
+        if self.icon:
+            purpose.setAttribute("icon", self.icon)
+        if self.colour:
+            purpose.setAttribute("colour", self.colour)
+        if self.interesting:
+            purpose.setAttribute("interesting", "true")
+        if self.free_room_candidate:
+            purpose.setAttribute("free-room-candidate", "true")
+        if self.default:
+            purpose.setAttribute("default", "true")
+
+        return purpose
+
 
 class Pavilion(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
     name = models.CharField(max_length=100)
     ground_level = models.IntegerField(default=0)
+
+    def to_xml(self, doc):
+        pavilion = doc.createElement("pavilion")
+        pavilion.setAttribute("id", self.id)
+        pavilion.setAttribute("name", self.name)
+        pavilion.setAttribute("ground-level", str(self.ground_level))
+        return pavilion
 
 
 admin.site.register(Part)

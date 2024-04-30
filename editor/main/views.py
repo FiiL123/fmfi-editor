@@ -2,7 +2,7 @@ import xml.dom.minidom as DOM
 import xml.etree.ElementTree as ET
 
 from django.core.serializers import serialize
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -127,3 +127,38 @@ def parse_pavilion(elem_data):
         ground_level=elem_data["ground-level"],
     )
     return created
+
+
+def export_xml(request):
+    items = Item.objects.all()
+    purposes = Purpose.objects.all()
+    departments = Department.objects.all()
+    pavilions = Pavilion.objects.all()
+    parts = Part.objects.all()
+    doc = DOM.Document()
+    map_element = doc.createElement("map")
+    map_element.setAttribute("id", "main_map")
+    map_element.setAttribute("scale-reality", "15456")
+    map_element.setAttribute("scale-map", "258300")
+    for item in items:
+        map_element.appendChild(item.to_xml(doc))
+
+    for purpose in purposes:
+        map_element.appendChild(purpose.to_xml(doc))
+
+    for department in departments:
+        map_element.appendChild(department.to_xml(doc))
+
+    for pavilion in pavilions:
+        map_element.appendChild(pavilion.to_xml(doc))
+
+    for part in parts:
+        map_element.appendChild(part.to_xml(doc))
+
+    doc.appendChild(map_element)
+    xml_str = doc.toprettyxml()
+
+    response = HttpResponse(xml_str, content_type="application/xml")
+    response["Content-Disposition"] = 'attachment; filename="exported_data.xml"'
+
+    return response
