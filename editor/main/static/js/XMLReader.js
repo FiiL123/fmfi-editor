@@ -203,4 +203,7 @@ export default class XMLReader {
 }
 
 const xmlReader = new XMLReader(part_xml);
-xmlReader.exportXML();
+
+export function exportPartXML() {
+	xmlReader.exportXML();
+}

@@ -1,6 +1,7 @@
 import { addDoor } from "./objects/Door.js";
 import { addLift } from "./objects/Lift.js";
 import { addRoom } from "./objects/Room.js";
+import { exportPartXML } from "./XMLReader.js";
 
 function toolbarClickFunc(element) {
 	console.log(element.title);
@@ -27,6 +28,8 @@ function toolbarClickFunc(element) {
 				layer.opacity(0.7);
 			}
 			break;
+		case "Save changes":
+			exportPartXML();
 	}
 }
 
