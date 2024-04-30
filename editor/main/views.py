@@ -111,6 +111,7 @@ def parse_part(elem):
     part, created = Part.objects.get_or_create(
         name=elem_data["name"],
         part_xml=ET.tostring(elem, encoding="unicode", method="xml"),
+        level=int(elem_data["level"]),
         dx=int(elem_data["dx"]),
         dy=int(elem_data["dy"]),
         scale_x=elem_data["scalex"],
