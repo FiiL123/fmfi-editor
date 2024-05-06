@@ -1,0 +1,100 @@
+<script>
+function syncValue(source, targetId) {
+    var target = document.getElementById(targetId);
+    target.value = source.value;
+}
+</script>
+<div id="sidebar" class="col-3 bg-secondary p-4 h-100 overflow-auto">
+    <h2 class="text-white mb-3">Parts</h2>
+    <ul class="list-group">
+        {% for part in parts %}
+            <li class="list-group-item bg-light">
+                <strong>{{ part.name }}</strong>
+                <div class="row mt-2">
+                    <!-- Sliders and editable number inputs for x-offset, y-offset, x-scale, y-scale -->
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                        <label class="form-label me-2">X-offset:</label>
+                        <input type="range"
+                               class="form-range me-2"
+                               min="-100"
+                               max="100"
+                               step="1"
+                               value="0"
+                               id="x-offset-slider-{{ loop.index }}"
+                               oninput="syncValue(this, 'x-offset-number-{{ loop.index }}')">
+                        <input type="number"
+                               class="form-control"
+                               style="width: 80px"
+                               min="-100"
+                               max="100"
+                               step="1"
+                               value="0"
+                               id="x-offset-number-{{ loop.index }}"
+                               oninput="syncValue(this, 'x-offset-slider-{{ loop.index }}')">
+                    </div>
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                        <label class="form-label me-2">Y-offset:</label>
+                        <input type="range"
+                               class="form-range me-2"
+                               min="-100"
+                               max="100"
+                               step="1"
+                               value="0"
+                               id="y-offset-slider-{{ loop.index }}"
+                               oninput="syncValue(this, 'y-offset-number-{{ loop.index }}')">
+                        <input type="number"
+                               class="form-control"
+                               style="width: 80px"
+                               min="-100"
+                               max="100"
+                               step="1"
+                               value="0"
+                               id="y-offset-number-{{ loop.index }}"
+                               oninput="syncValue(this, 'y-offset-slider-{{ loop.index }}')">
+                    </div>
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                        <label class="form-label me-2">X-scale:</label>
+                        <input type="range"
+                               class="form-range me-2"
+                               min="0.1"
+                               max="10"
+                               step="0.1"
+                               value="1"
+                               id="x-scale-slider-{{ loop.index }}"
+                               oninput="syncValue(this, 'x-scale-number-{{ loop.index }}')">
+                        <input type="number"
+                               class="form-control"
+                               style="width: 80px"
+                               min="0.1"
+                               max="10"
+                               step="0.1"
+                               value="1"
+                               id="x-scale-number-{{ loop.index }}"
+                               oninput="syncValue(this, 'x-scale-slider-{{ loop.index }}')">
+                    </div>
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                        <label class="form-label me-2">Y-scale:</label>
+                        <input type="range"
+                               class="form-range me-2"
+                               min="0.1"
+                               max="10"
+                               step="0.1"
+                               value="1"
+                               id="y-scale-slider-{{ loop.index }}"
+                               oninput="syncValue(this, 'y-scale-number-{{ loop.index }}')">
+                        <input type="number"
+                               class="form-control"
+                               style="width: 80px"
+                               min="0.1"
+                               max="10"
+                               step="0.1"
+                               value="1"
+                               id="y-scale-number-{{ loop.index }}"
+                               oninput="syncValue(this, 'y-scale-slider-{{ loop.index }}')">
+                    </div>
+                </div>
+                <a class="btn btn-primary btn-sm mt-2" href="{% url 'editor' part.id %}">Edit</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
