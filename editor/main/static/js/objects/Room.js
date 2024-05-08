@@ -41,11 +41,11 @@ export default class Room {
 	}
 
 	updateText() {
-		this.numberText.text(
-			this.attributes.has("custom-map-label")
-				? this.attributes.get("custom-map-label")
-				: this.number,
-		);
+		this.text = this.attributes.has("custom-map-label")
+			? this.attributes.get("custom-map-label")
+			: this.number;
+		this.text = this.text.replace("\\n", "\n");
+		this.numberText.text(this.text);
 		const textPosition = this.geometry.getLabelPoint();
 		this.numberText.position({ x: textPosition.x, y: textPosition.y });
 	}

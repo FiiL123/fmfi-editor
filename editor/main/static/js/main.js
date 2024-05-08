@@ -1,4 +1,4 @@
-var width = 10 * (window.innerWidth / 12) - 10;
+var width = 9 * (window.innerWidth / 12) - 10;
 var height = window.innerHeight;
 
 var stage = new Konva.Stage({
