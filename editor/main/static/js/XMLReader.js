@@ -86,7 +86,7 @@ export default class XMLReader {
 							...this.readLinePoints(line0),
 							...this.reversePoints(this.readLinePoints(line1)),
 						];
-						const s = addStairs(points, attributes);
+						const s = addStairs(attributes, "polygon", points);
 					} else if (elem.children[0].tagName === "polyline") {
 						const line0 = elem.children[0];
 						const line1 = elem.children[1];
@@ -94,7 +94,7 @@ export default class XMLReader {
 							...this.readPolygonPoints(line0),
 							...this.reversePoints(this.readPolygonPoints(line1)),
 						];
-						const s = addStairs(points, attributes);
+						const s = addStairs(attributes, "polygon", points);
 					}
 					break;
 				case "vending-machine":

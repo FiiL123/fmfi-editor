@@ -1,234 +1,85 @@
-import { TransformPolyAction } from "../Actions.js";
+import { createGeometry, createSidebar } from "./Helper.js";
 
-export default class Stairs extends Konva.Line {
-	constructor(points, attributes = new Map()) {
-		super({
-			points: points,
-			fill: "magenta",
-			stroke: "black",
-			closed: true,
-			draggable: true,
-		});
+export default class Stairs {
+	constructor(attributes, geometryType, geometry) {
+		this.color = "magenta";
 		this.attributes = attributes;
-		this.startingPoints = points;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
-		this.steps = attributes.has("steps") ? attributes.get("steps") : 5;
-		super.on("click", this.handleClick);
+		this.geometry = createGeometry(this, geometryType, geometry, this.color);
+		this.isStairway = !attributes.has("steps");
+		layer.add(this.geometry);
 
-		super.on("dragstart", function () {
-			this.prevPoints = [...this.points()];
-			this.handleClick();
-		});
-		super.on("dragend", function () {
-			this.updatePosition();
-			this.updateSidebar();
-			actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
-		});
-
-		super.on("transformstart", function () {
-			this.prevPoints = [...this.points()];
-			this.handleRoomClick();
-		});
-		super.on("transformend", function () {
-			this.updateScale();
-			this.updatePosition();
-			this.updateSidebar();
-			actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
-		});
+		if (this.isStairway) {
+			this.text = attributes.has("type") ? attributes.get("type") : "U-shaped";
+			const textPosition = this.geometry.getLabelPoint();
+			this.fontSize = Math.floor(12 * (1 / part_scale));
+			this.typeText = new Konva.Text({
+				text: this.text,
+				x: textPosition.x + 4,
+				y: textPosition.y - 4,
+				fontSize: this.fontSize,
+			});
+			layer.add(this.typeText);
+		}
 	}
 
-	updateScale() {
-		const points = this.points();
-		for (let i = 0; i < points.length; i++) {
-			if (i % 2 === 0) {
-				points[i] = Math.floor(this.startingPoints[i] * this.scaleX());
-			} else {
-				points[i] = Math.floor(this.startingPoints[i] * this.scaleY());
-			}
-		}
-
-		this.scaleX(1);
-		this.scaleY(1);
-		this.points(points);
-		this.startingPoints = points;
-	}
-
-	updatePosition() {
-		const points = this.points();
-
-		for (let i = 0; i < points.length; i++) {
-			if (i % 2 === 0) {
-				points[i] = Math.floor(this.startingPoints[i] + this.x());
-			} else {
-				points[i] = Math.floor(this.startingPoints[i] + this.y());
-			}
-		}
-		this.x(0);
-		this.y(0);
-		this.points(points);
-		this.startingPoints = points;
-		console.log("points: " + points);
-		console.log("starting poiuits:" + this.startingPoints);
+	toString() {
+		return `Stairs(${this.geometry.points()})`;
 	}
 
 	updateSidebar() {
-		// Access the sidebar form elements
-		var existingAttributesDiv = document.getElementById("attributesDiv");
-		if (existingAttributesDiv) {
-			existingAttributesDiv.parentNode.removeChild(existingAttributesDiv);
-		}
-		var attributesDiv = document.createElement("div");
-		attributesDiv.id = "attributesDiv";
-		attributesDiv.classList.add("attributes");
-		var polygonRoomForm = document.createElement("form");
-		polygonRoomForm.id = "polygonRoomForm";
-
-		var roomIDInput = document.createElement("input");
-		roomIDInput.id = "roomID";
-		roomIDInput.type = "text";
-		roomIDInput.name = "roomID";
-		roomIDInput.value = this.id;
-		var roomIDLabel = document.createElement("label");
-		roomIDLabel.for = "RoomID";
-		roomIDLabel.textContent = "ID:";
-		polygonRoomForm.appendChild(roomIDLabel);
-		polygonRoomForm.appendChild(roomIDInput);
-
-		var stepsInput = document.createElement("input");
-		stepsInput.id = "stepsInput";
-		stepsInput.type = "text";
-		stepsInput.name = "stepsInput";
-		stepsInput.value = this.steps;
-		var stepsLabel = document.createElement("label");
-		stepsLabel.for = "stepsInput";
-		stepsLabel.textContent = "Steps:";
-		polygonRoomForm.appendChild(stepsLabel);
-		polygonRoomForm.appendChild(stepsInput);
-		const addPointButton = document.createElement("button");
-		addPointButton.textContent = "Add point";
-		addPointButton.id = "addPointButton";
-		addPointButton.addEventListener("click", () => {
-			selectedRoom.addPoint();
-		});
-		polygonRoomForm.appendChild(addPointButton);
-		this.makePointForm(polygonRoomForm);
-
-		var formButton = document.createElement("button");
-		formButton.type = "submit";
-		formButton.id = "updateRoomDetailsBtn";
-		formButton.style.display = "block";
-		formButton.textContent = "Update";
-		attributesDiv.appendChild(polygonRoomForm);
-		polygonRoomForm.appendChild(formButton);
-		document.getElementById("sidebar").appendChild(attributesDiv);
-
-		polygonRoomForm.addEventListener("submit", (event) => {
-			event.preventDefault();
-			console.log("UPDATEEEE");
-			// Update the selected room with the edited details
-			const newID = document.getElementById("roomID").value;
-			const newSteps = document.getElementById("stepsInput").value;
-			var pointInputs = document.querySelectorAll('[id^="pointInput"]');
-			const points = [];
-			pointInputs.forEach((inp) => {
-				points.push(Math.floor(inp.value));
-			});
-			console.log(points);
-			selectedRoom.id = newID;
-			selectedRoom.steps = newSteps;
-			selectedRoom.points(points);
-			selectedRoom.startingPoints = points;
-			console.log(selectedRoom.points());
-			selectedRoom.updateSidebar();
-		});
+		createSidebar(this);
 	}
 
-	makePointForm(mainDiv) {
-		var pointsDiv = document.createElement("div");
-		pointsDiv.id = "pointsDiv";
-		pointsDiv.classList.add("attributes");
-		const points = this.points();
-		for (let i = 0; i < points.length / 2; ++i) {
-			this.makePointInput(pointsDiv, i);
-		}
-
-		mainDiv.appendChild(pointsDiv);
-	}
-	addPoint() {
-		this.points().push(0);
-		this.points().push(0);
-		this.startingPoints = this.points();
-		this.prevPoints = [...this.points()];
-		actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
-		const pointsDiv = document.getElementById("pointsDiv");
-		this.makePointInput(pointsDiv, this.points().length);
-	}
-
-	makePointInput(mainComponent, i) {
-		const points = this.points();
-		i = i * 2;
-
-		const pointLabel = document.createElement("label");
-		pointLabel.for = "pointInput" + i;
-		pointLabel.textContent = "Point(" + i / 2 + "):";
-		pointLabel.id = "pointLabel" + i;
-		const deleteButton = document.createElement("button");
-		deleteButton.textContent = "-";
-		deleteButton.id = "pointDelete" + i;
-		deleteButton.addEventListener("click", () => {
-			console.log("deleting");
-			document.getElementById("pointInput" + i).remove();
-			document.getElementById("pointInput" + (i + 1)).remove();
-			document.getElementById("pointLabel" + i).remove();
-			document.getElementById("pointDelete" + i).remove();
-		});
-		mainComponent.appendChild(deleteButton);
-		const pointXInput = document.createElement("input");
-		pointXInput.id = "pointInput" + i;
-		pointXInput.type = "number";
-		pointXInput.size = 5;
-		pointXInput.value = points[i];
-		mainComponent.appendChild(pointLabel);
-		mainComponent.appendChild(pointXInput);
-		const pointYInput = document.createElement("input");
-		pointYInput.id = "pointInput" + (i + 1);
-		pointYInput.type = "number";
-		pointYInput.size = 5;
-		pointYInput.value = points[i + 1];
-		mainComponent.appendChild(pointYInput);
+	updateText() {
+		this.text = this.attributes.has("type")
+			? this.attributes.get("type")
+			: "U-shaped";
+		this.typeText.text(this.text);
+		const textPosition = this.geometry.getLabelPoint();
+		this.typeText.position({ x: textPosition.x, y: textPosition.y });
 	}
 
 	delete() {
-		this.numberText.remove();
+		this.geometry.remove();
 		tr.nodes([]);
 	}
 
 	ressurect() {
-		layer.add(this);
-		layer.add(this.numberText);
+		layer.add(this.geometry);
+		if (this.attributes.has("type")) {
+			layer.add(this.typeText);
+		}
 	}
 
-	moveBack(prevPoints) {
-		this.points(prevPoints);
-		this.startingPoints = prevPoints;
-		this.updateSidebar();
+	moveBack(prevPosition) {
+		this.geometry.moveBack(prevPosition);
 	}
 
-	handleClick() {
+	handleRoomClick() {
 		selectedRoom = this;
 		tr.nodes([this]);
 		this.updateSidebar();
 	}
 
 	lockDragging() {
-		this.draggable(false);
+		this.geometry.draggable(false);
+	}
+
+	toXML(doc, parent) {
+		const stairElem = this.isStairway
+			? doc.createElement("stairway")
+			: doc.createElement("stairs");
+		this.attributes.forEach((val, key) => {
+			stairElem.setAttribute(key, val);
+		});
+		this.geometry.toXML(doc, stairElem);
+		parent.appendChild(stairElem);
 	}
 }
 
-export function addStairs(points = [], attributes = new Map()) {
-	if (points === []) points = [200, 200, 100, 200, 100, 100, 200, 100];
-	const stairs = new Stairs(points, attributes);
-	layer.add(stairs);
+export function addStairs(attributes, geometryType, geometry) {
+	const stairs = new Stairs(attributes, geometryType, geometry);
 	objects.push(stairs);
 	return stairs;
 }
