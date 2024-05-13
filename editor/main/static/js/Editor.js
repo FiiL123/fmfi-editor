@@ -9,37 +9,6 @@ var stage = new Konva.Stage({
 });
 
 var scaleBy = 1.1;
-stage.on("wheel", (e) => {
-	// stop default scrolling
-	e.evt.preventDefault();
-
-	var oldScale = stage.scaleX();
-	var pointer = stage.getPointerPosition();
-
-	var mousePointTo = {
-		x: (pointer.x - stage.x()) / oldScale,
-		y: (pointer.y - stage.y()) / oldScale,
-	};
-
-	// how to scale? Zoom in? Or zoom out?
-	let direction = e.evt.deltaY > 0 ? 1 : -1;
-
-	// when we zoom on trackpad, e.evt.ctrlKey is true
-	// in that case lets revert direction
-	if (e.evt.ctrlKey) {
-		direction = -direction;
-	}
-
-	var newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-
-	stage.scale({ x: newScale, y: newScale });
-
-	var newPos = {
-		x: pointer.x - mousePointTo.x * newScale,
-		y: pointer.y - mousePointTo.y * newScale,
-	};
-	stage.position(newPos);
-});
 
 function getDistance(p1, p2) {
 	return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
@@ -55,82 +24,6 @@ function getCenter(p1, p2) {
 var lastCenter = null;
 var lastDist = 0;
 var dragStopped = false;
-
-stage.on("touchmove", (e) => {
-	e.evt.preventDefault();
-	var touch1 = e.evt.touches[0];
-	var touch2 = e.evt.touches[1];
-
-	// we need to restore dragging, if it was cancelled by multi-touch
-	if (touch1 && !touch2 && !stage.isDragging() && dragStopped) {
-		stage.startDrag();
-		dragStopped = false;
-	}
-
-	if (touch1 && touch2) {
-		// if the stage was under Konva's drag&drop
-		// we need to stop it, and implement our own pan logic with two pointers
-		if (stage.isDragging()) {
-			dragStopped = true;
-			stage.stopDrag();
-		}
-
-		var p1 = {
-			x: touch1.clientX,
-			y: touch1.clientY,
-		};
-		var p2 = {
-			x: touch2.clientX,
-			y: touch2.clientY,
-		};
-
-		if (!lastCenter) {
-			lastCenter = getCenter(p1, p2);
-			return;
-		}
-		var newCenter = getCenter(p1, p2);
-
-		var dist = getDistance(p1, p2);
-
-		if (!lastDist) {
-			lastDist = dist;
-		}
-
-		// local coordinates of center point
-		var pointTo = {
-			x: (newCenter.x - stage.x()) / stage.scaleX(),
-			y: (newCenter.y - stage.y()) / stage.scaleX(),
-		};
-
-		var scale = stage.scaleX() * (dist / lastDist);
-
-		stage.scaleX(scale);
-		stage.scaleY(scale);
-
-		// calculate new position of the stage
-		var dx = newCenter.x - lastCenter.x;
-		var dy = newCenter.y - lastCenter.y;
-
-		var newPos = {
-			x: newCenter.x - pointTo.x * scale + dx,
-			y: newCenter.y - pointTo.y * scale + dy,
-		};
-
-		stage.position(newPos);
-
-		lastDist = dist;
-		lastCenter = newCenter;
-	}
-});
-
-stage.on("touchend", (e) => {
-	lastDist = 0;
-	lastCenter = null;
-});
-
-document.addEventListener("contextmenu", function (event) {
-	event.preventDefault();
-});
 
 stage.getContainer().style.backgroundColor = "#ffefe0";
 var layer = new Konva.Layer();
@@ -159,45 +52,10 @@ if (img_src != null) {
 
 stage.add(layer);
 
-// create new transformer
-//
 var tr = new Konva.Transformer({ rotateEnabled: false });
 
 layer.add(tr);
 
 var selectedRoom = null;
 
-// stage.on('mousemove', function (e) {
-//     const mousePos = stage.getPointerPosition();
-//     console.log("Cursor position - x: " + mousePos.x + ", y: " + mousePos.y);
-// });
-
-// used for keeping track of all objects for exporting
 var objects = [];
-
-function getRandomInt(min, max) {
-	const minCeiled = Math.ceil(min);
-	const maxFloored = Math.floor(max);
-	return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
-}
-
-function getRandomColor(from = 150, to = 230) {
-	const colorStr =
-		"rgb(" +
-		getRandomInt(from, to) +
-		"," +
-		getRandomInt(from, to) +
-		"," +
-		getRandomInt(from, to) +
-		")";
-	return colorStr;
-}
-
-/*TODO
-Presuvanie viacerych objektov naraz
-Snapovanie++
-Snapovanie dveri
-Levely su relativne k matike
- */
-
-// console.log(part_xml)

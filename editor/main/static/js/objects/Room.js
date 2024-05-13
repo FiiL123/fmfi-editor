@@ -5,12 +5,9 @@ export default class Room {
 		const purpose = purposesData.find(
 			(purpose) => purpose.pk === attributes.get("purpose"),
 		);
-		this.color = getRandomColor();
-		if (attributes.size > 0) {
-			this.color =
-				purpose && purpose.fields.colour !== ""
-					? "rgb(" + purpose.fields.colour + ")"
-					: "lightgray";
+		this.color = "lightgray";
+		if (attributes.size > 0 && purpose && purpose.fields.colour !== "") {
+			this.color = "rgb(" + purpose.fields.colour + ")";
 		}
 		this.attributes = attributes;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
