@@ -56,6 +56,10 @@ var tr = new Konva.Transformer({ rotateEnabled: false });
 
 layer.add(tr);
 
+var graphLayer = new Konva.Layer();
+stage.add(graphLayer);
+graphLayer.visible(false);
+
 var selectedRoom = null;
 
 var objects = [];

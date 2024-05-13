@@ -20,12 +20,20 @@ function toolbarClickFunc(element) {
 			break;
 		case "Toggle plan view":
 			if (bottom_layer.visible()) {
-				console.log("is visible");
 				bottom_layer.visible(false);
 				layer.opacity(1);
 			} else {
 				bottom_layer.visible(true);
 				layer.opacity(0.7);
+			}
+			break;
+		case "Toggle graph view":
+			if (graphLayer.visible()) {
+				graphLayer.visible(false);
+				layer.opacity(1);
+			} else {
+				graphLayer.visible(true);
+				layer.opacity(0.6);
 			}
 			break;
 		case "Save changes":
