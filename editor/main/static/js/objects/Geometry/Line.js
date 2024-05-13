@@ -10,6 +10,7 @@ export default class Line extends Konva.Line {
 		super({
 			points: points,
 			stroke: color,
+			strokeWidth: 4,
 			closed: false,
 			draggable: true,
 		});
