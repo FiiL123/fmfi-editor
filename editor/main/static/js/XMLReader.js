@@ -127,6 +127,9 @@ export default class XMLReader {
 					break;
 			}
 		}
+		for (const lateEdge of lateEdges) {
+			lateEdge.createEdge();
+		}
 	}
 
 	readPolygonPoints(polygon) {

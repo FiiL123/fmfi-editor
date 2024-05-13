@@ -64,4 +64,6 @@ var selectedRoom = null;
 
 var objects = [];
 
+var lateEdges = [];
+
 var vertices = new Map();
