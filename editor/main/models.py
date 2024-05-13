@@ -16,7 +16,7 @@ class Part(models.Model):
     level = models.IntegerField(default=0)
     scale_x = models.FloatField(default=1)
     scale_y = models.FloatField(default=1)
-    pavilion = models.TextField(null=True, blank=True)
+    pavilion = models.CharField(max_length=30, null=True, blank=True)
 
     def __str__(self):
         return self.name

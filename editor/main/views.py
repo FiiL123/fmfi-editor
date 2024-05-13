@@ -37,7 +37,6 @@ def xml_upload(request):
             xml_file = request.FILES["xml_file"]
             tree = ET.parse(xml_file)
             root = tree.getroot()
-            # Example: Print each child of the root
             for child in root:
                 parse_element(child)
                 # print(child.tag, created, child.attrib)
