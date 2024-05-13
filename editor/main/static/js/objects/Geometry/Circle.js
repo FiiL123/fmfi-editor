@@ -35,6 +35,7 @@ export default class Circle extends Konva.Circle {
 		this.y(Math.floor(this.y()));
 		this.vertex.attributes.set("x", this.x());
 		this.vertex.attributes.set("y", this.y());
+		this.vertex.updatePosition();
 	}
 
 	createFormItems(elemtent) {}

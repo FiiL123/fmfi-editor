@@ -2,19 +2,29 @@ import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Vertex {
 	constructor(attributes) {
-		this.color = "black";
+		this.color = "red";
 		this.attributes = attributes;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		const points = {
 			x: parseInt(this.attributes.get("x")),
 			y: parseInt(this.attributes.get("y")),
 		};
+		vertices.set(attributes.get("id"), points);
 		this.geometry = createGeometry(this, "circle", points, this.color);
 		graphLayer.add(this.geometry);
 	}
 
 	updateSidebar() {
 		createSidebar(this);
+	}
+
+	updatePosition() {
+		const points = {
+			x: parseInt(this.attributes.get("x")),
+			y: parseInt(this.attributes.get("y")),
+		};
+		vertices.set(this.attributes.get("id"), points);
+		console.log(vertices);
 	}
 
 	toXML(doc, parent) {

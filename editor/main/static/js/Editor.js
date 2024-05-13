@@ -63,3 +63,5 @@ graphLayer.visible(false);
 var selectedRoom = null;
 
 var objects = [];
+
+var vertices = new Map();
