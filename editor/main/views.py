@@ -1,3 +1,4 @@
+import json
 import xml.dom.minidom as DOM
 import xml.etree.ElementTree as ET
 
@@ -162,3 +163,18 @@ def export_xml(request):
     response["Content-Disposition"] = 'attachment; filename="exported_data.xml"'
 
     return response
+
+
+@csrf_exempt
+def save_configurations(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        for part_data in data["parts"]:
+            part = Part.objects.get(id=part_data["id"])
+            part.dx = part_data["dx"]
+            part.dy = part_data["dy"]
+            part.scale_x = part_data["scale_x"]
+            part.scale_y = part_data["scale_y"]
+            part.save()
+        return JsonResponse({"status": "success"})
+    return JsonResponse({"status": "error"}, status=400)

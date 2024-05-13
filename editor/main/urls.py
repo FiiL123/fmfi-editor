@@ -12,6 +12,7 @@ urlpatterns = [
     path("xml_upload", views.xml_upload, name="xml_upload"),
     path("part_xml/<int:id>/", views.receive_xml, name="receive_xml"),
     path("export_xml", views.export_xml, name="export_xml"),
+    path("save-configurations/", views.save_configurations, name="save-configurations"),
 ]
 
 if settings.DEBUG:
