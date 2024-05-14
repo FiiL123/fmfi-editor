@@ -31,9 +31,11 @@ function toolbarClickFunc(element) {
 			if (graphLayer.visible()) {
 				graphLayer.visible(false);
 				layer.opacity(1);
+				layer.listening(true);
 			} else {
 				graphLayer.visible(true);
 				layer.opacity(0.6);
+				layer.listening(false);
 			}
 			break;
 		case "Save changes":
