@@ -28,10 +28,8 @@ export default class Vertex {
 	}
 
 	updatePosition() {
-		const points = {
-			x: parseInt(this.attributes.get("x")),
-			y: parseInt(this.attributes.get("y")),
-		};
+		this.attributes.set("x", this.geometry.x());
+		this.attributes.set("y", this.geometry.y());
 		vertices.set(this.attributes.get("id"), this);
 		for (const edge of this.edges) {
 			edge.updateEdgePosition();
@@ -44,6 +42,28 @@ export default class Vertex {
 			vertexElem.setAttribute(key, val);
 		});
 		parent.appendChild(vertexElem);
+	}
+
+	delete() {
+		this.geometry.remove();
+		for (const edge of this.edges) {
+			edge.geometry.remove();
+		}
+	}
+
+	ressurect() {
+		for (const edge of this.edges) {
+			graphLayer.add(edge.geometry);
+		}
+		graphLayer.add(this.geometry);
+	}
+
+	moveBack(prevPosition) {
+		this.geometry.moveBack(prevPosition);
+	}
+
+	lockDragging() {
+		this.geometry.draggable(false);
 	}
 }
 

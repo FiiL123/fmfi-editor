@@ -1,3 +1,5 @@
+import { TransformAction } from "../../Actions.js";
+
 export default class Circle extends Konva.Circle {
 	constructor(vertex, x, y, color) {
 		super({
@@ -13,21 +15,31 @@ export default class Circle extends Konva.Circle {
 		super.on("click", this.handleRoomClick);
 		super.on("dragstart", function () {
 			this.handleRoomClick();
+			this.prevX = this.x();
+			this.prevY = this.y();
 		});
 		super.on("dragend", function () {
 			this.handlePositionChange();
 			this.vertex.updateSidebar();
-			// actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
+			actionManager.addAction(
+				new TransformAction(this, this.prevX, this.prevY, 0, 0),
+			);
 		});
 		super.on("drag", function () {
 			this.handlePositionChange();
 			this.vertex.updateSidebar();
-			// actionManager.addAction(new TransformPolyAction(this, this.prevPoints));
 		});
 	}
 	handleRoomClick() {
 		selectedRoom = this.vertex;
 		this.vertex.updateSidebar();
+	}
+
+	moveBack(prev) {
+		this.x(prev.x);
+		this.y(prev.y);
+		this.vertex.updateSidebar();
+		this.vertex.updatePosition();
 	}
 
 	handlePositionChange() {
