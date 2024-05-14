@@ -4,12 +4,13 @@ export default class Vertex {
 	constructor(attributes) {
 		this.color = "red";
 		this.attributes = attributes;
+		this.edges = [];
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		const points = {
 			x: parseInt(this.attributes.get("x")),
 			y: parseInt(this.attributes.get("y")),
 		};
-		vertices.set(attributes.get("id"), points);
+		vertices.set(attributes.get("id"), this);
 		this.geometry = createGeometry(this, "circle", points, this.color);
 		graphLayer.add(this.geometry);
 	}
@@ -18,13 +19,23 @@ export default class Vertex {
 		createSidebar(this);
 	}
 
+	getPoints() {
+		const points = {
+			x: parseInt(this.attributes.get("x")),
+			y: parseInt(this.attributes.get("y")),
+		};
+		return points;
+	}
+
 	updatePosition() {
 		const points = {
 			x: parseInt(this.attributes.get("x")),
 			y: parseInt(this.attributes.get("y")),
 		};
-		vertices.set(this.attributes.get("id"), points);
-		console.log(vertices);
+		vertices.set(this.attributes.get("id"), this);
+		for (const edge of this.edges) {
+			edge.updateEdgePosition();
+		}
 	}
 
 	toXML(doc, parent) {

@@ -5,13 +5,7 @@ export default class Edge {
 		this.color = "black";
 		this.attributes = attributes;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
-		const v1Pos = vertices.get(this.attributes.get("first-vertex-id"));
-		const v2Pos = vertices.get(this.attributes.get("second-vertex-id"));
-		if (v1Pos && v2Pos) {
-			this.points = [v1Pos.x, v1Pos.y, v2Pos.x, v2Pos.y];
-			this.geometry = createGeometry(this, "line", this.points, "black");
-			graphLayer.add(this.geometry);
-		} else {
+		if (!this.createEdge()) {
 			lateEdges.push(this);
 		}
 	}
@@ -20,13 +14,34 @@ export default class Edge {
 	}
 
 	createEdge() {
-		const v1Pos = vertices.get(this.attributes.get("first-vertex-id"));
-		const v2Pos = vertices.get(this.attributes.get("second-vertex-id"));
-		if (v1Pos && v2Pos) {
-			this.points = [v1Pos.x, v1Pos.y, v2Pos.x, v2Pos.y];
+		const v1 = vertices.get(this.attributes.get("first-vertex-id"));
+		const v2 = vertices.get(this.attributes.get("second-vertex-id"));
+		if (v1 && v2) {
+			v1.edges.push(this);
+			v2.edges.push(this);
+			this.points = [
+				v1.getPoints().x,
+				v1.getPoints().y,
+				v2.getPoints().x,
+				v2.getPoints().y,
+			];
 			this.geometry = createGeometry(this, "line", this.points, "black");
 			graphLayer.add(this.geometry);
+			return true;
 		}
+		return false;
+	}
+
+	updateEdgePosition() {
+		const v1 = vertices.get(this.attributes.get("first-vertex-id"));
+		const v2 = vertices.get(this.attributes.get("second-vertex-id"));
+		this.points = [
+			v1.getPoints().x,
+			v1.getPoints().y,
+			v2.getPoints().x,
+			v2.getPoints().y,
+		];
+		this.geometry.points(this.points);
 	}
 
 	toXML(doc, parent) {
