@@ -69,7 +69,7 @@ export default class Room {
 	}
 
 	lockDragging() {
-		this.draggable(false);
+		this.geometry.draggable(false);
 	}
 	toXML(doc, parent) {
 		const roomElem = doc.createElement("room");

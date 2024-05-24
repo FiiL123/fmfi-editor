@@ -1,14 +1,14 @@
-import Door, { addDoor } from "./objects/Door.js";
+import { addDoor } from "./objects/Door.js";
 import { addLift } from "./objects/Lift.js";
-import Room, { addRoom } from "./objects/Room.js";
+import { addRoom } from "./objects/Room.js";
 import Stairs, { addStairs } from "./objects/Stairs.js";
-import Floor, { addFloor } from "./objects/Floor.js";
+import { addFloor } from "./objects/Floor.js";
 import { addVendingMachine } from "./objects/VendingMachine.js";
 import { addWall } from "./objects/Wall.js";
 import { addVertex } from "./objects/Vertex.js";
 import { addEdge } from "./objects/Edge.js";
 
-export default class XMLReader {
+export default class XMLManager {
 	constructor(xml_text) {
 		const parser = new DOMParser();
 		const xmlDoc = parser.parseFromString(part_xml, "text/xml");
@@ -205,8 +205,8 @@ export default class XMLReader {
 	}
 }
 
-const xmlReader = new XMLReader(part_xml);
+const xmlManager = new XMLManager(part_xml);
 
 export function exportPartXML() {
-	xmlReader.exportXML();
+	xmlManager.exportXML();
 }

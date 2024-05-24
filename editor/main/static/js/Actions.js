@@ -1,13 +1,14 @@
 class EmptyAction {
-	constructor(props) {}
+	constructor() {}
 
 	make() {}
 
 	revert() {}
 }
 
-export class DeleteAction {
+export class DeleteAction extends EmptyAction {
 	constructor(obj) {
+		super();
 		this.obj = obj;
 	}
 
@@ -21,8 +22,9 @@ export class DeleteAction {
 	}
 }
 
-export class TransformAction {
+export class TransformAction extends EmptyAction {
 	constructor(obj, prevX, prevY, prevW, prevH) {
+		super();
 		this.obj = obj;
 		this.prevPostition = { x: prevX, y: prevY, w: prevW, h: prevH };
 	}
@@ -34,8 +36,9 @@ export class TransformAction {
 	}
 }
 
-export class TransformPolyAction {
+export class TransformPolyAction extends EmptyAction {
 	constructor(obj, points) {
+		super();
 		this.obj = obj;
 		this.prevPoints = points;
 	}
