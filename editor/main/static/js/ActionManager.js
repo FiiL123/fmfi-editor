@@ -1,18 +1,28 @@
 export default class ActionManager {
 	constructor() {
-		this.stack = [];
+		this.undoStack = [];
+		this.redoStack = [];
 	}
 
 	addAction(action) {
-		this.stack.push(action);
-		console.log(this.stack);
+		this.undoStack.push(action);
+		console.log(this.undoStack);
 	}
 
 	revertLastAction() {
 		console.log("reverting last action");
-		const action = this.stack.pop();
+		const action = this.undoStack.pop();
 		if (action) {
 			action.revert();
+		}
+		this.redoStack.push(action);
+	}
+
+	redoLastAction() {
+		console.log(this.redoStack);
+		const action = this.redoStack.pop();
+		if (action) {
+			action.make();
 		}
 	}
 }

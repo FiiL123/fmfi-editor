@@ -1,7 +1,7 @@
 import { addDoor } from "./objects/Door.js";
 import { addLift } from "./objects/Lift.js";
 import { addRoom } from "./objects/Room.js";
-import { exportPartXML } from "./XMLReader.js";
+import { exportPartXML } from "./XMLManager.js";
 
 function toolbarClickFunc(element) {
 	console.log(element.title);
