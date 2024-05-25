@@ -14,8 +14,8 @@ export default class ActionManager {
 		const action = this.undoStack.pop();
 		if (action) {
 			action.revert();
+			this.redoStack.push(action);
 		}
-		this.redoStack.push(action);
 	}
 
 	redoLastAction() {
