@@ -22,9 +22,11 @@ function toolbarClickFunc(element) {
 			if (bottom_layer.visible()) {
 				bottom_layer.visible(false);
 				layer.opacity(1);
+				element.classList.replace("btn-primary", "btn-secondary");
 			} else {
 				bottom_layer.visible(true);
 				layer.opacity(0.7);
+				element.classList.replace("btn-secondary", "btn-primary");
 			}
 			break;
 		case "Toggle graph view":
@@ -32,10 +34,12 @@ function toolbarClickFunc(element) {
 				graphLayer.visible(false);
 				layer.opacity(1);
 				layer.listening(true);
+				element.classList.replace("btn-primary", "btn-secondary");
 			} else {
 				graphLayer.visible(true);
-				layer.opacity(0.6);
+				layer.opacity(0.7);
 				layer.listening(false);
+				element.classList.replace("btn-secondary", "btn-primary");
 			}
 			break;
 		case "Save changes":

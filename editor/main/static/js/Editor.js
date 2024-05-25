@@ -48,6 +48,9 @@ if (img_src != null) {
 	};
 	imageObj.src = img_src;
 	layer.opacity(0.7);
+	document
+		.getElementById("toggle-map-button")
+		.classList.replace("btn-secondary", "btn-primary");
 }
 
 stage.add(layer);
