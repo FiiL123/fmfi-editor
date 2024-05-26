@@ -32,7 +32,7 @@ function toolbarClickFunc(element) {
 		case "Toggle graph view":
 			if (graphLayer.visible()) {
 				graphLayer.visible(false);
-				layer.opacity(1);
+				if (!bottom_layer.visible()) layer.opacity(1);
 				layer.listening(true);
 				element.classList.replace("btn-primary", "btn-secondary");
 			} else {
