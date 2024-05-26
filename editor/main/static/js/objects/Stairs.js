@@ -1,13 +1,14 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Stairs {
-	constructor(attributes, geometryType, geometry) {
+	constructor(attributes, layer, geometryType, geometry) {
 		this.color = "magenta";
 		this.attributes = attributes;
+		this.layer = layer;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		this.geometry = createGeometry(this, geometryType, geometry, this.color);
 		this.isStairway = !attributes.has("steps");
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 
 		if (this.isStairway) {
 			this.text = attributes.has("type") ? attributes.get("type") : "U-shaped";
@@ -19,7 +20,7 @@ export default class Stairs {
 				y: textPosition.y - 4,
 				fontSize: this.fontSize,
 			});
-			layer.add(this.typeText);
+			this.layer.add(this.typeText);
 		}
 	}
 
@@ -46,9 +47,9 @@ export default class Stairs {
 	}
 
 	ressurect() {
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 		if (this.attributes.has("type")) {
-			layer.add(this.typeText);
+			this.layer.add(this.typeText);
 		}
 	}
 
@@ -78,8 +79,8 @@ export default class Stairs {
 	}
 }
 
-export function addStairs(attributes, geometryType, geometry) {
-	const stairs = new Stairs(attributes, geometryType, geometry);
+export function addStairs(attributes, layer, geometryType, geometry) {
+	const stairs = new Stairs(attributes, layer, geometryType, geometry);
 	objects.push(stairs);
 	return stairs;
 }

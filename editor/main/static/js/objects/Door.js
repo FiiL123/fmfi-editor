@@ -1,12 +1,13 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Door {
-	constructor(attributes, geometryType, geometry) {
+	constructor(attributes, layer, geometryType, geometry) {
 		this.color = "red";
 		this.attributes = attributes;
+		this.layer = layer;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		this.geometry = createGeometry(this, geometryType, geometry, this.color);
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 	}
 	updateSidebar() {
 		createSidebar(this);
@@ -24,7 +25,7 @@ export default class Door {
 	}
 
 	ressurect() {
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 		this.geometry.moveToTop();
 	}
 
@@ -44,8 +45,8 @@ export default class Door {
 	}
 }
 
-export function addDoor(attributes, geometryType, geometry) {
-	const door = new Door(attributes, geometryType, geometry);
+export function addDoor(attributes, layer, geometryType, geometry) {
+	const door = new Door(attributes, layer, geometryType, geometry);
 	objects.push(door);
 	door.geometry.moveToTop();
 	return door;

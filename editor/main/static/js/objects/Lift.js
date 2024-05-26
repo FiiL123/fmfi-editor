@@ -1,12 +1,13 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Lift {
-	constructor(attributes, geometryType, geometry) {
+	constructor(attributes, layer, geometryType, geometry) {
 		this.color = "blue";
 		this.attributes = attributes;
+		this.layer = layer;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		this.geometry = createGeometry(this, geometryType, geometry, this.color);
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 	}
 	toString() {
 		return `Lift(${this.geometry.x()}-${this.geometry.y()})`;
@@ -24,7 +25,7 @@ export default class Lift {
 	}
 
 	ressurect() {
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 		this.geometry.moveToBottom();
 	}
 
@@ -52,8 +53,8 @@ export default class Lift {
 	}
 }
 
-export function addLift(attributes, geometryType, geometry) {
-	const lift = new Lift(attributes, geometryType, geometry);
+export function addLift(attributes, layer, geometryType, geometry) {
+	const lift = new Lift(attributes, layer, geometryType, geometry);
 	objects.push(lift);
 	return lift;
 }

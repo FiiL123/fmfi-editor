@@ -1,12 +1,13 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Wall {
-	constructor(attributes, geometryType, geometry) {
+	constructor(attributes, layer, geometryType, geometry) {
 		this.color = "black";
 		this.attributes = attributes;
+		this.layer = layer;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		this.geometry = createGeometry(this, geometryType, geometry, this.color);
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 	}
 	updateSidebar() {
 		createSidebar(this);
@@ -23,7 +24,7 @@ export default class Wall {
 	}
 
 	ressurect() {
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 	}
 
 	moveBack(prevPosition) {
@@ -42,8 +43,8 @@ export default class Wall {
 	}
 }
 
-export function addWall(attributes, geometryType, geometry) {
-	const wall = new Wall(attributes, geometryType, geometry);
+export function addWall(attributes, layer, geometryType, geometry) {
+	const wall = new Wall(attributes, layer, geometryType, geometry);
 	objects.push(wall);
 	return wall;
 }

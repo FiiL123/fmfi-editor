@@ -9,9 +9,9 @@ import { addVertex } from "./objects/Vertex.js";
 import { addEdge } from "./objects/Edge.js";
 
 export default class XMLManager {
-	constructor(xml_text) {
+	constructor(xml_text, layer, graphLayer) {
 		const parser = new DOMParser();
-		const xmlDoc = parser.parseFromString(part_xml, "text/xml");
+		const xmlDoc = parser.parseFromString(xml_text, "text/xml");
 
 		const part_elem = xmlDoc.getElementsByTagName("part")[0];
 		const part_children = part_elem.children;
@@ -31,18 +31,17 @@ export default class XMLManager {
 							w: rectPoints.x2 - rectPoints.x1,
 							h: rectPoints.y2 - rectPoints.y1,
 						};
-						const r = addRoom(attributes, "rectangle", geometry);
+						const r = addRoom(attributes, layer, "rectangle", geometry);
 					} else if (elem.children[0].tagName === "polygon") {
 						const polygon = elem.children[0];
 						const points = this.readPolygonPoints(polygon);
-						const r = addRoom(attributes, "polygon", points);
-						// addPolygonRoom(points, attributes)
+						const r = addRoom(attributes, layer, "polygon", points);
 					}
 					break;
 				case "door":
 					const line = elem.children[0];
 					const points = this.readLinePoints(line);
-					addDoor(attributes, "line", points);
+					addDoor(attributes, layer, "line", points);
 					break;
 				case "floor":
 					if (elem.children[0].tagName === "rectangle") {
@@ -54,13 +53,13 @@ export default class XMLManager {
 							w: rectPoints.x2 - rectPoints.x1,
 							h: rectPoints.y2 - rectPoints.y1,
 						};
-						const f = addFloor(attributes, "rectangle", geometry);
+						const f = addFloor(attributes, layer, "rectangle", geometry);
 						f.lockDragging();
 						f.geometry.moveToBottom();
 					} else if (elem.children[0].tagName === "polygon") {
 						const polygon = elem.children[0];
 						const points = this.readPolygonPoints(polygon);
-						const f = addFloor(attributes, "polygon", points);
+						const f = addFloor(attributes, layer, "polygon", points);
 						f.lockDragging();
 						f.geometry.moveToBottom();
 					} else if (elem.children[0].tagName === "hollowrectangle") {
@@ -71,7 +70,7 @@ export default class XMLManager {
 						const holePoints = this.getRectangularGeometry(
 							this.readHolePoints(rect),
 						);
-						const f = addFloor(attributes, "hollowrectangle", {
+						const f = addFloor(attributes, layer, "hollowrectangle", {
 							rect: rectPoints,
 							holePoints: holePoints,
 						});
@@ -90,7 +89,7 @@ export default class XMLManager {
 						w: rectPoints1.x2 - rectPoints1.x1,
 						h: rectPoints1.y2 - rectPoints1.y1,
 					};
-					const r = addLift(attributes, "rectangle", geometry1);
+					const r = addLift(attributes, layer, "rectangle", geometry1);
 					break;
 				case "stairway":
 				case "stairs":
@@ -101,7 +100,7 @@ export default class XMLManager {
 							...this.readLinePoints(line0),
 							...this.reversePoints(this.readLinePoints(line1)),
 						];
-						const s = addStairs(attributes, "polygon", points);
+						const s = addStairs(attributes, layer, "polygon", points);
 					} else if (elem.children[0].tagName === "polyline") {
 						const line0 = elem.children[0];
 						const line1 = elem.children[1];
@@ -109,7 +108,7 @@ export default class XMLManager {
 							...this.readPolygonPoints(line0),
 							...this.reversePoints(this.readPolygonPoints(line1)),
 						];
-						const s = addStairs(attributes, "polygon", points);
+						const s = addStairs(attributes, layer, "polygon", points);
 					}
 					break;
 				case "vending-machine":
@@ -121,24 +120,33 @@ export default class XMLManager {
 						w: rectPoints2.x2 - rectPoints2.x1,
 						h: rectPoints2.y2 - rectPoints2.y1,
 					};
-					const m = addVendingMachine(attributes, "rectangle", geometry2);
+					const m = addVendingMachine(
+						attributes,
+						layer,
+						"rectangle",
+						geometry2,
+					);
 					break;
 				case "wall":
 					const geo = elem.children[0];
 					let points1 = [];
 					if (geo.tagName === "polyline") {
 						points1 = this.readPolygonPoints(elem.children[0]);
-						const l = addWall(attributes, "polyline", points1);
+						const l = addWall(attributes, layer, "polyline", points1);
 					} else {
 						points1 = this.readLinePoints(geo);
-						const l = addWall(attributes, "line", points1);
+						const l = addWall(attributes, layer, "line", points1);
 					}
 					break;
 				case "vertex":
-					const vertex = addVertex(attributes);
+					if (graphLayer) {
+						const vertex = addVertex(attributes, graphLayer);
+					}
 					break;
 				case "edge":
-					const edge = addEdge(attributes);
+					if (graphLayer) {
+						const edge = addEdge(attributes, graphLayer);
+					}
 					break;
 			}
 		}
@@ -237,7 +245,7 @@ export default class XMLManager {
 	}
 }
 
-const xmlManager = new XMLManager(part_xml);
+const xmlManager = new XMLManager(part_xml, layer, graphLayer);
 
 export function exportPartXML() {
 	xmlManager.exportXML();

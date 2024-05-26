@@ -1,9 +1,10 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Edge {
-	constructor(attributes) {
+	constructor(attributes, layer) {
 		this.color = "black";
 		this.attributes = attributes;
+		this.layer = layer;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		if (!this.createEdge()) {
 			lateEdges.push(this);
@@ -26,7 +27,7 @@ export default class Edge {
 				v2.getPoints().y,
 			];
 			this.geometry = createGeometry(this, "line", this.points, "black");
-			graphLayer.add(this.geometry);
+			this.layer.add(this.geometry);
 			return true;
 		}
 		return false;
@@ -53,8 +54,8 @@ export default class Edge {
 	}
 }
 
-export function addEdge(attributes) {
-	const edge = new Edge(attributes);
+export function addEdge(attributes, layer) {
+	const edge = new Edge(attributes, layer);
 	objects.push(edge);
 	return edge;
 }

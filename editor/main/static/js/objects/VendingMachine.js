@@ -1,12 +1,13 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class VendingMachine {
-	constructor(attributes, geometryType, geometry) {
+	constructor(attributes, layer, geometryType, geometry) {
 		this.color = "yellow";
 		this.attributes = attributes;
+		this.layer = layer;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		this.geometry = createGeometry(this, geometryType, geometry, this.color);
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 	}
 	toString() {
 		return `VendingMachine(${this.geometry.x()}-${this.geometry.y()})`;
@@ -24,7 +25,7 @@ export default class VendingMachine {
 	}
 
 	ressurect() {
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 		this.geometry.moveToBottom();
 	}
 
@@ -52,8 +53,8 @@ export default class VendingMachine {
 	}
 }
 
-export function addVendingMachine(attributes, geometryType, geometry) {
-	const machine = new VendingMachine(attributes, geometryType, geometry);
+export function addVendingMachine(attributes, layer, geometryType, geometry) {
+	const machine = new VendingMachine(attributes, layer, geometryType, geometry);
 	objects.push(machine);
 	return machine;
 }

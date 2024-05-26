@@ -1,7 +1,7 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Room {
-	constructor(attributes, geometryType, geometry) {
+	constructor(attributes, layer, geometryType, geometry) {
 		const purpose = purposesData.find(
 			(purpose) => purpose.pk === attributes.get("purpose"),
 		);
@@ -10,10 +10,11 @@ export default class Room {
 			this.color = "rgb(" + purpose.fields.colour + ")";
 		}
 		this.attributes = attributes;
+		this.layer = layer;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		this.number = attributes.has("number") ? attributes.get("number") : "";
 		this.geometry = createGeometry(this, geometryType, geometry, this.color);
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 
 		this.text = attributes.has("custom-map-label")
 			? attributes.get("custom-map-label")
@@ -30,7 +31,7 @@ export default class Room {
 			y: textPosition.y + 4,
 			fontSize: this.fontSize,
 		});
-		layer.add(this.numberText);
+		this.layer.add(this.numberText);
 	}
 
 	updateSidebar() {
@@ -54,8 +55,8 @@ export default class Room {
 	}
 
 	ressurect() {
-		layer.add(this.geometry);
-		layer.add(this.numberText);
+		this.layer.add(this.geometry);
+		this.layer.add(this.numberText);
 	}
 
 	moveBack(prevPosition) {
@@ -81,8 +82,8 @@ export default class Room {
 	}
 }
 
-export function addRoom(attributes, geometryType, geometry) {
-	const room = new Room(attributes, geometryType, geometry);
+export function addRoom(attributes, layer, geometryType, geometry) {
+	const room = new Room(attributes, layer, geometryType, geometry);
 	objects.push(room);
 	return room;
 }

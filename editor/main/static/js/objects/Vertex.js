@@ -1,9 +1,10 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Vertex {
-	constructor(attributes) {
+	constructor(attributes, layer) {
 		this.color = "red";
 		this.attributes = attributes;
+		this.layer = layer;
 		this.edges = [];
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		const points = {
@@ -12,7 +13,7 @@ export default class Vertex {
 		};
 		vertices.set(attributes.get("id"), this);
 		this.geometry = createGeometry(this, "circle", points, this.color);
-		graphLayer.add(this.geometry);
+		this.layer.add(this.geometry);
 	}
 
 	updateSidebar() {
@@ -53,9 +54,9 @@ export default class Vertex {
 
 	ressurect() {
 		for (const edge of this.edges) {
-			graphLayer.add(edge.geometry);
+			this.layer.add(edge.geometry);
 		}
-		graphLayer.add(this.geometry);
+		this.layer.add(this.geometry);
 	}
 
 	moveBack(prevPosition) {
@@ -67,8 +68,8 @@ export default class Vertex {
 	}
 }
 
-export function addVertex(attributes) {
-	const vertex = new Vertex(attributes);
+export function addVertex(attributes, layer) {
+	const vertex = new Vertex(attributes, layer);
 	objects.push(vertex);
 	return vertex;
 }

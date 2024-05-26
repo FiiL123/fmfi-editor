@@ -1,10 +1,11 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Floor {
-	constructor(attributes, geometryType, geometry) {
+	constructor(attributes, layer, geometryType, geometry) {
 		this.color = "white";
 		this.holeColor = "#ffefe0";
 		this.attributes = attributes;
+		this.layer = layer;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		if (geometryType === "hollowrectangle") {
 			console.log("IM HOLLOW");
@@ -20,12 +21,12 @@ export default class Floor {
 				geometry.holePoints,
 				this.holeColor,
 			);
-			layer.add(this.geometryRect);
+			this.layer.add(this.geometryRect);
 			console.log(this.geometryRect);
-			layer.add(this.geometryHole);
+			this.layer.add(this.geometryHole);
 		} else {
 			this.geometry = createGeometry(this, geometryType, geometry, this.color);
-			layer.add(this.geometry);
+			this.layer.add(this.geometry);
 		}
 	}
 
@@ -40,7 +41,7 @@ export default class Floor {
 	}
 
 	ressurect() {
-		layer.add(this.geometry);
+		this.layer.add(this.geometry);
 		this.geometry.moveToBottom();
 	}
 
@@ -73,8 +74,8 @@ export default class Floor {
 	}
 }
 
-export function addFloor(attributes, geometryType, geometry) {
-	const floor = new Floor(attributes, geometryType, geometry);
+export function addFloor(attributes, layer, geometryType, geometry) {
+	const floor = new Floor(attributes, layer, geometryType, geometry);
 	objects.push(floor);
 	return floor;
 }
