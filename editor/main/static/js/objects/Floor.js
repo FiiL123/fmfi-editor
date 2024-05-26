@@ -3,10 +3,30 @@ import { createGeometry, createSidebar } from "./Helper.js";
 export default class Floor {
 	constructor(attributes, geometryType, geometry) {
 		this.color = "white";
+		this.holeColor = "#ffefe0";
 		this.attributes = attributes;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
-		this.geometry = createGeometry(this, geometryType, geometry, this.color);
-		layer.add(this.geometry);
+		if (geometryType === "hollowrectangle") {
+			console.log("IM HOLLOW");
+			this.geometryRect = createGeometry(
+				this,
+				"rectangle",
+				geometry.rect,
+				this.color,
+			);
+			this.geometryHole = createGeometry(
+				this,
+				"rectangle",
+				geometry.holePoints,
+				this.holeColor,
+			);
+			layer.add(this.geometryRect);
+			console.log(this.geometryRect);
+			layer.add(this.geometryHole);
+		} else {
+			this.geometry = createGeometry(this, geometryType, geometry, this.color);
+			layer.add(this.geometry);
+		}
 	}
 
 	updateSidebar() {
@@ -35,7 +55,12 @@ export default class Floor {
 	}
 
 	lockDragging() {
-		this.geometry.draggable(false);
+		if (this.geometry) {
+			this.geometry.draggable(false);
+		} else {
+			this.geometryRect.draggable(false);
+			this.geometryHole.draggable(false);
+		}
 	}
 
 	toXML(doc, parent) {

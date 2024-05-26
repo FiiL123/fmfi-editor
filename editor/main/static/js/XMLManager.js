@@ -63,6 +63,21 @@ export default class XMLManager {
 						const f = addFloor(attributes, "polygon", points);
 						f.lockDragging();
 						f.geometry.moveToBottom();
+					} else if (elem.children[0].tagName === "hollowrectangle") {
+						const rect = elem.children[0];
+						const rectPoints = this.getRectangularGeometry(
+							this.readRectanglePoints(rect),
+						);
+						const holePoints = this.getRectangularGeometry(
+							this.readHolePoints(rect),
+						);
+						const f = addFloor(attributes, "hollowrectangle", {
+							rect: rectPoints,
+							holePoints: holePoints,
+						});
+						f.lockDragging();
+						f.geometryHole.moveToBottom();
+						f.geometryRect.moveToBottom();
 					}
 					break;
 
@@ -143,11 +158,28 @@ export default class XMLManager {
 		return points;
 	}
 
+	getRectangularGeometry(rectPoints) {
+		const geometry = {
+			x: rectPoints.x1,
+			y: rectPoints.y1,
+			w: rectPoints.x2 - rectPoints.x1,
+			h: rectPoints.y2 - rectPoints.y1,
+		};
+		return geometry;
+	}
+
 	readRectanglePoints(rectangle) {
 		const x1 = parseInt(rectangle.getAttribute("x1"));
 		const x2 = parseInt(rectangle.getAttribute("x2"));
 		const y1 = parseInt(rectangle.getAttribute("y1"));
 		const y2 = parseInt(rectangle.getAttribute("y2"));
+		return { x1: x1, x2: x2, y1: y1, y2: y2 };
+	}
+	readHolePoints(rectangle) {
+		const x1 = parseInt(rectangle.getAttribute("hx1"));
+		const x2 = parseInt(rectangle.getAttribute("hx2"));
+		const y1 = parseInt(rectangle.getAttribute("hy1"));
+		const y2 = parseInt(rectangle.getAttribute("hy2"));
 		return { x1: x1, x2: x2, y1: y1, y2: y2 };
 	}
 
