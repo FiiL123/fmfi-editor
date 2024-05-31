@@ -18,10 +18,10 @@ function toolbarClickFunc(element) {
 			);
 			break;
 		case "Create doors":
-			addDoor();
+			addDoor(new Map(), layer, "line", [10, 10, 10, 20]);
 			break;
 		case "Create lift/stairs":
-			addLift();
+			addLift(new Map(), layer, "rectangle", { x: 10, y: 10, w: 15, h: 15 });
 			break;
 		case "Toggle plan view":
 			if (bottom_layer) {
