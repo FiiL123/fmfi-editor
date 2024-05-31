@@ -19,20 +19,22 @@ function toolbarClickFunc(element) {
 			addLift();
 			break;
 		case "Toggle plan view":
-			if (bottom_layer.visible()) {
-				bottom_layer.visible(false);
-				layer.opacity(1);
-				element.classList.replace("btn-primary", "btn-secondary");
-			} else {
-				bottom_layer.visible(true);
-				layer.opacity(0.7);
-				element.classList.replace("btn-secondary", "btn-primary");
+			if (bottom_layer) {
+				if (bottom_layer.visible()) {
+					bottom_layer.visible(false);
+					layer.opacity(1);
+					element.classList.replace("btn-primary", "btn-secondary");
+				} else {
+					bottom_layer.visible(true);
+					layer.opacity(0.7);
+					element.classList.replace("btn-secondary", "btn-primary");
+				}
 			}
 			break;
 		case "Toggle graph view":
 			if (graphLayer.visible()) {
 				graphLayer.visible(false);
-				if (!bottom_layer.visible()) layer.opacity(1);
+				if (!bottom_layer || !bottom_layer.visible()) layer.opacity(1);
 				layer.listening(true);
 				element.classList.replace("btn-primary", "btn-secondary");
 			} else {
