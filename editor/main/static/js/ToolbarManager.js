@@ -54,4 +54,32 @@ function toolbarClickFunc(element) {
 	}
 }
 
+function homeToolbarClickFunc(element) {
+	console.log(element.title);
+	switch (element.title) {
+		case "Level up":
+			prevLevel = selectedLevel;
+			selectedLevel += 1;
+			changeLevel();
+			break;
+		case "Level down":
+			prevLevel = selectedLevel;
+			selectedLevel -= 1;
+			changeLevel();
+			break;
+	}
+	console.log(selectedLevel);
+}
+
 window.toolbarClickFunc = toolbarClickFunc;
+window.homeToolbarClickFunc = homeToolbarClickFunc;
+
+function changeLevel() {
+	document.getElementById("level-label").textContent = selectedLevel;
+	for (let [key, value] of parts.entries()) {
+		if (value.level === prevLevel || value.level === selectedLevel) {
+			document.getElementById("part_div-" + key).toggleAttribute("hidden");
+		}
+	}
+	renderParts();
+}
