@@ -9,10 +9,9 @@ import { addVertex } from "./objects/Vertex.js";
 import { addEdge } from "./objects/Edge.js";
 
 export default class XMLManager {
-	constructor(xml_text, layer, graphLayer) {
+	constructor(xml_text, layer, graphLayer, scale) {
 		const parser = new DOMParser();
 		const xmlDoc = parser.parseFromString(xml_text, "text/xml");
-
 		const part_elem = xmlDoc.getElementsByTagName("part")[0];
 		const part_children = part_elem.children;
 		for (const elem of part_children) {
@@ -31,11 +30,11 @@ export default class XMLManager {
 							w: rectPoints.x2 - rectPoints.x1,
 							h: rectPoints.y2 - rectPoints.y1,
 						};
-						const r = addRoom(attributes, layer, "rectangle", geometry);
+						const r = addRoom(attributes, layer, "rectangle", geometry, scale);
 					} else if (elem.children[0].tagName === "polygon") {
 						const polygon = elem.children[0];
 						const points = this.readPolygonPoints(polygon);
-						const r = addRoom(attributes, layer, "polygon", points);
+						const r = addRoom(attributes, layer, "polygon", points, scale);
 					}
 					break;
 				case "door":
@@ -100,7 +99,7 @@ export default class XMLManager {
 							...this.readLinePoints(line0),
 							...this.reversePoints(this.readLinePoints(line1)),
 						];
-						const s = addStairs(attributes, layer, "polygon", points);
+						const s = addStairs(attributes, layer, "polygon", points, scale);
 					} else if (elem.children[0].tagName === "polyline") {
 						const line0 = elem.children[0];
 						const line1 = elem.children[1];
@@ -108,7 +107,7 @@ export default class XMLManager {
 							...this.readPolygonPoints(line0),
 							...this.reversePoints(this.readPolygonPoints(line1)),
 						];
-						const s = addStairs(attributes, layer, "polygon", points);
+						const s = addStairs(attributes, layer, "polygon", points, scale);
 					}
 					break;
 				case "vending-machine":
@@ -150,8 +149,10 @@ export default class XMLManager {
 					break;
 			}
 		}
-		for (const lateEdge of lateEdges) {
-			lateEdge.createEdge();
+		if (graphLayer) {
+			for (const lateEdge of lateEdges) {
+				lateEdge.createEdge();
+			}
 		}
 	}
 
@@ -245,7 +246,11 @@ export default class XMLManager {
 	}
 }
 
-const xmlManager = new XMLManager(part_xml, layer, graphLayer);
+var xmlManager = null;
+
+try {
+	xmlManager = new XMLManager(part_xml, layer, graphLayer, part_scale);
+} catch (e) {}
 
 export function exportPartXML() {
 	xmlManager.exportXML();

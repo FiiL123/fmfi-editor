@@ -3,98 +3,137 @@ function syncValue(source, targetId) {
     var target = document.getElementById(targetId);
     target.value = source.value;
 }
+var parts =  new Map()
+var objects = []
+var purposesData = JSON.parse('{{ purposes|safe }}');
+
+var width = 8 * (window.innerWidth / 12);
+var height = window.innerHeight;
+var stage = new Konva.Stage({
+	container: "canvas-container",
+	width: width,
+	height: height,
+	draggable: true,
+});
+var scaleBy = 1.1;
+
+function getDistance(p1, p2) {
+	return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+}
+
+function getCenter(p1, p2) {
+	return {
+		x: (p1.x + p2.x) / 2,
+		y: (p1.y + p2.y) / 2,
+	};
+}
+
+var lastCenter = null;
+var lastDist = 0;
+var dragStopped = false;
 </script>
 <div id="sidebar" class="col-4 bg-secondary p-4 h-100 overflow-auto">
     <h2 class="text-white mb-3">Parts</h2>
     <button id="save-config-btn" class="btn btn-success mt-3">Save Configurations</button>
     <ul class="list-group">
         {% for part in parts %}
-            <li class="list-group-item bg-light">
-                <strong>{{ part.name }}</strong>
-                <div class="row mt-2">
-                    <div class="col-12 col-md-6 d-flex align-items-center">
-                        <label class="form-label me-2">X-offset:</label>
-                        <input type="range"
-                               class="form-range me-2"
-                               min="-3000"
-                               max="3000"
-                               step="1"
-                               value="{{ part.dx }}"
-                               id="x-offset-slider-{{ part.id }}"
-                               oninput="syncValue(this, 'x-offset-number-{{ part.id }}')">
-                        <input type="number"
-                               class="form-control"
-                               style="width: 80px"
-                               min="-3000"
-                               max="3000"
-                               step="1"
-                               value="{{ part.dx }}"
-                               id="x-offset-number-{{ part.id }}"
-                               oninput="syncValue(this, 'x-offset-slider-{{ part.id }}')">
+            {% if part.level == 0 %}
+                <li class="list-group-item bg-light">
+                    <strong>{{ part.name }}</strong>
+                    <div class="row mt-2">
+                        <div class="col-12 col-md-6 d-flex align-items-center">
+                            <label class="form-label me-2">X-offset:</label>
+                            <input type="range"
+                                   class="form-range me-2"
+                                   min="-3000"
+                                   max="3000"
+                                   step="1"
+                                   value="{{ part.dx }}"
+                                   id="x-offset-slider-{{ part.id }}"
+                                   oninput="syncValue(this, 'x-offset-number-{{ part.id }}')">
+                            <input type="number"
+                                   class="form-control"
+                                   style="width: 80px"
+                                   min="-3000"
+                                   max="3000"
+                                   step="1"
+                                   value="{{ part.dx }}"
+                                   id="x-offset-number-{{ part.id }}"
+                                   oninput="syncValue(this, 'x-offset-slider-{{ part.id }}')">
+                        </div>
+                        <div class="col-12 col-md-6 d-flex align-items-center">
+                            <label class="form-label me-2">Y-offset:</label>
+                            <input type="range"
+                                   class="form-range me-2"
+                                   min="-3000"
+                                   max="3000"
+                                   step="1"
+                                   value="{{ part.dy }}"
+                                   id="y-offset-slider-{{ part.id }}"
+                                   oninput="syncValue(this, 'y-offset-number-{{ part.id }}')">
+                            <input type="number"
+                                   class="form-control"
+                                   style="width: 80px"
+                                   min="-3000"
+                                   max="3000"
+                                   step="1"
+                                   value="{{ part.dy }}"
+                                   id="y-offset-number-{{ part.id }}"
+                                   oninput="syncValue(this, 'y-offset-slider-{{ part.id }}')">
+                        </div>
+                        <div class="col-12 col-md-6 d-flex align-items-center">
+                            <label class="form-label me-2">X-scale:</label>
+                            <input type="range"
+                                   class="form-range me-2"
+                                   min="0.01"
+                                   max="3"
+                                   step="0.01"
+                                   value="{{ part.scale_x }}"
+                                   id="x-scale-slider-{{ part.id }}"
+                                   oninput="syncValue(this, 'x-scale-number-{{ part.id }}')">
+                            <input type="number"
+                                   class="form-control"
+                                   style="width: 80px"
+                                   min="0.01"
+                                   max="3"
+                                   step="0.01"
+                                   value="{{ part.scale_x }}"
+                                   id="x-scale-number-{{ part.id }}"
+                                   oninput="syncValue(this, 'x-scale-slider-{{ part.id }}')">
+                        </div>
+                        <div class="col-12 col-md-6 d-flex align-items-center">
+                            <label class="form-label me-2">Y-scale:</label>
+                            <input type="range"
+                                   class="form-range me-2"
+                                   min="0.01"
+                                   max="3"
+                                   step="0.01"
+                                   value="{{ part.scale_y }}"
+                                   id="y-scale-slider-{{ part.id }}"
+                                   oninput="syncValue(this, 'y-scale-number-{{ part.id }}')">
+                            <input type="number"
+                                   class="form-control"
+                                   style="width: 80px"
+                                   min="0.01"
+                                   max="3"
+                                   step="0.01"
+                                   value="{{ part.scale_y }}"
+                                   id="y-scale-number-{{ part.id }}"
+                                   oninput="syncValue(this, 'y-scale-slider-{{ part.id }}')">
+                        </div>
                     </div>
-                    <div class="col-12 col-md-6 d-flex align-items-center">
-                        <label class="form-label me-2">Y-offset:</label>
-                        <input type="range"
-                               class="form-range me-2"
-                               min="-3000"
-                               max="3000"
-                               step="1"
-                               value="{{ part.dy }}"
-                               id="y-offset-slider-{{ part.id }}"
-                               oninput="syncValue(this, 'y-offset-number-{{ part.id }}')">
-                        <input type="number"
-                               class="form-control"
-                               style="width: 80px"
-                               min="-3000"
-                               max="3000"
-                               step="1"
-                               value="{{ part.dy }}"
-                               id="y-offset-number-{{ part.id }}"
-                               oninput="syncValue(this, 'y-offset-slider-{{ part.id }}')">
-                    </div>
-                    <div class="col-12 col-md-6 d-flex align-items-center">
-                        <label class="form-label me-2">X-scale:</label>
-                        <input type="range"
-                               class="form-range me-2"
-                               min="0.01"
-                               max="3"
-                               step="0.01"
-                               value="{{ part.scale_x }}"
-                               id="x-scale-slider-{{ part.id }}"
-                               oninput="syncValue(this, 'x-scale-number-{{ part.id }}')">
-                        <input type="number"
-                               class="form-control"
-                               style="width: 80px"
-                               min="0.01"
-                               max="3"
-                               step="0.01"
-                               value="{{ part.scale_x }}"
-                               id="x-scale-number-{{ part.id }}"
-                               oninput="syncValue(this, 'x-scale-slider-{{ part.id }}')">
-                    </div>
-                    <div class="col-12 col-md-6 d-flex align-items-center">
-                        <label class="form-label me-2">Y-scale:</label>
-                        <input type="range"
-                               class="form-range me-2"
-                               min="0.01"
-                               max="3"
-                               step="0.01"
-                               value="{{ part.scale_y }}"
-                               id="y-scale-slider-{{ part.id }}"
-                               oninput="syncValue(this, 'y-scale-number-{{ part.id }}')">
-                        <input type="number"
-                               class="form-control"
-                               style="width: 80px"
-                               min="0.01"
-                               max="3"
-                               step="0.01"
-                               value="{{ part.scale_y }}"
-                               id="y-scale-number-{{ part.id }}"
-                               oninput="syncValue(this, 'y-scale-slider-{{ part.id }}')">
-                    </div>
-                </div>
-                <a class="btn btn-primary btn-sm mt-2" href="{% url 'editor' part.id %}">Edit</a>
-            </li>
+                    <a class="btn btn-primary btn-sm mt-2" href="{% url 'editor' part.id %}">Edit</a>
+                </li>
+                <div id="part-{{ forloop.counter }}">{{ part.part_xml|json_script:"part_xml" }}</div>
+                <script>
+                var part_xml = JSON.parse(document.getElementById('part-{{ forloop.counter }}').children[0].textContent);
+                var part_info = {xml: part_xml, level: {{ part.level }}, dx: {{ part.dx }},
+                    dy: {{ part.dy }}, scale_x: {{ part.scale_x }}, scale_y: {{ part.scale_y }},
+                    name: '{{ part.name }}'
+                }
+                parts.set({{ part.id }}, part_info);
+                </script>
+            {% endif %}
         {% endfor %}
     </ul>
 </div>

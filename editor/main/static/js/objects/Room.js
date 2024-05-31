@@ -1,7 +1,7 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Room {
-	constructor(attributes, layer, geometryType, geometry) {
+	constructor(attributes, layer, geometryType, geometry, scale) {
 		const purpose = purposesData.find(
 			(purpose) => purpose.pk === attributes.get("purpose"),
 		);
@@ -23,7 +23,7 @@ export default class Room {
 
 		const textPosition = this.geometry.getLabelPoint();
 		this.fontSize = Math.floor(
-			(attributes.has("important") ? 30 : 16) * (1 / part_scale),
+			(attributes.has("important") ? 30 : 16) * (1 / scale),
 		);
 		this.numberText = new Konva.Text({
 			text: this.text,
@@ -82,8 +82,8 @@ export default class Room {
 	}
 }
 
-export function addRoom(attributes, layer, geometryType, geometry) {
-	const room = new Room(attributes, layer, geometryType, geometry);
+export function addRoom(attributes, layer, geometryType, geometry, scale) {
+	const room = new Room(attributes, layer, geometryType, geometry, scale);
 	objects.push(room);
 	return room;
 }

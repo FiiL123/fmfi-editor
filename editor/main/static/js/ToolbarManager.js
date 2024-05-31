@@ -7,10 +7,15 @@ function toolbarClickFunc(element) {
 	console.log(element.title);
 	switch (element.title) {
 		case "Create rectangular room":
-			addRoom(new Map(), "rectangle", { x: 10, y: 10, w: 100, h: 100 });
+			addRoom(new Map(), layer, "rectangle", { x: 10, y: 10, w: 100, h: 100 });
 			break;
 		case "Create polygon room":
-			addRoom(new Map(), "polygon", [200, 200, 100, 200, 100, 100, 200, 100]);
+			addRoom(
+				new Map(),
+				layer,
+				"polygon",
+				[200, 200, 100, 200, 100, 100, 200, 100],
+			);
 			break;
 		case "Create doors":
 			addDoor();

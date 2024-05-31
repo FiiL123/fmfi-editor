@@ -8,7 +8,6 @@ export default class Floor {
 		this.layer = layer;
 		this.id = attributes.has("id") ? attributes.get("id") : "";
 		if (geometryType === "hollowrectangle") {
-			console.log("IM HOLLOW");
 			this.geometryRect = createGeometry(
 				this,
 				"rectangle",
@@ -22,7 +21,6 @@ export default class Floor {
 				this.holeColor,
 			);
 			this.layer.add(this.geometryRect);
-			console.log(this.geometryRect);
 			this.layer.add(this.geometryHole);
 		} else {
 			this.geometry = createGeometry(this, geometryType, geometry, this.color);

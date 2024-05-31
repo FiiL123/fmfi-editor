@@ -1,3 +1,5 @@
+import XMLManager from "./XMLManager.js";
+
 document
 	.getElementById("save-config-btn")
 	.addEventListener("click", function () {
@@ -25,3 +27,30 @@ document
 			})
 			.catch((error) => console.error("Error:", error));
 	});
+
+stage.getContainer().style.backgroundColor = "#ffef00";
+
+var layer = new Konva.Layer();
+stage.add(layer);
+layer.listening(false);
+
+var part_groups = new Map();
+for (let [key, value] of parts.entries()) {
+	if (value.level === 0 && value.name !== "virt") {
+		let group = new Konva.Group();
+		const scale = (value.scale_x + value.scale_y) / 2;
+		let xml = new XMLManager(value.xml, group, null, scale);
+		group.scale({ x: value.scale_x, y: value.scale_y });
+		group.offset({
+			x: -(value.dx / value.scale_x),
+			y: -(value.dy / value.scale_y),
+		});
+
+		console.log(`part: ${value.name}`);
+		console.log(group.scale());
+		console.log(group.offset());
+		console.log(group.getAbsoluteTransform().decompose());
+		part_groups.set(key, group);
+		layer.add(group);
+	}
+}

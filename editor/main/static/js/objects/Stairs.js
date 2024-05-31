@@ -1,7 +1,7 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 
 export default class Stairs {
-	constructor(attributes, layer, geometryType, geometry) {
+	constructor(attributes, layer, geometryType, geometry, scale) {
 		this.color = "magenta";
 		this.attributes = attributes;
 		this.layer = layer;
@@ -13,7 +13,7 @@ export default class Stairs {
 		if (this.isStairway) {
 			this.text = attributes.has("type") ? attributes.get("type") : "U-shaped";
 			const textPosition = this.geometry.getLabelPoint();
-			this.fontSize = Math.floor(12 * (1 / part_scale));
+			this.fontSize = Math.floor(12 * (1 / scale));
 			this.typeText = new Konva.Text({
 				text: this.text,
 				x: textPosition.x + 4,
@@ -79,8 +79,8 @@ export default class Stairs {
 	}
 }
 
-export function addStairs(attributes, layer, geometryType, geometry) {
-	const stairs = new Stairs(attributes, layer, geometryType, geometry);
+export function addStairs(attributes, layer, geometryType, geometry, scale) {
+	const stairs = new Stairs(attributes, layer, geometryType, geometry, scale);
 	objects.push(stairs);
 	return stairs;
 }
