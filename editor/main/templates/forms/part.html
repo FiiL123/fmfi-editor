@@ -1,0 +1,41 @@
+{% extends 'forms/form_base.html' %}
+{% block extra_head %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/xml/xml.min.js"></script>
+{% endblock %}
+{% load static %}
+{% block title %}Add/edit part{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        {% if form.instance.id %}
+            <h2>Edit Part</h2>
+            <form method="post" action="{% url 'edit_part' form.instance.id %}">
+                <a type="button"
+                   class="btn btn-danger"
+                   href="{% url 'delete_part' form.instance.id %}"
+                   onclick="confirm('Are you sure you want to detele {{ form.instance.name }} ?')">Delete</a>
+            {% else %}
+                <h2>Create Part</h2>
+                <form method="post" action="{% url 'add_part' %}">
+                {% endif %}
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var textareas = document.getElementsByClassName('codemirror-textarea');
+        for (var i = 0; i < textareas.length; i++) {
+            CodeMirror.fromTextArea(textareas[i], {
+                mode: "xml",
+                lineNumbers: true,
+                matchBrackets: true,
+                autoCloseTags: true
+            });
+        }
+    });
+        </script>
+    {% endblock %}

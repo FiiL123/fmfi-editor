@@ -1,0 +1,22 @@
+{% extends 'forms/form_base.html' %}
+{% load static %}
+{% block title %}Add/edit pavilion{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        {% if form.instance.id %}
+            <h2>Edit Pavilion</h2>
+            <form method="post" action="{% url 'edit_pavilion' form.instance.id %}">
+                <a type="button"
+                   class="btn btn-danger"
+                   href="{% url 'delete_pavilion' form.instance.id %}"
+                   onclick="confirm('Are you sure you want to detele {{ form.instance.name }} ?')">Delete</a>
+            {% else %}
+                <h2>Create Pavilion</h2>
+                <form method="post" action="{% url 'add_pavilion' %}">
+                {% endif %}
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    {% endblock %}

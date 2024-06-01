@@ -21,7 +21,34 @@
         {% include 'home_toolbar.html' %}
         <div class="container-fluid p-0">
             <div class="row w-100 m-0 p-0 vh-100">
-                <div id="canvas-container" class="col-8 p-0"></div>
+                <div id="canvas-container" class="col-8 p-0">
+                    <div class="container mt-2">
+                        {% for message in messages %}
+                            {% if 'success' in message.tags %}
+                                <div class="alert alert-success">
+                                    <strong>SUCCESS!</strong>
+                                    {{ message }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% for message in messages %}
+                            {% if 'error' in message.tags %}
+                                <div class="alert alert-danger">
+                                    <strong>ERROR!</strong>
+                                    {{ message }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% for message in messages %}
+                            {% if 'info' in message.tags %}
+                                <div class="alert alert-info">
+                                    <strong>INFO!</strong>
+                                    {{ message }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
                 {% include 'parts.html' %}
             </div>
         </div>

@@ -123,7 +123,9 @@ var prevLevel = 0
                                oninput="syncValue(this, 'y-scale-slider-{{ part.id }}')">
                     </div>
                 </div>
-                <a class="btn btn-primary btn-sm mt-2" href="{% url 'editor' part.id %}">Edit</a>
+                <a class="btn btn-primary btn-sm mt-2" href="{% url 'editor' part.id %}">Edit part</a>
+                <a class="btn btn-primary btn-sm mt-2"
+                   href="{% url 'edit_part' part.id %}">Edit details</a>
             </li>
             <div id="part-{{ forloop.counter }}">{{ part.part_xml|json_script:"part_xml" }}</div>
             <script>

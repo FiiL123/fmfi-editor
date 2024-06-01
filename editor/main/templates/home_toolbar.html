@@ -18,7 +18,7 @@
                            title="Level down"
                            onclick="homeToolbarClickFunc(this)"><i class="fa-solid fa-circle-down"></i></a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown me-1">
                         <a class="btn btn-outline-secondary dropdown-toggle"
                            href="#"
                            id="navbarDropdown"
@@ -27,18 +27,49 @@
                            aria-expanded="false">New..</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="#">Department</a>
+                                <a class="dropdown-item" href="{% url 'add_department' %}">Department</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Item</a>
+                                <a class="dropdown-item" href="{% url 'add_item' %}">Item</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Part</a>
+                                <a class="dropdown-item" href="{% url 'add_purpose' %}">Purpose</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Purpose</a>
+                                <a class="dropdown-item" href="{% url 'add_pavilion' %}">Pavilion</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'add_part' %}">Part</a>
                             </li>
                         </ul>
+                    </li>
+                    <li class="nav-item dropdown me-1">
+                        <a class="btn btn-outline-secondary dropdown-toggle"
+                           href="#"
+                           id="navbarDropdown"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">Edit..</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="#">Departments</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Items</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Purposes</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Pavilions</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1" href="{% url 'xml_upload' %}">Upload XML</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1" href="{% url 'export_xml' %}">Export XML</a>
                     </li>
                 </ul>
             </ul>
