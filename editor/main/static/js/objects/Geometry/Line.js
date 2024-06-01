@@ -33,7 +33,6 @@ export default class Line extends Konva.Line {
 		});
 
 		super.on("transformend", function () {
-			console.log("transform end");
 			handlePolySizeChange(this);
 			this.room.updateSidebar();
 			actionManager.addAction(new TransformPolyAction(this, this.prevPoints));

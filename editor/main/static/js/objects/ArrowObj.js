@@ -46,9 +46,7 @@ export default class ArrowObj {
 }
 
 export function addArrow(attributes, layer, geometryType, geometry) {
-	console.log("adding arrow");
 	const arrow = new ArrowObj(attributes, layer, geometryType, geometry);
-	console.log(arrow);
 	objects.push(arrow);
 	arrow.geometry.moveToTop();
 	return arrow;

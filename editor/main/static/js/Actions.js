@@ -44,6 +44,26 @@ export class TransformAction extends EmptyAction {
 	}
 }
 
+export class TransformText extends EmptyAction {
+	constructor(obj, prevPoints) {
+		super();
+		this.obj = obj;
+		this.prevPostition = prevPoints;
+		this.currentPosition = {
+			x: this.obj.x(),
+			y: this.obj.y(),
+		};
+	}
+
+	make() {
+		this.obj.moveBack(this.currentPosition);
+	}
+
+	revert() {
+		this.obj.moveBack(this.prevPostition);
+	}
+}
+
 export class TransformPolyAction extends EmptyAction {
 	constructor(obj, points) {
 		super();

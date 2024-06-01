@@ -8,6 +8,7 @@ import { addWall } from "./objects/Wall.js";
 import { addVertex } from "./objects/Vertex.js";
 import { addEdge } from "./objects/Edge.js";
 import { addArrow } from "./objects/ArrowObj.js";
+import { addLabel } from "./objects/Label.js";
 
 export default class XMLManager {
 	constructor(xml_text, layer, graphLayer, scale) {
@@ -149,11 +150,12 @@ export default class XMLManager {
 					}
 					break;
 				case "arrow":
-					console.log("trying adding arrow");
 					const geom = elem.children[0];
 					const points2 = this.readLinePoints(geom);
 					const arrow = addArrow(attributes, layer, "arrow", points2);
 					break;
+				case "label":
+					const label = addLabel(attributes, layer, scale);
 			}
 		}
 		if (graphLayer) {
