@@ -1,0 +1,29 @@
+{% extends 'forms/form_base.html' %}
+{% load static %}
+{% block title %}List of {{ name }}s{% endblock %}
+{% block content %}
+    <div class="p-2">
+        <a href="{% url 'home' %}" class="btn btn-primary">Back</a>
+    </div>
+    <div class="container mt-5">
+        <h2>{{ name }}s</h2>
+        <table class="table">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col">Názov</th>
+                    <th scope="col">Upraviť</th>
+                </tr>
+            </thead>
+            {% for obj in objects %}
+                <tr>
+                    <th scope="col">{{ obj }}</th>
+                    <th scope="col">
+                        <a type="button"
+                           class="btn btn-success"
+                           href="/edit_{{ name }}/{{ obj.id }}">Edit</a>
+                    </th>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

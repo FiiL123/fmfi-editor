@@ -52,16 +52,16 @@
                            aria-expanded="false">Edit..</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="#">Departments</a>
+                                <a class="dropdown-item" href="{% url 'list_departments' %}">Departments</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Items</a>
+                                <a class="dropdown-item" href="{% url 'list_items' %}">Items</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Purposes</a>
+                                <a class="dropdown-item" href="{% url 'list_purposes' %}">Purposes</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Pavilions</a>
+                                <a class="dropdown-item" href="{% url 'list_pavilions' %}">Pavilions</a>
                             </li>
                         </ul>
                     </li>
@@ -73,7 +73,6 @@
                     </li>
                 </ul>
             </ul>
-            <a class="btn btn-outline-primary" href="/">Back</a>
         </div>
     </div>
 </nav>

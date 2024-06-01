@@ -135,6 +135,9 @@ class Pavilion(models.Model):
         pavilion.setAttribute("ground-level", str(self.ground_level))
         return pavilion
 
+    def __str__(self):
+        return self.name
+
 
 admin.site.register(Part)
 admin.site.register(Department)

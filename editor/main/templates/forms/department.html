@@ -2,6 +2,9 @@
 {% load static %}
 {% block title %}Add/edit department{% endblock %}
 {% block content %}
+    <div class="p-2">
+        <a href="{% url 'list_departments' %}" class="btn btn-primary">Back</a>
+    </div>
     <div class="container mt-5">
         {% if form.instance.id %}
             <h2>Edit Department</h2>

@@ -13,10 +13,7 @@
         {% block extra_head %}{% endblock %}
     </head>
     <body>
-        <div class="p-2">
-            <a href="{% url 'home' %}" class="btn btn-primary">Back</a>
-        </div>
-        <div class="container">
+        <div>
             {% block content %}{% endblock %}
         </div>
     </body>

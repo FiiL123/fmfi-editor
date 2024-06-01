@@ -14,7 +14,6 @@ from editor.main.models import Department, Item, Part, Pavilion, Purpose
 def home(request):
     parts = Part.objects.all()
     purposes = serialize("json", Purpose.objects.all())
-    print(parts)
     context = {"parts": parts, "purposes": purposes}
     return render(request, "home.html", context=context)
 

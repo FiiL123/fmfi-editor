@@ -28,6 +28,10 @@ def delete_department(request, id):
     return delete_object(id, Department)
 
 
+def list_departments(request):
+    return list_objects(request, Department, "department")
+
+
 def add_item(request):
     return add_object(request, form_class=ItemForm, html="forms/item.html")
 
@@ -40,6 +44,10 @@ def delete_item(request, id):
     return delete_object(id, Item)
 
 
+def list_items(request):
+    return list_objects(request, Item, "item")
+
+
 def add_purpose(request):
     return add_object(request, form_class=PurposeForm, html="forms/purpose.html")
 
@@ -49,7 +57,11 @@ def edit_purpose(request, id):
 
 
 def delete_purpose(request, id):
-    return delete_object(id, Item)
+    return delete_object(id, Purpose)
+
+
+def list_purposes(request):
+    return list_objects(request, Purpose, "purpose")
 
 
 def add_pavilion(request):
@@ -61,7 +73,11 @@ def edit_pavilion(request, id):
 
 
 def delete_pavilion(request, id):
-    return delete_object(id, Item)
+    return delete_object(id, Pavilion)
+
+
+def list_pavilions(request):
+    return list_objects(request, Pavilion, "pavilion")
 
 
 def add_object(request, form_class, html):
@@ -76,12 +92,17 @@ def add_object(request, form_class, html):
 
 
 def edit_object(request, id, object_class, form_class, html):
+    print(id, object_class)
     instance = get_object_or_404(object_class, id=id)
     if request.method == "POST":
         form = form_class(request.POST, instance=instance)
-
         if form.is_valid():
-            form.save()
+            new_id = form.cleaned_data["id"]
+            obj = form.save()
+            if new_id != id:
+                obj.pk = new_id
+                obj.save()
+                object_class.objects.get(id=id).delete()
             return redirect("home")
     else:
         form = form_class(instance=instance)
@@ -93,3 +114,8 @@ def delete_object(id, object_class):
     instance = get_object_or_404(object_class, id=id)
     instance.delete()
     return redirect("home")
+
+
+def list_objects(request, object_class, name):
+    objects = object_class.objects.all().order_by("id")
+    return render(request, "forms/list.html", context={"objects": objects, "name": name})
