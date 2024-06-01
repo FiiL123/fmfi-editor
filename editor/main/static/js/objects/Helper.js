@@ -121,8 +121,18 @@ export function addAttributeField(form, key, value) {
 export function showAttributeDropdown(form) {
 	const dropdown = document.createElement("select");
 	dropdown.classList.add("form-control", "mb-2");
-	// TODO add the rest, make purpose also a choosable one
-	const options = ["id", "name", "number", "purpose", "important"];
+	const options = [
+		"id",
+		"name",
+		"number",
+		"purpose",
+		"important",
+		"custom-map-label",
+		"description",
+		"custom-search-string",
+		"capacity",
+		"open",
+	];
 	options.forEach((option) => {
 		const opt = document.createElement("option");
 		opt.value = option;
