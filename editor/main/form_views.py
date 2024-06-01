@@ -82,7 +82,6 @@ def edit_object(request, id, object_class, form_class, html):
 
         if form.is_valid():
             form.save()
-            # messages.success(request, "Zmeny boli uložené.")
             return redirect("home")
     else:
         form = form_class(instance=instance)
