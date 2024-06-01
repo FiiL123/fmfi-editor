@@ -2,6 +2,7 @@ import Rectangle from "./Geometry/Rectangle.js";
 import Polygon from "./Geometry/Polygon.js";
 import Line from "./Geometry/Line.js";
 import Circle from "./Geometry/Circle.js";
+import Arrow from "./Geometry/Arrow.js";
 
 export function createGeometry(room, geometryType, geometry, color) {
 	let obj = null;
@@ -26,6 +27,8 @@ export function createGeometry(room, geometryType, geometry, color) {
 		case "circle":
 			obj = new Circle(room, geometry.x, geometry.y, color);
 			break;
+		case "arrow":
+			obj = new Arrow(room, geometry, color);
 	}
 
 	return obj;

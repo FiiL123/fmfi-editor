@@ -1,22 +1,22 @@
 import { TransformPolyAction } from "../../Actions.js";
 import {
-	createPointXMLElems,
 	handlePolyPositionChange,
 	handlePolySizeChange,
 } from "./GeometryHelper.js";
 
-export default class Line extends Konva.Line {
-	constructor(room, points, type, color) {
+export default class Arrow extends Konva.Arrow {
+	constructor(room, points, color) {
 		super({
 			points: points,
 			stroke: color,
-			strokeWidth: 3,
-			closed: false,
+			fill: color,
+			strokeWidth: 10,
+			pointerLength: 20,
+			pointerWidth: 20,
 			draggable: true,
 		});
 		this.room = room;
 		this.startingPoints = points;
-		this.type = type;
 		super.on("click", this.handleRoomClick);
 		super.on("dragstart", function () {
 			this.prevPoints = [...this.points()];
@@ -112,17 +112,11 @@ export default class Line extends Konva.Line {
 	}
 
 	toXML(doc, parent) {
-		if (this.type === "line") {
-			const lineElem = doc.createElement("line");
-			lineElem.setAttribute("x1", this.points()[0]);
-			lineElem.setAttribute("y1", this.points()[1]);
-			lineElem.setAttribute("x2", this.points()[2]);
-			lineElem.setAttribute("y2", this.points()[3]);
-			parent.appendChild(lineElem);
-		} else {
-			const polylineElem = doc.createElement("polyline");
-			createPointXMLElems(doc, polylineElem, this.points());
-			parent.appendChild(polylineElem);
-		}
+		const lineElem = doc.createElement("line");
+		lineElem.setAttribute("x1", this.points()[0]);
+		lineElem.setAttribute("y1", this.points()[1]);
+		lineElem.setAttribute("x2", this.points()[2]);
+		lineElem.setAttribute("y2", this.points()[3]);
+		parent.appendChild(lineElem);
 	}
 }
