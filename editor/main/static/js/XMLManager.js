@@ -230,10 +230,7 @@ export default class XMLManager {
 		const partElem = doc.createElement("part");
 		console.log(objects);
 		for (const obj of objects) {
-			if (!(obj instanceof Stairs)) {
-				// console.log("calling to XML for " + obj);
-				obj.toXML(doc, partElem);
-			}
+			obj.toXML(doc, partElem);
 		}
 
 		doc.appendChild(partElem); // Make sure to append your created element to the document

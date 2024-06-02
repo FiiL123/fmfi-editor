@@ -22,6 +22,11 @@ export default class Stairs {
 			});
 			this.layer.add(this.typeText);
 		}
+		if (this.geometry.points().length === 8) {
+			console.log("two lines");
+		} else {
+			console.log("two polylines");
+		}
 	}
 
 	toString() {
@@ -74,8 +79,43 @@ export default class Stairs {
 		this.attributes.forEach((val, key) => {
 			stairElem.setAttribute(key, val);
 		});
-		this.geometry.toXML(doc, stairElem);
+		this.xmlLines(doc, stairElem, this.geometry.points());
+		console.log(stairElem);
 		parent.appendChild(stairElem);
+	}
+
+	xmlLines(doc, parent, points) {
+		if (points.length === 8) {
+			const line1 = doc.createElement("line");
+			line1.setAttribute("x1", points[0]);
+			line1.setAttribute("y1", points[1]);
+			line1.setAttribute("x2", points[2]);
+			line1.setAttribute("y2", points[3]);
+			const line2 = doc.createElement("line");
+			line2.setAttribute("x1", points[6]);
+			line2.setAttribute("y1", points[7]);
+			line2.setAttribute("x2", points[4]);
+			line2.setAttribute("y2", points[5]);
+			parent.appendChild(line1);
+			parent.appendChild(line2);
+		} else {
+			const line1 = doc.createElement("polyline");
+			for (let i = 0; i < points.length / 2; i += 2) {
+				const point = doc.createElement("point");
+				point.setAttribute("x", points[i]);
+				point.setAttribute("y", points[i + 1]);
+				line1.appendChild(point);
+			}
+			const line2 = doc.createElement("polyline");
+			for (let i = points.length - 1; i > points.length / 2; i -= 2) {
+				const point = doc.createElement("point");
+				point.setAttribute("x", points[i - 1]);
+				point.setAttribute("y", points[i]);
+				line2.appendChild(point);
+			}
+			parent.appendChild(line1);
+			parent.appendChild(line2);
+		}
 	}
 }
 

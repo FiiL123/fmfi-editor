@@ -135,6 +135,8 @@ export function showAttributeDropdown(form) {
 		"custom-search-string",
 		"capacity",
 		"open",
+		"steps",
+		"type",
 	];
 	options.forEach((option) => {
 		const opt = document.createElement("option");
