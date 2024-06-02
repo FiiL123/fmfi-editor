@@ -97,7 +97,7 @@ def edit_object(request, id, object_class, form_class, html):
     if request.method == "POST":
         form = form_class(request.POST, instance=instance)
         if form.is_valid():
-            new_id = form.cleaned_data["id"]
+            new_id = form.cleaned_data["id"] if "id" in form.cleaned_data else id
             obj = form.save()
             if new_id != id:
                 obj.pk = new_id
