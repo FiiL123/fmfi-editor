@@ -61,4 +61,35 @@ function renderParts() {
 	}
 }
 
+function setGroupTransform(group, value) {
+	group.scale({ x: value.scale_x, y: value.scale_y });
+	group.offset({
+		x: -(value.dx / value.scale_x),
+		y: -(value.dy / value.scale_y),
+	});
+	console.log({
+		x: -(value.dx / value.scale_x),
+		y: -(value.dy / value.scale_y),
+	});
+	console.log(group.offset());
+}
+
+function syncPartTransform(source, targetId, partId) {
+	const partID = parseInt(partId);
+	const target = document.getElementById(targetId);
+	target.value = source.value;
+	const partGroup = part_groups.get(partID);
+	const values = {
+		dx: parseInt(document.getElementById("x-offset-number-" + partId).value),
+		dy: parseInt(document.getElementById("y-offset-number-" + partId).value),
+		scale_x: parseFloat(
+			document.getElementById("x-scale-number-" + partId).value,
+		),
+		scale_y: parseFloat(
+			document.getElementById("y-scale-number-" + partId).value,
+		),
+	};
+	setGroupTransform(partGroup, values);
+}
 window.renderParts = renderParts;
+window.syncPartTransform = syncPartTransform;

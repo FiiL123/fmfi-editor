@@ -1,8 +1,5 @@
 <script>
-function syncValue(source, targetId) {
-    var target = document.getElementById(targetId);
-    target.value = source.value;
-}
+
 var parts =  new Map()
 var objects = []
 var purposesData = JSON.parse('{{ purposes|safe }}');
@@ -51,7 +48,7 @@ var prevLevel = 0
                                step="1"
                                value="{{ part.dx }}"
                                id="x-offset-slider-{{ part.id }}"
-                               oninput="syncValue(this, 'x-offset-number-{{ part.id }}')">
+                               oninput="syncPartTransform(this, 'x-offset-number-{{ part.id }}', '{{ part.id }}')">
                         <input type="number"
                                class="form-control"
                                style="width: 80px"
@@ -60,7 +57,7 @@ var prevLevel = 0
                                step="1"
                                value="{{ part.dx }}"
                                id="x-offset-number-{{ part.id }}"
-                               oninput="syncValue(this, 'x-offset-slider-{{ part.id }}')">
+                               oninput="syncPartTransform(this, 'x-offset-slider-{{ part.id }}', '{{ part.id }}')">
                     </div>
                     <div class="col-12 col-md-6 d-flex align-items-center">
                         <label class="form-label me-2">Y-offset:</label>
@@ -71,7 +68,7 @@ var prevLevel = 0
                                step="1"
                                value="{{ part.dy }}"
                                id="y-offset-slider-{{ part.id }}"
-                               oninput="syncValue(this, 'y-offset-number-{{ part.id }}')">
+                               oninput="syncPartTransform(this, 'y-offset-number-{{ part.id }}', '{{ part.id }}')">
                         <input type="number"
                                class="form-control"
                                style="width: 80px"
@@ -80,7 +77,7 @@ var prevLevel = 0
                                step="1"
                                value="{{ part.dy }}"
                                id="y-offset-number-{{ part.id }}"
-                               oninput="syncValue(this, 'y-offset-slider-{{ part.id }}')">
+                               oninput="syncPartTransform(this, 'y-offset-slider-{{ part.id }}', '{{ part.id }}')">
                     </div>
                     <div class="col-12 col-md-6 d-flex align-items-center">
                         <label class="form-label me-2">X-scale:</label>
@@ -91,7 +88,7 @@ var prevLevel = 0
                                step="0.01"
                                value="{{ part.scale_x }}"
                                id="x-scale-slider-{{ part.id }}"
-                               oninput="syncValue(this, 'x-scale-number-{{ part.id }}')">
+                               oninput="syncPartTransform(this, 'x-scale-number-{{ part.id }}', '{{ part.id }}')">
                         <input type="number"
                                class="form-control"
                                style="width: 80px"
@@ -100,7 +97,7 @@ var prevLevel = 0
                                step="0.01"
                                value="{{ part.scale_x }}"
                                id="x-scale-number-{{ part.id }}"
-                               oninput="syncValue(this, 'x-scale-slider-{{ part.id }}')">
+                               oninput="syncPartTransform(this, 'x-scale-slider-{{ part.id }}', '{{ part.id }}')">
                     </div>
                     <div class="col-12 col-md-6 d-flex align-items-center">
                         <label class="form-label me-2">Y-scale:</label>
@@ -111,7 +108,7 @@ var prevLevel = 0
                                step="0.01"
                                value="{{ part.scale_y }}"
                                id="y-scale-slider-{{ part.id }}"
-                               oninput="syncValue(this, 'y-scale-number-{{ part.id }}')">
+                               oninput="syncPartTransform(this, 'y-scale-number-{{ part.id }}', '{{ part.id }}')">
                         <input type="number"
                                class="form-control"
                                style="width: 80px"
@@ -120,7 +117,7 @@ var prevLevel = 0
                                step="0.01"
                                value="{{ part.scale_y }}"
                                id="y-scale-number-{{ part.id }}"
-                               oninput="syncValue(this, 'y-scale-slider-{{ part.id }}')">
+                               oninput="syncPartTransform(this, 'y-scale-slider-{{ part.id }}', '{{ part.id }}')">
                     </div>
                 </div>
                 <a class="btn btn-primary btn-sm mt-2" href="{% url 'editor' part.id %}">Edit part</a>
