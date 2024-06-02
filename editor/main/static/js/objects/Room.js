@@ -31,6 +31,7 @@ export default class Room {
 			x: textPosition.x + 4,
 			y: textPosition.y + 4,
 			fontSize: this.fontSize,
+			perfectDrawEnabled: false,
 		});
 		this.layer.add(this.numberText);
 	}
