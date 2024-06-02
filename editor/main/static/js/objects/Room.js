@@ -1,4 +1,5 @@
 import { createGeometry, createSidebar } from "./Helper.js";
+import Polygon from "./Geometry/Polygon.js";
 
 export default class Room {
 	constructor(attributes, layer, geometryType, geometry, scale) {
@@ -46,6 +47,29 @@ export default class Room {
 		this.numberText.text(this.text);
 		const textPosition = this.geometry.getLabelPoint();
 		this.numberText.position({ x: textPosition.x, y: textPosition.y });
+		this.numberText.moveToTop();
+	}
+
+	switchGeometry() {
+		this.geometry.destroy();
+		if (this.geometry instanceof Polygon) {
+			this.geometry = createGeometry(
+				this,
+				"rectangle",
+				this.geometry.toRectanglePoints(),
+				this.color,
+			);
+		} else {
+			this.geometry = createGeometry(
+				this,
+				"polygon",
+				this.geometry.toPolygonPoints(),
+				this.color,
+			);
+		}
+		this.layer.add(this.geometry);
+		this.updateText();
+		this.updateSidebar();
 	}
 
 	delete() {

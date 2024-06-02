@@ -10,6 +10,7 @@ export default class Rectangle extends Konva.Rect {
 			fill: color,
 			stroke: "black",
 			draggable: true,
+			perfectDrawEnabled: false,
 		});
 		this.room = room;
 		super.on("transformstart", function () {
@@ -69,6 +70,7 @@ export default class Rectangle extends Konva.Rect {
 	handleRoomClick() {
 		selectedRoom = this.room;
 		tr.nodes([this]);
+		console.log(this.toPolygonPoints());
 		this.room.updateSidebar();
 	}
 
@@ -191,6 +193,19 @@ export default class Rectangle extends Konva.Rect {
 		this.height(prev.h);
 		this.room.updateSidebar();
 		this.room.updateText();
+	}
+
+	toPolygonPoints() {
+		return [
+			this.x(),
+			this.y(),
+			this.x() + this.width(),
+			this.y(),
+			this.x() + this.width(),
+			this.y() + this.height(),
+			this.x(),
+			this.y() + this.height(),
+		];
 	}
 
 	toXML(doc, parent) {

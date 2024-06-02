@@ -13,6 +13,7 @@ export default class Polygon extends Konva.Line {
 			stroke: "black",
 			closed: true,
 			draggable: true,
+			perfectDrawEnabled: false,
 		});
 		this.room = room;
 		this.startingPoints = points;
@@ -48,6 +49,7 @@ export default class Polygon extends Konva.Line {
 	handleRoomClick() {
 		selectedRoom = this.room;
 		tr.nodes([this]);
+		console.log(this.toRectanglePoints());
 		this.room.updateSidebar();
 	}
 
@@ -142,6 +144,25 @@ export default class Polygon extends Konva.Line {
 
 	toString() {
 		return `Polygon(${this.points()})`;
+	}
+
+	toRectanglePoints() {
+		const points = this.points();
+		let minX = points[0];
+		let minY = points[1];
+		let maxX = points[0];
+		let maxY = points[1];
+		for (let i = 2; i < points.length; i += 2) {
+			let x = points[i];
+			let y = points[i + 1];
+
+			minX = Math.min(minX, x);
+			maxX = Math.max(maxX, x);
+			minY = Math.min(minY, y);
+			maxY = Math.max(maxY, y);
+		}
+
+		return { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
 	}
 
 	moveBack(prevPoints) {

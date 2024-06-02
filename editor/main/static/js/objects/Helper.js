@@ -3,6 +3,7 @@ import Polygon from "./Geometry/Polygon.js";
 import Line from "./Geometry/Line.js";
 import Circle from "./Geometry/Circle.js";
 import Arrow from "./Geometry/Arrow.js";
+import Room from "./Room.js";
 
 export function createGeometry(room, geometryType, geometry, color) {
 	let obj = null;
@@ -81,6 +82,16 @@ export function createSidebar(room) {
 	};
 
 	attributesDiv.appendChild(roomForm);
+	if (room instanceof Room) {
+		const switchGeomBtn = document.createElement("button");
+		switchGeomBtn.type = "button";
+		switchGeomBtn.textContent = "Switch geometry";
+		switchGeomBtn.classList.add("btn", "btn-info", "mt-3", "mb-3");
+		roomForm.appendChild(switchGeomBtn);
+		switchGeomBtn.onclick = function () {
+			selectedRoom.switchGeometry();
+		};
+	}
 
 	room.geometry.createFormItems(roomForm);
 	const formButton = document.createElement("button");
