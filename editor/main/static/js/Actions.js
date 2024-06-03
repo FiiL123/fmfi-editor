@@ -14,11 +14,13 @@ export class DeleteAction extends EmptyAction {
 
 	make() {
 		this.obj.delete();
+		objects.remove(this.obj);
 		selectedRoom = null;
 	}
 
 	revert() {
 		this.obj.ressurect();
+		objects.push(this.obj);
 	}
 }
 
