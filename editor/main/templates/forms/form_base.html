@@ -13,6 +13,14 @@
         {% block extra_head %}{% endblock %}
     </head>
     <body>
+        <script>
+        function confirmDeletion(name, href) {
+            if (confirm('Are you sure you want to delete ' + name + '?')) {
+                window.location.href = href;
+            }
+            return false;
+        }
+        </script>
         <div>
             {% block content %}{% endblock %}
         </div>

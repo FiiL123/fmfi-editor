@@ -20,7 +20,7 @@
                 <a type="button"
                    class="btn btn-danger"
                    href="{% url 'delete_part' form.instance.id %}"
-                   onclick="confirm('Are you sure you want to delete {{ form.instance.name }} ?')">Delete</a>
+                   onclick="return confirmDeletion('{{ form.instance.name }}', this.href);">Delete</a>
             {% else %}
                 <h2>Create Part</h2>
                 <form id="part-form" method="post" action="{% url 'add_part' %}">
