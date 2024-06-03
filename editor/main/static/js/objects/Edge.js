@@ -28,6 +28,7 @@ export default class Edge {
 			];
 			this.geometry = createGeometry(this, "line", this.points, "black");
 			this.layer.add(this.geometry);
+			console.log("createsd");
 			return true;
 		}
 		return false;

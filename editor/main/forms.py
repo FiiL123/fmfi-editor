@@ -15,7 +15,7 @@ class PartForm(forms.ModelForm):
         # Optional: Customize widgets for better user experience
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control"}),
-            "part_xml": forms.Textarea(attrs={"class": "codemirror-textarea"}),
+            "part_xml": forms.Textarea(attrs={"class": "codemirror-textarea form-control"}),
             "plan_image": forms.ClearableFileInput(attrs={"class": "form-control"}),
             "plan_x_offset": forms.NumberInput(attrs={"class": "form-control"}),
             "plan_y_offset": forms.NumberInput(attrs={"class": "form-control"}),
@@ -26,6 +26,10 @@ class PartForm(forms.ModelForm):
             "scale_y": forms.NumberInput(attrs={"class": "form-control"}),
             "pavilion": forms.TextInput(attrs={"class": "form-control"}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(PartForm, self).__init__(*args, **kwargs)
+        self.fields["part_xml"].initial = "<part></part>"
 
 
 class DepartmentForm(forms.ModelForm):

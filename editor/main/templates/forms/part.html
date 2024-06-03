@@ -14,14 +14,16 @@
     <div class="container mt-5">
         {% if form.instance.id %}
             <h2>Edit Part</h2>
-            <form method="post" action="{% url 'edit_part' form.instance.id %}">
+            <form id="part-form"
+                  method="post"
+                  action="{% url 'edit_part' form.instance.id %}">
                 <a type="button"
                    class="btn btn-danger"
                    href="{% url 'delete_part' form.instance.id %}"
-                   onclick="confirm('Are you sure you want to detele {{ form.instance.name }} ?')">Delete</a>
+                   onclick="confirm('Are you sure you want to delete {{ form.instance.name }} ?')">Delete</a>
             {% else %}
                 <h2>Create Part</h2>
-                <form method="post" action="{% url 'add_part' %}">
+                <form id="part-form" method="post" action="{% url 'add_part' %}">
                 {% endif %}
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -32,13 +34,13 @@
     document.addEventListener("DOMContentLoaded", function() {
         var textareas = document.getElementsByClassName('codemirror-textarea');
         for (var i = 0; i < textareas.length; i++) {
-            CodeMirror.fromTextArea(textareas[i], {
+            var editor = CodeMirror.fromTextArea(textareas[i], {
                 mode: "xml",
                 lineNumbers: true,
                 matchBrackets: true,
                 autoCloseTags: true
             });
         }
-    });
+    })
         </script>
     {% endblock %}

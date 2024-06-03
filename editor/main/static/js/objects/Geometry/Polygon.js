@@ -38,7 +38,6 @@ export default class Polygon extends Konva.Line {
 		});
 
 		super.on("transformend", function () {
-			console.log("transform end");
 			handlePolySizeChange(this);
 			this.room.updateSidebar();
 			this.room.updateText();

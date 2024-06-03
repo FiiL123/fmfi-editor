@@ -22,11 +22,6 @@ export default class Stairs {
 			});
 			this.layer.add(this.typeText);
 		}
-		if (this.geometry.points().length === 8) {
-			console.log("two lines");
-		} else {
-			console.log("two polylines");
-		}
 	}
 
 	toString() {
@@ -48,6 +43,9 @@ export default class Stairs {
 
 	delete() {
 		this.geometry.remove();
+		if (this.attributes.has("type")) {
+			this.typeText.remove();
+		}
 		tr.nodes([]);
 	}
 
@@ -73,6 +71,7 @@ export default class Stairs {
 	}
 
 	toXML(doc, parent) {
+		this.isStairway = !this.attributes.has("steps");
 		const stairElem = this.isStairway
 			? doc.createElement("stairway")
 			: doc.createElement("stairs");
@@ -80,7 +79,6 @@ export default class Stairs {
 			stairElem.setAttribute(key, val);
 		});
 		this.xmlLines(doc, stairElem, this.geometry.points());
-		console.log(stairElem);
 		parent.appendChild(stairElem);
 	}
 

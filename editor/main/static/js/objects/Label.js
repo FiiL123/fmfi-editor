@@ -16,6 +16,8 @@ export default class Label {
 		this.layer.add(this.geometry);
 	}
 	updateSidebar() {
+		this.attributes.set("x", this.geometry.x());
+		this.attributes.set("y", this.geometry.y());
 		createSidebar(this);
 	}
 	updateText() {

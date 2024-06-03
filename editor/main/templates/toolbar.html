@@ -4,15 +4,15 @@
             {% load static %}
             <script type="module" src={% static 'js/ToolbarManager.js' %}></script>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <ul class="navbar-nav mb-lg-0 me-2">
+                <ul class="navbar-nav mb-lg-0 me-2" id="toolbar-plan">
                     <li class="nav-item">
                         <a class="btn btn-secondary me-1"
-                           title="Create rectangular room"
+                           title="Create room"
                            onclick="toolbarClickFunc(this)"><i class="fa-solid fa-vector-square"></i></a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-secondary me-1"
-                           title="Create polygon room"
+                           title="Create floor"
                            onclick="toolbarClickFunc(this)"><i class="fa-solid fa-draw-polygon"></i></a>
                     </li>
                     <li class="nav-item">
@@ -22,8 +22,45 @@
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-secondary me-1"
-                           title="Create lift/stairs"
+                           title="Create wall"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-trowel-bricks"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create stairs"
                            onclick="toolbarClickFunc(this)"><i class="fa-solid fa-stairs"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create lift"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-elevator"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create vending machine"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-basket-shopping"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create arrow"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-arrow-right"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create label"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-tag"></i></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mb-lg-0 me-2" id="toolbar-graph" hidden>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create vertex"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-circle-plus"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary me-1"
+                           title="Create edge"
+                           onclick="toolbarClickFunc(this)"><i class="fa-solid fa-link"></i></a>
                     </li>
                 </ul>
                 <li class="nav-item">
