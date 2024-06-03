@@ -36,6 +36,16 @@ def xml_upload(request):
         form = XMLUploadForm(request.POST, request.FILES)
         if form.is_valid():
             xml_file = request.FILES["xml_file"]
+            delete_all = form.cleaned_data["delete_all"]
+
+            if delete_all:
+                # Add your logic to delete all existing entries
+                Part.objects.all().delete()
+                Pavilion.objects.all().delete()
+                Department.objects.all().delete()
+                Item.objects.all().delete()
+                Purpose.objects.all().delete()
+
             tree = ET.parse(xml_file)
             root = tree.getroot()
             for child in root:

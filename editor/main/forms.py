@@ -5,6 +5,7 @@ from .models import Department, Item, Part, Pavilion, Purpose
 
 class XMLUploadForm(forms.Form):
     xml_file = forms.FileField()
+    delete_all = forms.BooleanField(required=False, label="Wipe all data (Parts, Departments, Purposes etc..)")
 
 
 class PartForm(forms.ModelForm):
