@@ -70,7 +70,6 @@ export default class Rectangle extends Konva.Rect {
 	handleRoomClick() {
 		selectedRoom = this.room;
 		tr.nodes([this]);
-		console.log(this.toPolygonPoints());
 		this.room.updateSidebar();
 	}
 

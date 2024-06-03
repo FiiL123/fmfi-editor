@@ -14,13 +14,18 @@ export class DeleteAction extends EmptyAction {
 
 	make() {
 		this.obj.delete();
-		objects.remove(this.obj);
+		const index = objects.indexOf(this.obj);
+		if (index !== -1) {
+			objects.splice(index, 1);
+		}
 		selectedRoom = null;
+		console.log(objects);
 	}
 
 	revert() {
 		this.obj.ressurect();
 		objects.push(this.obj);
+		console.log(objects);
 	}
 }
 
