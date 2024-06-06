@@ -13,6 +13,15 @@ import { addEdge } from "./objects/Edge.js";
 
 function toolbarClickFunc(element) {
 	console.log(element.title);
+	console.log(stage.position());
+	console.log(stage.scale());
+	const x =
+		-Math.floor(stage.position().x * stage.scale().x) + Math.floor(width / 2);
+	const y =
+		-Math.floor(stage.position().y * stage.scale().x) + Math.floor(height / 2);
+	console.log(x);
+	console.log(y);
+
 	let attrs = new Map();
 	switch (element.title) {
 		case "Create room":
@@ -20,59 +29,59 @@ function toolbarClickFunc(element) {
 				new Map(),
 				layer,
 				"rectangle",
-				{ x: 10, y: 10, w: 100, h: 100 },
+				{ x: x, y: y, w: 100, h: 100 },
 				part_scale,
 			);
 			break;
 		case "Create floor":
 			const f = addFloor(new Map(), layer, "rectangle", {
-				x: 10,
-				y: 10,
+				x: x,
+				y: y,
 				w: 100,
 				h: 100,
 			});
 			f.geometry.moveToBottom();
 			break;
 		case "Create doors":
-			addDoor(new Map(), layer, "line", [10, 10, 10, 30]);
+			addDoor(new Map(), layer, "line", [x, y, x, y + 20]);
 			break;
 		case "Create wall":
-			addWall(new Map(), layer, "line", [10, 10, 10, 30]);
+			addWall(new Map(), layer, "line", [x, y, x, y + 20]);
 			break;
 		case "Create lift":
-			addLift(new Map(), layer, "rectangle", { x: 10, y: 10, w: 30, h: 30 });
+			addLift(new Map(), layer, "rectangle", { x: x, y: y, w: 30, h: 30 });
 			break;
 		case "Create stairs":
 			addStairs(
 				new Map(),
 				layer,
 				"polygon",
-				[10, 10, 30, 10, 30, 30, 10, 30],
+				[x, y, x + 20, y, x + 20, y + 20, x, y + 20],
 				part_scale,
 			);
 			break;
 		case "Create vending machine":
 			addVendingMachine(new Map(), layer, "rectangle", {
-				x: 10,
-				y: 10,
+				x: x,
+				y: y,
 				w: 100,
 				h: 100,
 			});
 			break;
 		case "Create arrow":
-			addArrow(new Map(), layer, "arrow", [10, 10, 10, 30]);
+			addArrow(new Map(), layer, "arrow", [x, y, 10, y + 20]);
 		case "Create label":
 			attrs.set("text", "TEXT");
-			attrs.set("x", "0");
-			attrs.set("y", "0");
+			attrs.set("x", `${x}`);
+			attrs.set("y", `${y}`);
 			addLabel(attrs, layer, part_scale);
 			break;
 			break;
 		case "Create vertex":
 			attrs.set("id", "id");
-			attrs.set("x", "0");
-			attrs.set("y", "0");
-			addVertex(attrs, graphLayer, "arrow", [10, 10, 10, 30]);
+			attrs.set("x", `${x}`);
+			attrs.set("y", `${y}`);
+			addVertex(attrs, graphLayer, "arrow", [x, y, x, y + 20]);
 			break;
 		case "Create edge":
 			const edgeId = prompt("Enter the ID for the edge:");
@@ -85,7 +94,7 @@ function toolbarClickFunc(element) {
 			attrs.set("id", edgeId);
 			attrs.set("first-vertex-id", firstVertexId);
 			attrs.set("second-vertex-id", secondVertexId);
-			addEdge(attrs, graphLayer, "arrow", [10, 10, 10, 30]);
+			addEdge(attrs, graphLayer, "arrow", [x, y, x, y + 20]);
 			break;
 		case "Toggle plan view":
 			if (bottom_layer) {
