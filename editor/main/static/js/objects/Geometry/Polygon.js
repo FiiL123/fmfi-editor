@@ -48,7 +48,7 @@ export default class Polygon extends Konva.Line {
 	handleRoomClick() {
 		selectedRoom = this.room;
 		tr.nodes([this]);
-		console.log(this.toRectanglePoints());
+		tr.moveToTop();
 		this.room.updateSidebar();
 	}
 

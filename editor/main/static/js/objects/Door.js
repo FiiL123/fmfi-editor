@@ -14,11 +14,6 @@ export default class Door {
 		this.geometry.moveToTop();
 	}
 
-	handleRoomClick() {
-		selectedRoom = this;
-		tr.nodes([this]);
-		this.updateSidebar();
-	}
 	delete() {
 		this.geometry.remove();
 		tr.nodes([]);

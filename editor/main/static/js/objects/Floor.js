@@ -47,12 +47,6 @@ export default class Floor {
 		this.geometry.moveBack(prevPosition);
 	}
 
-	handleRoomClick() {
-		selectedRoom = this;
-		tr.nodes([this]);
-		this.updateSidebar();
-	}
-
 	lockDragging() {
 		if (this.geometry) {
 			this.geometry.draggable(false);

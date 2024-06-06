@@ -70,6 +70,7 @@ export default class Rectangle extends Konva.Rect {
 	handleRoomClick() {
 		selectedRoom = this.room;
 		tr.nodes([this]);
+		tr.moveToTop();
 		this.room.updateSidebar();
 	}
 

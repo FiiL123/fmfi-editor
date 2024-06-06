@@ -6,11 +6,9 @@ export default class ActionManager {
 
 	addAction(action) {
 		this.undoStack.push(action);
-		console.log(this.undoStack);
 	}
 
-	revertLastAction() {
-		console.log("reverting last action");
+	undoLastAction() {
 		const action = this.undoStack.pop();
 		if (action) {
 			action.revert();
@@ -19,10 +17,10 @@ export default class ActionManager {
 	}
 
 	redoLastAction() {
-		console.log(this.redoStack);
 		const action = this.redoStack.pop();
 		if (action) {
 			action.make();
+			this.undoStack.push(action);
 		}
 	}
 }

@@ -43,6 +43,7 @@ export default class Arrow extends Konva.Arrow {
 	handleRoomClick() {
 		selectedRoom = this.room;
 		tr.nodes([this]);
+		tr.moveToTop();
 		this.room.updateSidebar();
 	}
 

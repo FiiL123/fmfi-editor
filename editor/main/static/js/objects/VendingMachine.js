@@ -33,12 +33,6 @@ export default class VendingMachine {
 		this.geometry.moveBack(prevPosition);
 	}
 
-	handleRoomClick() {
-		selectedRoom = this;
-		tr.nodes([this]);
-		this.updateSidebar();
-	}
-
 	lockDragging() {
 		this.geometry.draggable(false);
 	}

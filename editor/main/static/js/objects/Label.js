@@ -30,11 +30,6 @@ export default class Label {
 		this.geometry.position(points);
 	}
 
-	handleRoomClick() {
-		selectedRoom = this;
-		tr.nodes([]);
-		this.updateSidebar();
-	}
 	delete() {
 		this.geometry.remove();
 		tr.nodes([]);

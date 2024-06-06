@@ -13,11 +13,6 @@ export default class Wall {
 		createSidebar(this);
 	}
 
-	handleRoomClick() {
-		selectedRoom = this;
-		tr.nodes([this]);
-		this.updateSidebar();
-	}
 	delete() {
 		this.geometry.remove();
 		tr.nodes([]);

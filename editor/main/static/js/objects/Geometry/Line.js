@@ -42,6 +42,7 @@ export default class Line extends Konva.Line {
 	handleRoomClick() {
 		selectedRoom = this.room;
 		tr.nodes([this]);
+		tr.moveToTop();
 		this.room.updateSidebar();
 	}
 
