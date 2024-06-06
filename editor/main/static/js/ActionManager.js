@@ -6,6 +6,7 @@ export default class ActionManager {
 
 	addAction(action) {
 		this.undoStack.push(action);
+		console.log(this.undoStack);
 	}
 
 	undoLastAction() {

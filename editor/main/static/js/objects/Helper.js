@@ -89,7 +89,7 @@ export function createSidebar(room) {
 		switchGeomBtn.classList.add("btn", "btn-info", "mt-3", "mb-3");
 		roomForm.appendChild(switchGeomBtn);
 		switchGeomBtn.onclick = function () {
-			selectedRoom.switchGeometry();
+			selectedRoom.switchGeometry(true);
 		};
 	}
 

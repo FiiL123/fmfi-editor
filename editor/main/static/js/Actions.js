@@ -87,3 +87,19 @@ export class TransformPolyAction extends EmptyAction {
 		this.obj.moveBack(this.prevPoints);
 	}
 }
+
+export class switchGeometryAction {
+	constructor(obj, prevGeometry) {
+		this.obj = obj;
+		this.prevGeometry = prevGeometry;
+		this.currGeometry = this.obj.geometry;
+	}
+
+	make() {
+		this.obj.geometrySwap(this.currGeometry);
+	}
+
+	revert() {
+		this.obj.geometrySwap(this.prevGeometry);
+	}
+}

@@ -1,5 +1,6 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 import Polygon from "./Geometry/Polygon.js";
+import { switchGeometryAction } from "../Actions.js";
 
 export default class Room {
 	constructor(attributes, layer, geometryType, geometry, scale) {
@@ -52,7 +53,8 @@ export default class Room {
 	}
 
 	switchGeometry() {
-		this.geometry.destroy();
+		const oldGeometry = this.geometry;
+		this.geometry.remove();
 		if (this.geometry instanceof Polygon) {
 			this.geometry = createGeometry(
 				this,
@@ -68,6 +70,16 @@ export default class Room {
 				this.color,
 			);
 		}
+		actionManager.addAction(new switchGeometryAction(this, oldGeometry));
+		this.layer.add(this.geometry);
+		tr.nodes([this.geometry]);
+		this.updateText();
+		this.updateSidebar();
+	}
+
+	geometrySwap(geometry) {
+		this.geometry.remove();
+		this.geometry = geometry;
 		this.layer.add(this.geometry);
 		this.updateText();
 		this.updateSidebar();
