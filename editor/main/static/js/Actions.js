@@ -88,7 +88,7 @@ export class TransformPolyAction extends EmptyAction {
 	}
 }
 
-export class switchGeometryAction {
+export class SwitchGeometryAction {
 	constructor(obj, prevGeometry) {
 		this.obj = obj;
 		this.prevGeometry = prevGeometry;

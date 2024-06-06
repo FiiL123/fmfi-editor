@@ -1,6 +1,6 @@
 import { createGeometry, createSidebar } from "./Helper.js";
 import Polygon from "./Geometry/Polygon.js";
-import { switchGeometryAction } from "../Actions.js";
+import { SwitchGeometryAction } from "../Actions.js";
 
 export default class Room {
 	constructor(attributes, layer, geometryType, geometry, scale) {
@@ -70,7 +70,7 @@ export default class Room {
 				this.color,
 			);
 		}
-		actionManager.addAction(new switchGeometryAction(this, oldGeometry));
+		actionManager.addAction(new SwitchGeometryAction(this, oldGeometry));
 		this.layer.add(this.geometry);
 		tr.nodes([this.geometry]);
 		this.updateText();
