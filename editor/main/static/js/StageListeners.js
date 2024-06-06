@@ -101,3 +101,14 @@ stage.on("wheel", (e) => {
 	};
 	stage.position(newPos);
 });
+
+stage.on("click", function (e) {
+	if (e.target === stage) {
+		const existingAttributesDiv = document.getElementById("attributesDiv");
+		if (existingAttributesDiv) {
+			existingAttributesDiv.parentNode.removeChild(existingAttributesDiv);
+		}
+		selectedRoom = null;
+		tr.nodes([]);
+	}
+});
