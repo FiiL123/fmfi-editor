@@ -16,6 +16,7 @@
             <h2>Edit Part</h2>
             <form id="part-form"
                   method="post"
+                  enctype="multipart/form-data"
                   action="{% url 'edit_part' form.instance.id %}">
                 <a type="button"
                    class="btn btn-danger"
@@ -23,7 +24,10 @@
                    onclick="return confirmDeletion('{{ form.instance.name }}', this.href);">Delete</a>
             {% else %}
                 <h2>Create Part</h2>
-                <form id="part-form" method="post" action="{% url 'add_part' %}">
+                <form id="part-form"
+                      method="post"
+                      enctype="multipart/form-data"
+                      action="{% url 'add_part' %}">
                 {% endif %}
                 {% csrf_token %}
                 {{ form.as_p }}
